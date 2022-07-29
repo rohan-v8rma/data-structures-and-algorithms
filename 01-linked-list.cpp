@@ -81,12 +81,13 @@ void addElement(struct node* &head) {  // We are passing head by reference so th
     
 
     if (insertIndex > 0) {
-        // tempPtr-> next = beforePtr -> next;
+        tempPtr -> next = beforePtr -> next;
+        beforePtr -> next = tempPtr;
     }
     else {
         tempPtr -> next = head;
         head = tempPtr;    
-    }; // this if else block is need since if the inserted element is to be at 0th index, head has to point directly to the next element, instead of having its next pointer on the new element.
+    }; // this if else block is need since if the inserted element is to be at 0th index, head has to point directly to the next element, instead of the new element getting pointed to by some other element.
 }
 
 int main() {
