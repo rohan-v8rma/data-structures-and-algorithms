@@ -56,7 +56,7 @@ void printLinkedList(struct node* head) {
 }
 
 // Function for adding elements in the linked list 
-void addElement(struct node* &head) {  // We are passing head by reference in order to 
+void addElement(struct node* &head) {  // We are passing head by reference so that whatever changes happen to the head pointer are reflected outside
 
     int insertIndex; // let 0
     printf("Index position of node: ");
@@ -64,25 +64,28 @@ void addElement(struct node* &head) {  // We are passing head by reference in or
 
     struct node* tempPtr = head;
     struct node* beforePtr = new struct node;
-    
+    beforePtr -> next = tempPtr;    
+
     for(int index = 0; index < insertIndex; index++) {
         tempPtr = tempPtr -> next;
+        beforePtr = beforePtr -> next;
     };
-    
-    beforePtr -> next = tempPtr;
+    // printf("%p\n", beforePtr);
+    // printf("%p\n", tempPtr);
     tempPtr = new struct node;
-
+    // printf("%p\n", beforePtr);
+    // printf("%p\n", tempPtr);
     printf("Value of node: ");
     scanf("%d", &(tempPtr -> value));
-
-    tempPtr -> next = (beforePtr -> next);
+    
     
 
     if (insertIndex > 0) {
-        head = tempPtr;
+        // tempPtr-> next = beforePtr -> next;
     }
     else {
-        // head = tempPtr;
+        tempPtr -> next = head;
+        head = tempPtr;    
     }; // this if else block is need since if the inserted element is to be at 0th index, head has to point directly to the next element, instead of having its next pointer on the new element.
 }
 
