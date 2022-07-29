@@ -25,7 +25,7 @@ struct node* createLinkedList(int elementCt) {
             //! Not working, where we first change tempPtr and then allocate memory for the new node
             // tempPtr = tempPtr -> next; // We dereference tempPtr and access the pointer to the next node. We assign this value to the tempPtr itself.          
                    
-            // tempPtr = (struct node*)(malloc(sizeof(struct node))); // This statement allocates memory for the value that the next pointers of the nodes will point to
+            // tempPtr = (struct node*)(realloc(sizeof(struct node))); // This statement allocates memory for the value that the next pointers of the nodes will point to
             // printf("%p\n", tempPtr); 
             
             //* Working code, where we first allocate memory in next, then change tempPtr
@@ -58,15 +58,15 @@ void printLinkedList(struct node* head) {
 // Function for adding elements in the linked list 
 void addElement(struct node* &head) {  // We are passing head by reference so that whatever changes happen to the head pointer are reflected outside
 
-    int insertIndex; // let 0
+    int addIndex; // let 0
     printf("Index position of node: ");
-    scanf("%d", &insertIndex);
+    scanf("%d", &addIndex);
 
     struct node* tempPtr = head;
     struct node* beforePtr = new struct node;
     beforePtr -> next = tempPtr;    
 
-    for(int index = 0; index < insertIndex; index++) {
+    for(int index = 0; index < addIndex; index++) {
         tempPtr = tempPtr -> next;
         beforePtr = beforePtr -> next;
     };
@@ -80,7 +80,7 @@ void addElement(struct node* &head) {  // We are passing head by reference so th
     
     
 
-    if (insertIndex > 0) {
+    if (addIndex > 0) {
         tempPtr -> next = beforePtr -> next;
         beforePtr -> next = tempPtr;
     }
@@ -88,6 +88,23 @@ void addElement(struct node* &head) {  // We are passing head by reference so th
         tempPtr -> next = head;
         head = tempPtr;    
     }; // this if else block is need since if the inserted element is to be at 0th index, head has to point directly to the next element, instead of the new element getting pointed to by some other element.
+}
+
+void delElement(struct node* &head) {
+    int delIndex;
+    printf("Index position of node: ");
+    scanf("%d", &delIndex);
+    if(delIndex == 0){
+        head = head -> next;
+    }
+    else {
+        struct node* tempPtr = head;
+
+        for(int index = 0; index < (delIndex - 1); index++) { // if delIndex is 1, we need not move `tempPtr` from `head`, we can simply assign tempPtr -> next = (tempPtr -> next) -> next; 
+            tempPtr = tempPtr -> next;
+        }
+        tempPtr -> next = (tempPtr -> next) -> next;
+    }
 }
 
 int main() {
@@ -99,7 +116,8 @@ int main() {
 
     head = createLinkedList(elementCt);
 
-    addElement(head);
+    // addElement(head);
+    delElement(head);
 
     printLinkedList(head);
 }
