@@ -42,7 +42,7 @@ struct node* createLinkedList(int elementCt) {
 }
 
 // Function for printing the linked list
-void printLinkedList(struct node* head) {
+void printLinkedList(struct node* head) { // We pass the head pointer by-reference since in most cases when we are passing pointers, we are dereferencing them and modifying the value stored at the address they point to. Here, we are potentially changing the value of the head pointer itself, which is why if we pass-by-value, the changes won't be reflected. 
     struct node* tempPtr = head;
     int elementCt = 1;
 
@@ -90,6 +90,7 @@ void addElement(struct node* &head) {  // We are passing head by reference so th
     }; // this if else block is need since if the inserted element is to be at 0th index, head has to point directly to the next element, instead of the new element getting pointed to by some other element.
 }
 
+// Function for deleting elements from the linked list
 void delElement(struct node* &head) {
     int delIndex;
     printf("Index position of node: ");
@@ -116,8 +117,12 @@ int main() {
 
     head = createLinkedList(elementCt);
 
-    // addElement(head);
+    // Calling the function for adding an element.
+    addElement(head);
+
+    // Calling the function for deleting an element.
     delElement(head);
 
+    // Calling the function for printing the linked-list.
     printLinkedList(head);
 }
