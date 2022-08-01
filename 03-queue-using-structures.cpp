@@ -9,7 +9,7 @@ struct queue {
     int *queueArray;
 };
 
-struct queue* createQueue (int size){
+struct queue* createQueue (int size) {
     struct queue* queuePtr;
 
     queuePtr = (struct queue*)( malloc( sizeof(struct queue) ) );
@@ -71,10 +71,15 @@ int deQueue(struct queue* queuePtr) {
 }
 
 void printQueue(struct queue* queuePtr) {
-    int elementCt = 1;
-    for(int index = ( (queuePtr -> front) + 1 ); index <= (queuePtr -> rear) ; index++) {
-        printf("Element %d is %d", elementCt, (queuePtr -> queueArray)[index] );
-        elementCt++;
+    if ( isEmpty(queuePtr) ) {
+        printf("Queue is empty.");
+    }
+    else {
+        int elementCt = 1;
+        for(int index = ( (queuePtr -> front) + 1 ); index <= (queuePtr -> rear) ; index++) {
+            printf("Element %d is %d", elementCt, (queuePtr -> queueArray)[index] );
+            elementCt++;
+        };
     };
 }
 
