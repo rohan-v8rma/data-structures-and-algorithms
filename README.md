@@ -1,11 +1,29 @@
+# INDEX
+
+- [INDEX](#index)
+- [Abstract Data Types](#abstract-data-types)
+  - [Classification of Abstract Data Types](#classification-of-abstract-data-types)
 - [Linked List](#linked-list)
   - [Linked List Implementation in CPP](#linked-list-implementation-in-cpp)
       - [More about `NULL`](#more-about-null)
 - [Stack Abstract Data Type](#stack-abstract-data-type)
   - [Stack Operations](#stack-operations)
-- [Applications of Stacks](#applications-of-stacks)
-- [Stack Implementation](#stack-implementation)
+  - [Applications of Stacks](#applications-of-stacks)
+  - [Stack Implementation in CPP](#stack-implementation-in-cpp)
 - [Queue](#queue)
+  - [Queue operations](#queue-operations)
+  - [Queue implementation in CPP](#queue-implementation-in-cpp)
+
+# Abstract Data Types
+
+An Abstract Data Type specifies:
+- Data stored
+- Operations on the data
+- Error conditions associated with operations
+
+## Classification of Abstract Data Types
+
+![](./images/adt-classification.png)
 
 # Linked List
 
@@ -59,51 +77,75 @@ A pointer that is assigned `NULL` is called a null pointer.
 
 # Stack Abstract Data Type
 
-Last-in-First-Out
+Stack is an ADT that manages data elements linearly but provides access to only one end i.e., data element can be inserted and removed from one end only.
 
-Abstract data type
+It is a Last-in-First-Out data structure.
 
-An Abstract Data Type specifies:
-- Data stored
-- Operations on the data
-- Error conditions associated with operations
-
-
+It consists of a an array whose size is set by the user and can't be changed along with a top pointer to point to the 'top of the stack' or the last filled element. 
 
 ## Stack Operations
 
-push()
-pop()
-create()
-isempty()
-isfull()
+- `create()` - 
+- `push()` - for adding an element onto the top of the stack.
+- `pop()` - for deleting an element from the top of stack and returning the element. -1 is returned when `pop()` fails.
+- `peek()` - access the element at the top of the stack.
+- `isempty()` - for checking whether the stack is empty before trying to pop. 
+- `isfull()` - for checking whether the stack is full before trying to add an element.
 
-Before inserting an element in the stack, we check `isfull()`
-Before deleting an element from the stack, we check `isempty()`
+## Applications of Stacks
 
-# Applications of Stacks
+- Reversing Data : We can use stacks to reverse data. (example: files, strings).  Very useful for finding palindromes.
+- Backtracking : It is an algorithmic technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point in time.
+- Function calls : Stacks are used to implement function calls by creating a **stack frame** in memory where local variables are stored.
 
-reversing
-backtracking
-function calls
-java bytecode is evaluated on virtual stack based processor
+  As the scopes of the variables end, they are one-by-one popped out from the stack, with the return address at the bottom, after which the stack frame is removed from memory.
+  
+  Most compilers implement function calls by using a stack.
+- Arithmetic expression evaluation: An important application of stacks is in parsing.
+  
+  In high level languages, infix notation can't be used to evaluate expressions. A common technique is to convert a infix notation into postfix notation, then evaluating it.
 
-# Stack Implementation
+TODO: Understand java bytecode is evaluated on virtual stack based processor
 
-We can start entering elements from the end or the beginning of the array (ONLY ONE, DON'T BE GREEDY).
-We need a top pointer along with a stack to point to the 'top of the stack' or the last filled element.
+## Stack Implementation in CPP
+
+We can start entering elements from the end or the beginning of the array.
+
+We usually implement the `top` pointer in a simple manner where `top` is just an integer with a value of the index of topmost element. The value of `top` is kept as -1 if the stack is empty. 
 
 Stack implementation using Linked List
 
 # Queue
 
-- The `front` index points to the oldest element in the queue
-- The `rear` index points to the newest element in the queue
+- The `front` pointer points to the oldest element in the queue
+- The `rear` pointer points to the newest element in the queue
 
 - front is actually the first element of the array
 - rear is actually the last element of the array
 
+## Queue operations
 
-When the queue is empty, `front = -1`.
+- `isEmpty()` 
+- `isFull()`
+- `enQueue()`
+- `deQueue()`
+- `printQueue()`
 
-When the queue has one element, both front and rear are 0.
+## Queue implementation in CPP
+
+It is opposite to the implementation of stacks using arrays. In stacks, the beginning of the array represented the bottom of the stack for easy pushing and popping.
+
+Here the beginnning of the array is considered as the front of the queue over here.
+
+The implementation of the `front` and `rear` pointers is usually kept simple by keeping them as integers storing values of indices.
+
+Initially, `front` = -1 and `rear` = -1.
+
+When one element is queued, front is -1 and rear is 0.
+
+Whenever `front` = `rear`, queue is empty.
+
+
+- Using arrays: Here, enqueueing and dequeueing is an O(1) operation but when the queue isn't full and an element has to be enqueued then shifting has to take place which is an O(n) operation.
+- Using linked list: Here, both enqueueing and dequeueing is an O(1)
+- Using other ADTs
