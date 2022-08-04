@@ -19,17 +19,22 @@ struct node* createLinkedList(int elementCt) {
         // printf("%d\n", tempPtr -> value);
 
         if (index == (elementCt - 1)) { // Since index starts from 0 and elements start from 1, this is the last element of the linked list
-            tempPtr->next = NULL; //the next pointer of the last element will point to NULL
+            tempPtr -> next = NULL; //the next pointer of the last element will point to NULL
         }
         else {
-            //! Not working, where we first change tempPtr and then allocate memory for the new node
+            //! Not working, where we first change tempPtr and then allocate memory for the new node. This is
+            
+            //? It is not working since we are changing the value stored in tempPtr, and it is a local variable, which is not being returned so the changes aren't reflected.
+            
             // tempPtr = tempPtr -> next; // We dereference tempPtr and access the pointer to the next node. We assign this value to the tempPtr itself.          
                    
-            // tempPtr = (struct node*)(realloc(sizeof(struct node))); // This statement allocates memory for the value that the next pointers of the nodes will point to
-            // printf("%p\n", tempPtr); 
+            // tempPtr = (struct node*)(malloc(sizeof(struct node))); // This statement allocates memory for the value that the next pointers of the nodes will point to
             
             //* Working code, where we first allocate memory in next, then change tempPtr
-            // This is because we need to allocate space fo
+            
+            //? It is working because we are de-referencing tempPtr (arrow operator dereferences, then accesses) and accessing the members of the structure it is pointing to. So we are not making changes to the local variable.
+
+            // This is because we need to allocate space for 
             
             (tempPtr -> next) = (struct node*)(malloc(sizeof(struct node))); 
             tempPtr = tempPtr -> next;          
@@ -77,8 +82,6 @@ void addElement(struct node* &head) {  // We are passing head by reference so th
     // printf("%p\n", tempPtr);
     printf("Value of node: ");
     scanf("%d", &(tempPtr -> value));
-    
-    
 
     if (addIndex > 0) {
         tempPtr -> next = beforePtr -> next;
@@ -121,7 +124,7 @@ int main() {
     addElement(head);
 
     // Calling the function for deleting an element.
-    delElement(head);
+    // delElement(head);
 
     // Calling the function for printing the linked-list.
     printLinkedList(head);
