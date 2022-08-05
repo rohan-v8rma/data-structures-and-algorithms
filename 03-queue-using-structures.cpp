@@ -50,24 +50,26 @@ void enQueue(struct queue* queuePtr, int element) {
                 (queuePtr -> queueArray)[insertIndex] = (queuePtr -> queueArray)[index];
                 insertIndex++;
             }
-            int newSize = (queuePtr -> rear) - (queuePtr -> front) + 1;
+            int size = (queuePtr -> rear) - (queuePtr -> front);
             (queuePtr -> front) = -1;
-            (queuePtr -> rear) = newSize + 1;
-        }
+            (queuePtr -> rear) = size - 1; // Since `(size - 1) - (-1) = size so size of the array remains same`
+        };
 
         (queuePtr -> rear)++;
         *( (queuePtr -> queueArray) + (queuePtr -> rear) ) = element;
-    }
+    };
 }
 
 int deQueue(struct queue* queuePtr) {
     if( isEmpty(queuePtr) ) { 
         printf("Queue is empty. Dequeueing failed\n");
+        return -1;
     }
     else {
         (queuePtr -> front)++;
         return *( (queuePtr -> queueArray) + (queuePtr -> front)); // Since front anyways stores the index before the first element.
     };
+    return -1;
 }
 
 void printQueue(struct queue* queuePtr) {
@@ -76,8 +78,9 @@ void printQueue(struct queue* queuePtr) {
     }
     else {
         int elementCt = 1;
+        printf("From the front:\n");
         for(int index = ( (queuePtr -> front) + 1 ); index <= (queuePtr -> rear) ; index++) {
-            printf("Element %d is %d", elementCt, (queuePtr -> queueArray)[index] );
+            printf("Element %d is %d\n", elementCt, (queuePtr -> queueArray)[index] );
             elementCt++;
         };
     };
@@ -85,6 +88,11 @@ void printQueue(struct queue* queuePtr) {
 
 int main() {
     struct queue* queuePtr = createQueue(5);
+    for(int element =  1; element <= 5; element++) {
+        enQueue(queuePtr, element);
+    }
+    std::cout << deQueue(queuePtr) << std::endl;
+    printQueue(queuePtr);
     
 }
 
