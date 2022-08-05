@@ -1,49 +1,35 @@
 #include<iostream>
 #include<string.h>
 
+/*
+If we used WHILE loop, for the edge case where substring is `susuper` and the main string is `sususuper`, the first non-matching character would be found at the index 4 of the mainstring, after which the check would again start from index 4, with `super` left in the main string. 
+We should have started our check again from index 2 in order to find the substring match. So, in the case of using WHILE loop, we would have missed the occurrence of the substring.
+
+THIS IS WHY WE ARE USING NESTED FOR LOOP.
+*/
+
 int subCheck(std::string subString, std::string mainString) {
-    
-    int mainIndex = 0;
-    int subIndex = 0;
-    
-    int lastMainStringIndex = (mainString.size() - 1);
-    int lastSubStringIndex = (subString.size() - 1);
 
+    int mainStringLength = mainString.size();
+    int subStringLength = subString.size();
 
-    // We keep this as the condition of the while loop as if mainIndex has gone beyond the bound of its highest value, we have nothing left to check. 
-    // If subIndex has gone beyond the bound of its highest value, it means that all its index positions were checked without the subIndex getting reset back to 0, which means the first match of the subString has been found in the mainString. 
-    while( !(mainIndex > lastMainStringIndex ) && !(subIndex > lastSubStringIndex ) ) { 
-        
-        if(mainString[mainIndex] == subString[subIndex]) {
-            mainIndex++;
-            subIndex++;
-        }
-        else {
-            // If the subIndex is already incremented, we need to reset it back to 0, WITHOUT incrementing the mainIndex because it can be possible that an occurrence of the substring starts from the index of the mismatch. 
-            //? Considering two strings 'super' and 'susuper', index 2 of main string will be a point of mismatch. Now, if we increment the mainIndex over here while resetting subIndex to 0, in the next iteration, the next index checked will be 3, which is 'u'. So we would miss the match of the substring present in the mainstring.
-            if(subIndex != 0) { 
-                subIndex = 0;
+    // Two for loops seem inefficient but this is the only for taking care of all edge cases.
+    for(int mainIndex = 0; mainIndex < mainStringLength; mainIndex++) {
+        for(int subIndex = 0; subIndex < subStringLength; subIndex++) {
+            if(subString[subIndex] != mainString[mainIndex + subIndex]) { // If a non-matching character is found in the main string, we break the inner for loop and start checking from the next character of the main string.
+                break;
             }
-
-            // If substring == 0, meaning not even a single character of the substring has matched so far with the mainstring, we increment the mainIndex to check for a match with the next mainstring character.
-            else { 
-                mainIndex++;
-            };            
-        };
+            else if(subIndex == (subStringLength - 1) ) { // When the last index also doesn't break the loop, it means that the substring is fully matched, so we will return the mainIndex, which is wear the occurrence of the substring starts.
+                return mainIndex;
+            };
+        }
     }
-
-    // After the while loop, if the subIndex successfully reached greater than the last index, it means that all the index positions of the  substring were matched with the mainstring without the subIndex being reset back to 0. Even if the subIndex would been equal to the last index, it would have meant that the last index wasn't checked so the last character wasn't matched.
-    if(subIndex > lastSubStringIndex) {
-        return(( mainIndex - 1 ) - lastSubStringIndex); // Returning the index position of the occurrence of the substring in the mainstring
-    }
-    else {
-        return -1; // Returning -1 when substring not found in mainstring
-    }
+    return -1;
 }
 
 int main() {
-    std::string subString = "super";
-    std::string mainString = "susuper";
+    std::string subString = "susuper";
+    std::string mainString = "sususuper";
 
     int returnVal = subCheck(subString, mainString);
     
