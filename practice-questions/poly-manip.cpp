@@ -62,11 +62,12 @@ std::ostream& operator << (std::ostream& out, term* polynomial) {
     struct term* tempPtr = polynomial;
 
     while (tempPtr != NULL) { // this condition helps us stop printing when the tempPtr points to the NULL terminator of the linked list.
-        if (tempPtr != polynomial) {
+        if ( (tempPtr != polynomial)) { // For the first term, we need not a + binary operator sign.
             out << (" + ");
         };
-
-        out << (tempPtr -> coeff) <<  " * (x^" << (tempPtr -> pow) << ")";
+        // if ( (tempPtr -> coeff) != 0 ) {
+            out << (tempPtr -> coeff) <<  " * (x^" << (tempPtr -> pow) << ")";
+        // };
                      
         tempPtr = tempPtr -> nextTerm; // this moves the tempPtr to the next term.
     };
@@ -98,29 +99,44 @@ term* addPolynomial(term* poly1, term* poly2) {
             poly1 = poly1 -> nextTerm;
             poly2 = poly2 -> nextTerm;
         };
-
-        tempPtr -> nextTerm = (term*)(malloc(sizeof(term)));
-        tempPtr = tempPtr -> nextTerm;
+        
+        if( (poly1 == NULL) && (poly2 == NULL) ) {
+            tempPtr -> nextTerm = NULL;
+        }
+        else {
+            tempPtr -> nextTerm = (term*)(malloc(sizeof(term)));
+            tempPtr = tempPtr -> nextTerm;
+        };
     }
 
     while(poly1 != NULL) {
-        tempPtr -> nextTerm = (term*)(malloc(sizeof(term)));
-        tempPtr = tempPtr -> nextTerm;
-
         tempPtr -> coeff = poly1 -> coeff;
         tempPtr -> pow = poly1 -> pow;
         poly1 = poly1 -> nextTerm;
+
+        if(poly1 == NULL) {
+            tempPtr -> nextTerm = NULL;
+        }
+        else {
+            tempPtr -> nextTerm = (term*)(malloc(sizeof(term)));
+            tempPtr = tempPtr -> nextTerm;
+        };
     };
 
     while(poly2 != NULL) {
-        tempPtr -> nextTerm = (term*)(malloc(sizeof(term)));
-        tempPtr = tempPtr -> nextTerm;
-
         tempPtr -> coeff = poly2 -> coeff;
         tempPtr -> pow = poly2 -> pow;
         poly2 = poly2 -> nextTerm;
+
+        if(poly2 == NULL) {
+            tempPtr -> nextTerm = NULL;
+        }
+        else {
+            tempPtr -> nextTerm = (term*)(malloc(sizeof(term)));
+            tempPtr = tempPtr -> nextTerm;
+        };
     };
-    tempPtr = NULL;
+
     return result;
 }
 
