@@ -65,18 +65,24 @@ struct stack* stackCreate (int size){
     return stackPtr;
 }; 
 
-
 int precedence(char op) {
-    if(op == '^') {
-        return 4;
-    }
-    else if( (op == '/') || (op == '*') || (op == '%')) {
-        return 3;
-    }
-    else if( (op == '+') || (op == '-') ) {
-        return 2;
-    };
-    return 0;
+    switch(op) {
+        case '^':
+            return 4;
+            break;
+        case '/':
+        case '*':
+        case '%':
+            return 3;
+            break;
+        case '+': 
+        case '-':
+            return 2;
+            break;
+        default:
+            return 0;
+            break;
+    };    
 };
 
 std::string inToPost(std::string infix) {
@@ -94,17 +100,17 @@ std::string inToPost(std::string infix) {
             stackPush(opStack, current);
         }
         else if(current == ')') {
-            while((opStack->stackArray)[opStack -> top] != '(') {
+            while((opStack -> stackArray)[opStack -> top] != '(') {
                 postfix += stackPop(opStack);
             }
             stackPop(opStack);
         }
         else if( (current == '^') ||  (current == '*') ||  (current == '/') ||  (current == '+') ||  (current == '-') ||  (current == '%')) {
-            if( precedence(*( (opStack ->stackArray) +(opStack -> top) )) < precedence(current) ) {
+            if( precedence(*( (opStack -> stackArray) + (opStack -> top) )) < precedence(current) ) {
                 stackPush(opStack, current);
             }
             else {
-                while( precedence( *( (opStack ->stackArray) + (opStack -> top) ) ) >= precedence(current) ) {
+                while( precedence( *( (opStack -> stackArray) + (opStack -> top) ) ) >= precedence(current) ) {
                     postfix += stackPop(opStack);
                 };
                 stackPush(opStack, current);
