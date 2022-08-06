@@ -132,6 +132,8 @@ int main() {
         printf("Enter the infix expression : ");
         getline(std::cin, infix); //for considering spaces
     };
+    //* Test Expression : (K + L - M*N + (O^P) * W/U/V * T + Q) 
+    //? Expected Output : KL+MN∗−OP^W∗U/V/T∗+Q+
 
     std::string postfix = inToPost(infix);
     std::cout << postfix << std::endl;
