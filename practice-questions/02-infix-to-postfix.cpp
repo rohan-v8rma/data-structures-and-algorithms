@@ -48,11 +48,6 @@ char stackPop (struct stack *stackPtr) {
     return ( *( (stackPtr -> stackArray) + (stackPtr -> top) + 1 ) );
 };
 
-// Function that returns the topmost element of the stack.
-int stackPeek (struct stack *stackPtr) {
-    return ( *( (stackPtr -> stackArray) + (stackPtr -> top) ) );
-};
-
 // Function for creating a new stack. It returns a pointer to the stack.
 struct stack* stackCreate (int size){
     struct stack* stackPtr;
@@ -65,7 +60,7 @@ struct stack* stackCreate (int size){
     return stackPtr;
 }; 
 
-int precedence(char op) {
+int precedOpCheck(char op) {
     switch(op) {
         case '^':
             return 4;
@@ -80,7 +75,7 @@ int precedence(char op) {
             return 2;
             break;
         default:
-            return 0;
+            return 0; // This default case will help us verify whether a certain character is an operator or not.
             break;
     };    
 };
@@ -105,12 +100,12 @@ std::string inToPost(std::string infix) {
             }
             stackPop(opStack);
         }
-        else if( (current == '^') ||  (current == '*') ||  (current == '/') ||  (current == '+') ||  (current == '-') ||  (current == '%')) {
-            if( precedence(*( (opStack -> stackArray) + (opStack -> top) )) < precedence(current) ) {
+        else if( precedOpCheck(current) ) {
+            if( precedOpCheck(*( (opStack -> stackArray) + (opStack -> top) )) < precedOpCheck(current) ) {
                 stackPush(opStack, current);
             }
             else {
-                while( precedence( *( (opStack -> stackArray) + (opStack -> top) ) ) >= precedence(current) ) {
+                while( precedOpCheck( *( (opStack -> stackArray) + (opStack -> top) ) ) >= precedOpCheck(current) ) {
                     postfix += stackPop(opStack);
                 };
                 stackPush(opStack, current);
@@ -126,13 +121,14 @@ std::string inToPost(std::string infix) {
 }
 
 int main() {
-    std::string infix = "";
-    while( (infix[0] != '(') && (infix[-1] != ')') ) {
-        printf("Please give the infix expression enclosed in brackets. Ensure there is no mismatch in brackets\n");
-        printf("Enter the infix expression : ");
-        getline(std::cin, infix); //for considering spaces
-    };
-    //* Test Expression : (K + L - M*N + (O^P) * W/U/V * T + Q) 
+    // std::string infix = "";
+    // while( (infix[0] != '(') && (infix[-1] != ')') ) {
+    //     printf("Please give the infix expression enclosed in brackets. Ensure there is no mismatch in brackets\n");
+    //     printf("Enter the infix expression : ");
+    //     getline(std::cin, infix); //for considering spaces
+    // };
+    //* Test Expression
+    std::string infix = "(K + L - M*N + (O^P) * W/U/V * T + Q)";
     //? Expected Output : KL+MN∗−OP^W∗U/V/T∗+Q+
 
     std::string postfix = inToPost(infix);
