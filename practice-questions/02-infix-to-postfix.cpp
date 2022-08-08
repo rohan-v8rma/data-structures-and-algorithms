@@ -1,63 +1,58 @@
 #include <iostream>
 #include <string>
 
-struct stack {
-    int top;
-    int size = 100;
-    char *stackArray;
-};
+template <class T> class stack {
+    public:
+        int top;
+        int size;
+        T *stackArray;
 
-// Function for checking if the stack is empty. Truth value of function call can be checked.if()
-int isEmpty(struct stack *stackPtr) {
-    if( (stackPtr -> top) == -1) {
-        return 1;
-    }
-    else {
-        return 0;
-    };
-}; 
+        stack() {
+            size = 100;
+        }
+        stack(int size) {            
+            this -> size = size;
+            top = -1;
+            stackArray = (T*)( malloc( size * sizeof(T) ) );
+        }; 
+        
 
-// Function for checking if the stack is full. Truth value of function call can be checked.
-int isFull(struct stack *stackPtr) {
-    if( ( (stackPtr -> top) + 1) == (stackPtr -> size) ) {
-        return 1;
-    }
-    else {
-        return 0;
-    };
-};
+        int isEmpty() {
+            if(top == -1) {
+                return 1;
+            }   
+            else {
+                return 0;
+            };
+        }
 
-// Function for inserting an element in the stack
-void stackPush (struct stack *stackPtr, int element) {
-    if ( isFull(stackPtr) ) {
-        std::cout << "Stack overflow. Element not inserted.\n";
-    }
-    else {
-        ( stackPtr -> top )++;
-        *( (stackPtr -> stackArray) + (stackPtr -> top) ) = element;
-    };
-};
+        int isFull() {
+            if( ( (top) + 1) == (size) ) {
+                return 1;
+            }
+            else {
+                return 0;
+            };
+        }
+        void stackPush (int element) {
+            if ( isFull() ) {
+            std::cout << "Stack overflow. Element not inserted.\n";
+            }
+            else {
+                ( top )++;
+                *(stackArray + top) = element;
+            };
+        };
 
-// Function for removing and returning the top element
-char stackPop (struct stack *stackPtr) {
-    if ( isEmpty(stackPtr) ) {
-        std::cout << "Stack underflow. Stack is empty.\n";
-        return -1;
-    }
-    ( stackPtr -> top )--;
-    return ( *( (stackPtr -> stackArray) + (stackPtr -> top) + 1 ) );
-};
+        T stackPop () {
+            if ( isEmpty() ) {
+                std::cout << "Stack underflow. Stack is empty.\n";
+                return -1;
+            }
+            (top )--;
+            return ( *( stackArray + top + 1 ) );
+        };
 
-// Function for creating a new stack. It returns a pointer to the stack.
-struct stack* stackCreate (int size){
-    struct stack* stackPtr;
-
-    stackPtr = (struct stack*)( malloc( sizeof(struct stack) ) );
-    stackPtr -> size = size;
-    stackPtr -> top = -1;
-    stackPtr -> stackArray = (char*)( malloc( size * sizeof(int) ) );
-
-    return stackPtr;
 }; 
 
 int precedOpCheck(char op) {
@@ -85,30 +80,30 @@ std::string inToPost(std::string infix) {
     std::string postfix = "";
     int infixLength = infix.length();
 
-    struct stack* opStack = stackCreate(50);
+    stack<char> opStack(50);
     char current;
     
     for(int index = 0; index < infixLength ; index++) {
         current = infix[index];
         
         if(current == '(') {
-            stackPush(opStack, current);
+            opStack.stackPush(current);
         }
         else if(current == ')') {
-            while((opStack -> stackArray)[opStack -> top] != '(') {
-                postfix += stackPop(opStack);
+            while((opStack.stackArray)[opStack.top] != '(') {
+                postfix += opStack.stackPop();
             }
-            stackPop(opStack);
+            opStack.stackPop();
         }
         else if( precedOpCheck(current) ) {
-            if( precedOpCheck(*( (opStack -> stackArray) + (opStack -> top) )) < precedOpCheck(current) ) {
-                stackPush(opStack, current);
+            if( precedOpCheck(*( (opStack.stackArray) + (opStack.top) )) < precedOpCheck(current) ) {
+                opStack.stackPush(current);
             }
             else {
-                while( precedOpCheck( *( (opStack -> stackArray) + (opStack -> top) ) ) >= precedOpCheck(current) ) {
-                    postfix += stackPop(opStack);
+                while( precedOpCheck( *( (opStack.stackArray) + (opStack.top) ) ) >= precedOpCheck(current) ) {
+                    postfix += opStack.stackPop();
                 };
-                stackPush(opStack, current);
+                opStack.stackPush(current);
 
             };
         }
@@ -121,14 +116,9 @@ std::string inToPost(std::string infix) {
 }
 
 int main() {
-    // std::string infix = "";
-    // while( (infix[0] != '(') && (infix[-1] != ')') ) {
-    //     printf("Please give the infix expression enclosed in brackets. Ensure there is no mismatch in brackets\n");
-    //     printf("Enter the infix expression : ");
-    //     getline(std::cin, infix); //for considering spaces
-    // };
     //* Test Expression
     std::string infix = "(K + L - M*N + (O^P) * W/U/V * T + Q)";
+    
     //? Expected Output : KL+MN∗−OP^W∗U/V/T∗+Q+
 
     std::string postfix = inToPost(infix);

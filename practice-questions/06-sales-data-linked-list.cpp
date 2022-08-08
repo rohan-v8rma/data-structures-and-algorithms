@@ -8,10 +8,10 @@ struct productDetails {
 // Each node contains a value and an address pointing to the next node
 struct node {
     struct productDetails values;
-    struct node* next = NULL; // This default value doesn't affect the work/non-working code in any way
+    struct node* next = NULL; 
 };
 
-// Function for filling the elements of a linked list
+// Function for filling the elements of a Queue
 struct node* createQueue(int elementCt) {
     
     struct node* head = (struct node*)(malloc(sizeof(struct node)));
@@ -43,9 +43,6 @@ void printQueue(struct node* head) {
     int elementCt = 1;
 
     while (tempPtr != NULL) {
-        
-        // printf("product ID : %d\n", ( (tempPtr -> values).productId));
-        // printf("price : %lf\n", ( (tempPtr -> values).price));
         printf("%d, ", ( (tempPtr -> values).productId));
         printf(" %lf\n", ( (tempPtr -> values).price));
         elementCt++;
@@ -54,8 +51,8 @@ void printQueue(struct node* head) {
     };
 }
 
-// Function for adding elements in the linked list 
-void enQueue(struct node* &head) {  // We are passing head by reference so that whatever changes happen to the head pointer are reflected outside
+// Function for adding elements in the queue
+void enQueue(struct node* head) {  
 
     struct node* tempPtr = head;
 
@@ -72,8 +69,8 @@ void enQueue(struct node* &head) {  // We are passing head by reference so that 
     scanf("%lf", &( (tempPtr -> values).price));
 }
 
-// Function for deleting elements from the linked list
-void deQueue(struct node* &head) { //Removing element from front;
+// Function for dequeueing the elements of the queue
+void deQueue(struct node* &head) {
     head = head -> next;
 }
 
