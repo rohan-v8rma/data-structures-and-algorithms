@@ -17,8 +17,8 @@ class term {
         term(int elementCt) {
             printf("Please enter the terms with descending powers of 'x'. Failing to do this will trigger a prompt to enter the power again.\n");
 
-            struct term* head = this; 
-            struct term* tempPtr;
+            term* head = this; 
+            term* tempPtr;
             tempPtr = head;
             int max = -10000; 
             for(int index = 0; index < elementCt; index++) {
@@ -45,7 +45,7 @@ class term {
                     //* Working code, where we first allocate memory in next, then change tempPtr
                     // This is because we need to allocate space fo
                     
-                    (tempPtr -> nextTerm) = (struct term*)(malloc(sizeof(struct term))); 
+                    (tempPtr -> nextTerm) = (term*)(malloc(sizeof(term))); 
                     tempPtr = tempPtr -> nextTerm;          
                 };
 
@@ -59,7 +59,7 @@ class term {
 };
 
 std::ostream& operator << (std::ostream& out, term* polynomial) { 
-    struct term* tempPtr = polynomial;
+    term* tempPtr = polynomial;
 
     while (tempPtr != NULL) { // this condition helps us stop printing when the tempPtr points to the NULL terminator of the linked list.
         if ( (tempPtr != polynomial) && ( (tempPtr -> coeff) != 0 ) ) { // For the first term, we need not a + binary operator sign.
@@ -92,7 +92,7 @@ term* addPolynomial(term* poly1, term* poly2) {
         else if( (poly1 -> pow) < (poly2 -> pow) ) {
             tempPtr -> coeff = poly2 -> coeff;
             tempPtr -> pow = poly2 -> pow;
-            poly1 = poly1 -> nextTerm;
+            poly2 = poly2 -> nextTerm;
         }
         else {
             tempPtr -> coeff = (poly1 -> coeff) + (poly2 -> coeff);
@@ -147,13 +147,13 @@ int main() {
     term* poly1 = new term(3);
     term* poly2 = new term(3);
 
-    std::cout << poly1;
-    std::cout << poly2;
+    std::cout << "poly1  : " << poly1;
+    std::cout << "poly2  : " << poly2;
 
     term* result = addPolynomial(poly1, poly2);
 
-    std::cout << result;
+    std::cout << "Sum is : " << result << "\n";
 
-    // struct term* poly2 = createPolynomial(3);
+    // term* poly2 = createPolynomial(3);
 }
 
