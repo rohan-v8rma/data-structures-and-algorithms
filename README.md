@@ -9,10 +9,18 @@
 - [Stack Abstract Data Type](#stack-abstract-data-type)
   - [Stack Operations](#stack-operations)
   - [Applications of Stacks](#applications-of-stacks)
+    - [Infix to Postfix/Prefix](#infix-to-postfixprefix)
+    - [Reversing Data](#reversing-data)
+    - [Backtracking](#backtracking)
+    - [Function calls](#function-calls)
   - [Stack Implementation in CPP](#stack-implementation-in-cpp)
 - [Queue](#queue)
   - [Queue operations](#queue-operations)
   - [Queue implementation in CPP](#queue-implementation-in-cpp)
+- [Time Complexity](#time-complexity)
+- [Space Complexity](#space-complexity)
+  - [What is Auxiliary Space?](#what-is-auxiliary-space)
+  - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
 
 # Abstract Data Types
 
@@ -94,9 +102,21 @@ It consists of a an array whose size is set by the user and can't be changed alo
 
 ## Applications of Stacks
 
-- Reversing Data : We can use stacks to reverse data. (example: files, strings).  Very useful for finding palindromes.
-- Backtracking : It is an algorithmic technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point in time.
-- Function calls : Stacks are used to implement function calls by creating a **stack frame** in memory where local variables are stored.
+### Infix to Postfix/Prefix
+
+
+
+### Reversing Data
+
+We can use stacks to reverse data. (example: files, strings).  Very useful for finding palindromes.
+
+### Backtracking
+
+It is an algorithmic technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point in time.
+
+### Function calls
+
+Stacks are used to implement function calls by creating a **stack frame** in memory where local variables are stored.
 
   As the scopes of the variables end, they are one-by-one popped out from the stack, with the return address at the bottom, after which the stack frame is removed from memory.
   
@@ -149,3 +169,32 @@ Whenever `front` = `rear`, queue is empty.
 - Using arrays: Here, enqueueing and dequeueing is an O(1) operation but when the queue isn't full and an element has to be enqueued then shifting has to take place which is an O(n) operation.
 - Using linked list: Here, both enqueueing and dequeueing is an O(1)
 - Using other ADTs
+
+# Time Complexity 
+
+![Time-Complexity-1.png](./images/Time-Complexity-1.png)
+
+![Time-Complexity-2.png](./images/Time-Complexity-2.png)
+
+![Time-Complexity-3.png](./images/Time-Complexity-3.png)
+
+![Time-Complexity-4.png](./images/Time-Complexity-4.png)
+
+# Space Complexity 
+
+Space Complexity of an algorithm is the total space taken by an algorithm withm respect to the input size. Space complexity includes both Auxiliary space and space used by input.
+
+## What is Auxiliary Space?
+
+Auxiliary space is the extra space or the temporary space used by an algorithm.
+
+## Using Auxiliary Space as a criteria instead of Space Complexity.
+
+We can't really do anything about the input we are taking, but we can choose what algorithm to use, depending on which takes up the least amount of memory.
+
+For example, if we want to compare standard sorting algorithms on the basis of space, the auxiliary space would be a better criteria than Space Complexity. Merge Sort uses O(n) auxiliary space, Insertion sort and Heap Sort use O(1) auxiliary space. 
+
+Space complexity of all these sorting algorithms is O(n) though.
+
+
+
