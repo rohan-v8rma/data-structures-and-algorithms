@@ -21,6 +21,16 @@
 - [Space Complexity](#space-complexity)
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
   - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
+- [Sorting Algorithms](#sorting-algorithms)
+  - [Stable vs. Unstable Sorting Algorithms](#stable-vs-unstable-sorting-algorithms)
+  - [Bubble Sort (Sinking Sort OR Exchange Sort)](#bubble-sort-sinking-sort-or-exchange-sort)
+    - [Time Complexity](#time-complexity-1)
+      - [Best case - O(N)](#best-case---on)
+      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup)
+    - [Boundary Case](#boundary-case)
+  - [Selection Sort](#selection-sort)
+    - [Time Complexity](#time-complexity-2)
+      - [Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)](#best-case---onsup2sup--worst-case---onsup2sup)
 
 # Abstract Data Types
 
@@ -196,5 +206,83 @@ For example, if we want to compare standard sorting algorithms on the basis of s
 
 Space complexity of all these sorting algorithms is O(n) though.
 
+# Sorting Algorithms
 
+An in-place algorithm is an algorithm that does not need an extra space and produces an output in the same memory that contains the data by transforming the input 'in-place'. 
 
+However, a small constant extra space used for variables is allowed.
+
+## Stable vs. Unstable Sorting Algorithms
+
+![](./images/stable-and-unstable-sorting.png)
+
+**Stable sorting algorithms** preserve the relative order of equal elements, while **unstable sorting algorithms** don't. 
+
+In other words, stable sorting maintains the position of two equals elements relative to one another.
+
+## Bubble Sort (Sinking Sort OR Exchange Sort)
+
+This sorting technique is just like bubbles in a water column, coming up one by one. 
+
+![Bubble Sort](./images/bubble-sort.ppm)
+
+In bubble sort, with each subsequent pass, the next largest element is settled at the end of the array.
+
+In each subsequent pass, we reduce our domain of comparison by 1 because 1 additional element is placed in its sorted position after each pass.
+
+It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
+
+### Time Complexity
+
+#### Best case - O(N)
+
+When the array is already sorted, only one pass is run, which includes **(N-1)** comparisons.
+
+So, it takes minimum amount of time (order of N).
+
+This is implemented using a `swap` variable which keeps track of how many swaps occur in a single pass. 
+```cpp
+if(swap == 0) { 
+    break;
+}
+else { 
+    swap = 0;
+};
+```
+- If no swaps occur in a particular pass, then it is clear that the array is already sorted and we need not make any more passes.
+- Else, we reset the swap variable for the next pass.
+
+#### Worst case - O(N<sup>2</sup>)
+
+When the array is already sorted, but in reverse order.
+
+<!-- Add picture of calculation done in notebook -->
+![]()
+
+### Boundary Case
+
+when array is already sorted, minimum time (order of N).
+
+## Selection Sort
+
+The selection sort algorithm sorts an array by repeatedly finding the maximum element (considering ascending order) from unsorted part and putting it at the end. 
+
+The algorithm maintains two subarrays in a given array.
+
+- The subarray which is already sorted. 
+- Remaining subarray which is unsorted.
+
+The good thing about selection sort is that never makes more than O(N) swaps so it can be useful when memory write is a costly operation.
+
+### Time Complexity
+
+The average time complexity is O(N<sup>2</sup>).
+
+<!-- Add picture of calculation done in notebook -->
+![]()
+
+#### Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)
+
+In both the Best and Worst case, all the comparisons will still be made for finding the index position of the next largest element so the time complexity will be almost the same as the average case.
+
+Minor difference can be no time spent in swap operations in the Best Case and all possible swap operations performed in Worst Case.
