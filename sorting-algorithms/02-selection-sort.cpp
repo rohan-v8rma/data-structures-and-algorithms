@@ -21,9 +21,11 @@ int main() {
             };            
         }
         // Swap operation of the element of the next largest value with the lastmost unsorted element.
-        temp = array[maxIndex];
-        array[maxIndex] = array[SIZE - 1 - pass];
-        array[SIZE - 1 - pass] = temp;
+        if (maxIndex != (SIZE - 1 - pass) ) { // if the position of the maxIndex is already at the end, we need not swap it.
+            temp = array[maxIndex];
+            array[maxIndex] = array[SIZE - 1 - pass];
+            array[SIZE - 1 - pass] = temp;
+        };
     }
 
     // Loop for printing th array
