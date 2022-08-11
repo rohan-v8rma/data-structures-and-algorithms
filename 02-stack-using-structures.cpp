@@ -73,8 +73,8 @@ int main() {
     stackPush(stackPtr, 3);
     stackPush(stackPtr, 4);
 
-    printf("Topmost element of stack is %d", stackPeek(stackPtr));
-    printf("Popped %d from the stack", stackPop(stackPtr)); // If stack is empty, -1 will be shown as the popped value.
+    printf("Topmost element of stack is %d.\n", stackPeek(stackPtr));
+    printf("Popped %d from the stack.\n", stackPop(stackPtr)); // If stack is empty, -1 will be shown as the popped value.
 
 
     return 0;
