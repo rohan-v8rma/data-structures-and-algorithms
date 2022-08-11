@@ -3,9 +3,6 @@
 
 // Sort should be in ascending order from LEFT to RIGHT
 
-// int returnMaxIndex(int arr[SIZE]) {
-//     for(int )
-// }
 
 int main() {
     int array[SIZE] = {5, 2, 4, 3, 1};
@@ -20,7 +17,7 @@ int main() {
                 maxIndex = index;
             };            
         }
-        // Swap operation of the element of the next largest value with the lastmost unsorted element.
+        // Swap operation of the element of the next largest value with the last-most unsorted element.
         if (maxIndex != (SIZE - 1 - pass) ) { // if the position of the maxIndex is already at the end, we need not swap it.
             temp = array[maxIndex];
             array[maxIndex] = array[SIZE - 1 - pass];
