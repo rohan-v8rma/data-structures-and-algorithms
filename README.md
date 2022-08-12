@@ -27,10 +27,15 @@
     - [Time Complexity](#time-complexity-1)
       - [Best case - O(N)](#best-case---on)
       - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup)
-    - [Boundary Case](#boundary-case)
   - [Selection Sort](#selection-sort)
+    - [Why use Selection Sort?](#why-use-selection-sort)
     - [Time Complexity](#time-complexity-2)
       - [Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)](#best-case---onsup2sup--worst-case---onsup2sup)
+  - [Insertion Sort](#insertion-sort)
+    - [Why use Insertion Sort?](#why-use-insertion-sort)
+    - [Time Complexity](#time-complexity-3)
+      - [Best case - O(N)](#best-case---on-1)
+      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup-1)
 
 # Abstract Data Types
 
@@ -256,12 +261,8 @@ else {
 
 When the array is already sorted, but in reverse order.
 
-<!-- Add picture of calculation done in notebook -->
+<!-- TODO: Add picture of calculation done in notebook -->
 ![]()
-
-### Boundary Case
-
-when array is already sorted, minimum time (order of N).
 
 ## Selection Sort
 
@@ -272,13 +273,18 @@ The algorithm maintains two subarrays in a given array.
 - The subarray which is already sorted. 
 - Remaining subarray which is unsorted.
 
-The good thing about selection sort is that never makes more than O(N) swaps so it can be useful when memory write is a costly operation.
+It is an [unstable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
+
+### Why use Selection Sort?
+
+- The good thing about selection sort is that never makes more than O(N) swaps so it can be useful when memory write is a costly operation.
+- It performs well for smaller values of N. 
 
 ### Time Complexity
 
 The average time complexity is O(N<sup>2</sup>).
 
-<!-- Add picture of calculation done in notebook -->
+<!-- TODO: Add picture of calculation done in notebook -->
 ![]()
 
 #### Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)
@@ -286,3 +292,40 @@ The average time complexity is O(N<sup>2</sup>).
 In both the Best and Worst case, all the comparisons will still be made for finding the index position of the next largest element so the time complexity will be almost the same as the average case.
 
 Minor difference can be no time spent in swap operations in the Best Case and all possible swap operations performed in Worst Case.
+
+## Insertion Sort
+
+Insertion sort is a simple sorting algorithm that works similar to the way you sort playing cards in your hands. The array is virtually split into a sorted and an unsorted part. Values from the unsorted part are picked and placed at the correct position in the sorted part.
+
+Putting the first index position of the unsorted array into the correct position in the sorted array. 
+
+The problem encountered here is that we need to shift elements to the right, in order to insert the element that has to be sorted into the correct position.
+
+After every pass, a larger and larger portion of the array would be sorted.
+
+It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
+
+### Why use Insertion Sort?
+
+- It is adaptive as steps get reduced if array is already sorted.
+- It is used for smaller values of N. 
+- It works well when array is partially sorted.
+- It takes part in hybrid sorting algorithms.
+
+### Time Complexity
+
+#### Best case - O(N)
+
+When the array is already sorted, only comparison takes place per pass. Number of passes is **(N-1)** so total comparisons are also **(N-1)**
+
+So, it takes minimum amount of time (order of N).
+
+<!-- TODO: Add picture of calculation done in notebook -->
+![]()
+
+#### Worst case - O(N<sup>2</sup>)
+
+When the array is already sorted, but in reverse order.
+
+<!-- TODO: Add picture of calculation done in notebook -->
+![]()
