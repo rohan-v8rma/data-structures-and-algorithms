@@ -1,6 +1,16 @@
 # INDEX
 
 - [INDEX](#index)
+- [Recursion](#recursion)
+  - [How to understand & approach problems](#how-to-understand--approach-problems)
+  - [Recursion Tree](#recursion-tree)
+  - [Types of Recurrence Relation](#types-of-recurrence-relation)
+    - [Linear Recurrence Relation](#linear-recurrence-relation)
+    - [Divide & Conquer Recurrence Relation](#divide--conquer-recurrence-relation)
+  - [Tail-end recursive functions](#tail-end-recursive-functions)
+    - [Factorial calculator using regular vs. tail recursion](#factorial-calculator-using-regular-vs-tail-recursion)
+    - [Fibonacci calculator using regular vs. tail recursion](#fibonacci-calculator-using-regular-vs-tail-recursion)
+  - [How function calls work in languages](#how-function-calls-work-in-languages)
 - [Abstract Data Types](#abstract-data-types)
   - [Classification of Abstract Data Types](#classification-of-abstract-data-types)
 - [Linked List](#linked-list)
@@ -36,6 +46,130 @@
     - [Time Complexity](#time-complexity-3)
       - [Best case - O(N)](#best-case---on-1)
       - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup-1)
+- [TODO](#todo)
+
+# Recursion
+
+- It helps us in solving bigger/complex problems in a simpler way.
+- You can convert recursion solution into iteration and vice versa.
+  
+  So, solve complex problems using recursion and the convert into recursion to get a more optimized answer.
+- Space complexity is higher. For example, if suppose we print 1000 numbers using recursion, 1000 function calls will go into the stack memory, so space complexity will be O(N). 
+
+  On the other hand, if we print 1000 numbers using loops, the task will be done in constant space complexity O(1) because only a loop variable will be required for storage and it will be updated with each iteration.
+
+## How to understand & approach problems
+
+- Identify if you can break down the problem into smaller problems.
+- Write down the recurrence relation if needed. 
+- Draw the recursion tree.
+- About the tree:
+  - See the flow of functions, how they are getting in stack.
+  - Identify and focus on left tree calls and right tree calls.    
+- Draw the tree and pointers again & again using pen and paper.
+- Use a debugger to see the flow.
+- See how and what type of values are returned at each step. 
+- See at which step, the function call actually finally returns a value.
+
+## Recursion Tree
+
+<!-- TODO -->
+
+## Types of Recurrence Relation
+
+### Linear Recurrence Relation
+
+Fibonacci Recurrence Relation
+```
+Fibo(N) = Fibo(N - 1) + Fibo(N - 2)
+``` 
+
+Here, the argument is getting reduced LINEARLY, which is why it is referred to as Linear Recurrence Relation.
+
+This is quite inefficient because the argument is getting reduced very slowly and at a constant rate. In comparison, in Divide & Conquer Recurrence Relations, division/multiplication by a factor results in exponential change which is much faster and efficient.
+
+### Divide & Conquer Recurrence Relation
+
+Recurrence Relation for Binary Search
+```
+Search(N) = O(1) + Search(N/2)
+```
+Here, when we try to search for an element using Binary Search, a comparison takes place (in constant time) between the element to be found and the element in the middle of the array, which explains the **O(1)** term.
+
+After it is determined whether the element to be found is greater or lesser than the middle point, a `Search` operation is again initiated at either the first or second half of the array, which explains the **Search(N/2)** term.
+
+Since the search space is DIVIDED by a factor, it is referred to as a Divide & Conquer Recurrence Relation.
+
+## Tail-end recursive functions
+ 
+The tail recursion is basically using the recursive function as the last statement of the function. So when nothing is left to do after coming back from the recursive call, that is called tail recursion. We will see one example of tail recursion.
+
+For example, if suppose we return (2 + function call), that 2 will be stored somewhere in memory when stack frame of the function, from which the value is being returned, is destroyed. 
+
+So instead, we find a way to pass that 2 somehow into the recursive function call.
+
+### Factorial calculator using regular vs. tail recursion
+
+Factorial calculator using regular recursion:
+```cpp
+#include <iostream>
+
+int fact(int n) {
+  if (n == 1) {
+    return 1;
+  };
+
+  return fact(n - 1) * n;
+}
+```
+
+In this case, suppose n = 5, the recursive call will make the return value occupy more and more memory until the base condition (n = 1) is reached.
+
+This is how the return value looks with changing **n**.
+```
+( fact(4) * 5 );
+( ( fact(3) * 4 ) * 5 );
+( ( ( fact(2) * 3 ) * 4 ) * 5 );
+( ( ( ( fact(1) * 2 ) * 3 ) * 4 ) * 5 );
+( ( ( ( 1 * 2 ) * 3 ) * 4 ) * 5 );
+( ( ( 2 * 3 ) * 4 ) * 5 );
+( ( 6 * 4 ) * 5 );
+( 24 * 5 );
+120;
+```
+
+Factorial calculator using tail-end recursion:
+```cpp
+#include <iostream>
+
+int fact(int n, int result) {
+  if(n == 1) {
+    return result;
+  }
+  return fact(n-1, result * n);
+}
+```
+
+In this case, suppose we take n = 5 and a = 1, the return value looks something like this:
+```
+fact(5-1,  1 * 5);
+fact(4-1,  5 * 4);
+fact(3-1, 20 * 3);
+fact(2-1, 60 * 2);
+120;
+```
+Here, as we can see, only the parameters of the function that is getting returned are getting changed, until the base condition (n = 1) is reached. So space complexity in the memory stack is O(1). 
+
+### Fibonacci calculator using regular vs. tail recursion
+
+<!-- TODO: Add picture of calculation done in notebook -->
+![]()
+
+## How function calls work in languages
+
+While the function is not finished executing, it will remain in stack.
+
+When a function finishes executing, it is removed from the stack and the flow of the program is returned to the point where the function was called.
 
 # Abstract Data Types
 
@@ -329,3 +463,7 @@ When the array is already sorted, but in reverse order.
 
 <!-- TODO: Add picture of calculation done in notebook -->
 ![]()
+
+# TODO 
+
+- (int)(Math.log10(maxElement)) can be used to calculate the number of elements of a number
