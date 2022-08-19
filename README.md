@@ -9,8 +9,10 @@
     - [Divide & Conquer Recurrence Relation](#divide--conquer-recurrence-relation)
   - [Tail-end recursive functions](#tail-end-recursive-functions)
     - [Factorial calculator using regular vs. tail recursion](#factorial-calculator-using-regular-vs-tail-recursion)
-    - [Fibonacci calculator using regular vs. tail recursion](#fibonacci-calculator-using-regular-vs-tail-recursion)
   - [How function calls work in languages](#how-function-calls-work-in-languages)
+  - [Complexity Analysis in Recursive Algorithms](#complexity-analysis-in-recursive-algorithms)
+    - [Space Complexity](#space-complexity)
+- [Dynamic Programming](#dynamic-programming)
 - [Abstract Data Types](#abstract-data-types)
   - [Classification of Abstract Data Types](#classification-of-abstract-data-types)
 - [Linked List](#linked-list)
@@ -28,7 +30,7 @@
   - [Queue operations](#queue-operations)
   - [Queue implementation in CPP](#queue-implementation-in-cpp)
 - [Time Complexity](#time-complexity)
-- [Space Complexity](#space-complexity)
+- [Space Complexity](#space-complexity-1)
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
   - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
 - [Sorting Algorithms](#sorting-algorithms)
@@ -46,6 +48,11 @@
     - [Time Complexity](#time-complexity-3)
       - [Best case - O(N)](#best-case---on-1)
       - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup-1)
+- [Tips & Tricks for DSA](#tips--tricks-for-dsa)
+  - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
+  - [Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)](#calculating-nth-fibonacci-number-regular-recursion-vs-recurrence-relation-formula)
+    - [Regular Recursion](#regular-recursion)
+    - [Recurrence Relation Formula](#recurrence-relation-formula)
 - [TODO](#todo)
 
 # Recursion
@@ -89,6 +96,15 @@ Here, the argument is getting reduced LINEARLY, which is why it is referred to a
 This is quite inefficient because the argument is getting reduced very slowly and at a constant rate. In comparison, in Divide & Conquer Recurrence Relations, division/multiplication by a factor results in exponential change which is much faster and efficient.
 
 ### Divide & Conquer Recurrence Relation
+
+Divide-and-conquer algorithms consist of:
+1. Dividing the problem into smaller sub-problems. 
+2. Solving those sub-problems
+3. Combining the solutions for those smaller sub-problems to solve the original problem
+   
+NOTE that the sub-problems should be of the same type as the main problem. 
+   
+For example, if the main problem is of SORTING an array, the sub-problem can ONLY be SORTING a part of the array.
 
 Recurrence Relation for Binary Search
 ```
@@ -160,16 +176,25 @@ fact(2-1, 60 * 2);
 ```
 Here, as we can see, only the parameters of the function that is getting returned are getting changed, until the base condition (n = 1) is reached. So space complexity in the memory stack is O(1). 
 
-### Fibonacci calculator using regular vs. tail recursion
-
-<!-- TODO: Add picture of calculation done in notebook -->
-![]()
-
 ## How function calls work in languages
 
 While the function is not finished executing, it will remain in stack.
 
 When a function finishes executing, it is removed from the stack and the flow of the program is returned to the point where the function was called.
+
+## Complexity Analysis in Recursive Algorithms
+
+### Space Complexity
+
+![](/images/recursive-space-complexity.jpg)
+
+# Dynamic Programming
+
+Dynamic Programming is a technique in computer programming that helps to efficiently solve a class of problems that have overlapping subproblems and optimal substructure property.
+
+If any problem can be divided into sub-problems, which in turn are divided into smaller sub-problems, and if there are overlapping among these subproblems, then the solutions to these subproblems can be saved for future reference. 
+
+In this way, efficiency of the CPU can be enhanced. This method of solving a solution is referred to as dynamic programming.
 
 # Abstract Data Types
 
@@ -395,8 +420,7 @@ else {
 
 When the array is already sorted, but in reverse order.
 
-<!-- TODO: Add picture of calculation done in notebook -->
-![]()
+![](/images/bubble-sort-worst.jpg)
 
 ## Selection Sort
 
@@ -418,8 +442,7 @@ It is an [unstable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
 
 The average time complexity is O(N<sup>2</sup>).
 
-<!-- TODO: Add picture of calculation done in notebook -->
-![]()
+![](/images/selection-sort-avg.jpg)
 
 #### Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)
 
@@ -454,16 +477,64 @@ When the array is already sorted, only comparison takes place per pass. Number o
 
 So, it takes minimum amount of time (order of N).
 
-<!-- TODO: Add picture of calculation done in notebook -->
-![]()
+![](/images/insertion-sort.jpg)
 
 #### Worst case - O(N<sup>2</sup>)
 
 When the array is already sorted, but in reverse order.
 
-<!-- TODO: Add picture of calculation done in notebook -->
+![](/images/insertion-sort-worst.jpg)
+
+# Tips & Tricks for DSA
+
+## Calculating the no. of digits in a number
+
+We can make use of the function: 
+
+$f(x) = floor( \log_{10}x ) + 1$
+
+where x is the number whose digits we want to count.
+
+This is because looking at the value of $\log_{10}x$, 
+
+$x = 1$, 
+- $\log_{10}1 = 0$
+- $\log_{10}1 + 1 = 1$
+
+$x = 7$
+- $\log_{10}7 = 0.845...$
+- $floor( \log_{10}7 ) + 1 = 1$
+
+$x = 10$
+- $\log_{10}10 = 1$
+- $\log_{10}10 + 1 = 2$
+
+$x = 47$
+- $\log_{10}47 = 1.672...$
+- $floor( \log_{10}47 ) + 1 = 2$
+
+$x = 100$
+- $\log_{10}100 = 2$, 
+- $\log_{10}100 + 1 = 3$
+
+The value of $\log_{10}x$ increases by an integer only when the number crosses an integer power of 10, like $10^0 = 1, 10^1 = 10, 10^2 = 100$, etc... 
+
+This is also when an extra digit is added to the number.
+
+So, this is an ideal method for calculating the number of digits of a number.
+
+
+## Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)
+
+### Regular Recursion
+
+![](/images/fibonacci-example.jpg)
+
+### Recurrence Relation Formula
+
+See the code [here](practice-questions/07-fibonacci-formula-calc.cpp).
+
+<!-- TODO: Added picture of calculation done in notebook -->
 ![]()
 
 # TODO 
-
-- (int)(Math.log10(maxElement)) can be used to calculate the number of elements of a number
