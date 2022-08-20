@@ -35,19 +35,30 @@
   - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
 - [Sorting Algorithms](#sorting-algorithms)
   - [Stable vs. Unstable Sorting Algorithms](#stable-vs-unstable-sorting-algorithms)
+  - [In-place Sorting Algorithms](#in-place-sorting-algorithms)
   - [Bubble Sort (Sinking Sort OR Exchange Sort)](#bubble-sort-sinking-sort-or-exchange-sort)
     - [Time Complexity](#time-complexity-1)
       - [Best case - O(N)](#best-case---on)
-      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup)
+      - [Worst case - $O(N^2)$](#worst-case---on2)
   - [Selection Sort](#selection-sort)
     - [Why use Selection Sort?](#why-use-selection-sort)
     - [Time Complexity](#time-complexity-2)
-      - [Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)](#best-case---onsup2sup--worst-case---onsup2sup)
+      - [Best case - $O(N^2)$ & Worst case - $O(N^2)$](#best-case---on2--worst-case---on2)
   - [Insertion Sort](#insertion-sort)
     - [Why use Insertion Sort?](#why-use-insertion-sort)
     - [Time Complexity](#time-complexity-3)
-      - [Best case - O(N)](#best-case---on-1)
-      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup-1)
+      - [Best case - $O(N)$](#best-case---on-1)
+      - [Worst case - $O(N^2)$](#worst-case---on2-1)
+  - [Merge Sort](#merge-sort)
+  - [Quick Sort](#quick-sort)
+    - [What is Pivot?](#what-is-pivot)
+    - [Picking a Pivot](#picking-a-pivot)
+    - [Time Complexity](#time-complexity-4)
+      - [Recurrence Relation](#recurrence-relation)
+      - [Best case - $O(N.logN)$](#best-case---onlogn)
+      - [Worst case - $O(N^2)$](#worst-case---on2-2)
+    - [Why use Quick Sort?](#why-use-quick-sort)
+  - [Hybrid Sorting Algorithms](#hybrid-sorting-algorithms)
 - [Tips & Tricks for DSA](#tips--tricks-for-dsa)
   - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
   - [Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)](#calculating-nth-fibonacci-number-regular-recursion-vs-recurrence-relation-formula)
@@ -384,6 +395,16 @@ However, a small constant extra space used for variables is allowed.
 
 In other words, stable sorting maintains the position of two equals elements relative to one another.
 
+## In-place Sorting Algorithms
+
+An in-place sorting algorithm uses constant space for producing the output (modifies the given array only). 
+
+It sorts the list only by modifying the order of the elements within the list. 
+
+For example, [Insertion Sort](#insertion-sort) and [Selection Sort](#selection-sort) are in-place sorting algorithms as they do not use any additional space for sorting the list. 
+
+A typical implementation of [Merge Sort](#merge-sort) is not in-place, also the implementation for counting sort is not an in-place sorting algorithm
+
 ## Bubble Sort (Sinking Sort OR Exchange Sort)
 
 This sorting technique is just like bubbles in a water column, coming up one by one. 
@@ -394,7 +415,7 @@ In bubble sort, with each subsequent pass, the next largest element is settled a
 
 In each subsequent pass, we reduce our domain of comparison by 1 because 1 additional element is placed in its sorted position after each pass.
 
-It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
+It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as well as an [in-place sorting algorithm](#in-place-sorting-algorithms).
 
 ### Time Complexity
 
@@ -416,7 +437,7 @@ else {
 - If no swaps occur in a particular pass, then it is clear that the array is already sorted and we need not make any more passes.
 - Else, we reset the swap variable for the next pass.
 
-#### Worst case - O(N<sup>2</sup>)
+#### Worst case - $O(N^2)$
 
 When the array is already sorted, but in reverse order.
 
@@ -431,20 +452,20 @@ The algorithm maintains two subarrays in a given array.
 - The subarray which is already sorted. 
 - Remaining subarray which is unsorted.
 
-It is an [unstable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
+It is an [unstable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as well as an [in-place sorting algorithm](#in-place-sorting-algorithms).
 
 ### Why use Selection Sort?
 
-- The good thing about selection sort is that never makes more than O(N) swaps so it can be useful when memory write is a costly operation.
+- The good thing about selection sort is that never makes more than $O(N^2)$ swaps so it can be useful when memory write is a costly operation.
 - It performs well for smaller values of N. 
 
 ### Time Complexity
 
-The average time complexity is O(N<sup>2</sup>).
+The average time complexity is $O(N^2)$.
 
 ![](/images/selection-sort-avg.jpg)
 
-#### Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)
+#### Best case - $O(N^2)$ & Worst case - $O(N^2)$
 
 In both the Best and Worst case, all the comparisons will still be made for finding the index position of the next largest element so the time complexity will be almost the same as the average case.
 
@@ -460,7 +481,7 @@ The problem encountered here is that we need to shift elements to the right, in 
 
 After every pass, a larger and larger portion of the array would be sorted.
 
-It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
+It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as well as an [in-place sorting algorithm](#in-place-sorting-algorithms).
 
 ### Why use Insertion Sort?
 
@@ -471,7 +492,7 @@ It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms).
 
 ### Time Complexity
 
-#### Best case - O(N)
+#### Best case - $O(N)$
 
 When the array is already sorted, only comparison takes place per pass. Number of passes is **(N-1)** so total comparisons are also **(N-1)**
 
@@ -479,11 +500,82 @@ So, it takes minimum amount of time (order of N).
 
 ![](/images/insertion-sort.jpg)
 
-#### Worst case - O(N<sup>2</sup>)
+#### Worst case - $O(N^2)$
 
 When the array is already sorted, but in reverse order.
 
 ![](/images/insertion-sort-worst.jpg)
+
+## Merge Sort
+
+TODO
+
+## Quick Sort
+
+It is a [Divide and Conquer](#divide--conquer-recurrence-relation) algorithm. 
+
+It uses the concept of a [**pivot**](#what-is-pivot) for sorting.
+
+It is an [unstable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as well as an [in-place sorting algorithm](#in-place-sorting-algorithms).
+
+### What is Pivot?
+
+Quick Sort works by selecting an element called a pivot and placing the pivot element at the correct position after each pass.
+
+Once an element is chosen as a pivot:
+- All elements lesser than the pivot will be on the LHS of the pivot.
+- All elements greater than the pivot will be on the RHS of the pivot.
+
+It is NOT necessary that the two parts of the array (LHS and RHS of pivot) are sorted. Only the pivot is at its correct position within the array.
+
+### Picking a Pivot
+
+There are many different versions of quick sort that pick [pivot](#what-is-pivot) in different ways. 
+
+- Always pick the first element as a pivot.
+- Always pick the last element as a pivot (implemented below)
+- Pick a random element as a pivot.
+- Pick median as the pivot.
+
+We use 4 variables in quick sort:
+- `start` : This is the starting index of the partitioned array.
+- `end` : This is the ending index of the partitioned array.
+- `low` : This is a dynamic variable used to swap elements which are greater than the pivot, but are present on the LHS of the pivot.
+- `high` : This is a dynamic variable used to swap elements which are less than the pivot, but are present on the RHS of the pivot.
+
+### Time Complexity
+
+#### Recurrence Relation
+
+<!-- TODO: Add picture from notebook -->
+![]()
+
+#### Best case - $O(N.logN)$
+
+<!-- TODO: Add picture from notebook -->
+![]()
+
+#### Worst case - $O(N^2)$
+
+<!-- TODO: Add picture from notebook -->
+![]()
+
+
+### Why use Quick Sort?
+
+- An advantage Quick Sort has over [Merge Sort](#merge-sort) is that if an array is already sorted, Merge Sort will still run till the base condition is reached. Here, that will NOT happen.
+  
+  TODO: How?
+
+- For arrays, Quick Sort is preferred over Merge Sort, because Merge Sort takes O(N) extra space.
+
+  But, in the case of linked lists, memory allocation is random so Merge Sort is preferred over Quick Sort.
+
+## Hybrid Sorting Algorithms
+
+The sorting algorithm used by the in-built `sort()` method in Python is Tim Sort which is a combination of [Merge Sort](#merge-sort) and [Insertion Sort](#insertion-sort) (works well with partially sorted arrays).
+
+TODO : Understand in detail
 
 # Tips & Tricks for DSA
 
