@@ -229,7 +229,7 @@ In this way, efficiency of the CPU can be enhanced. This method of solving a sol
 
 An array is a homogenous data structure: all elements are of the same type. Also, the elements of an array are stored in adjacent memory locations. 
 
-Because each cell has the same type (and thus the same size), and because the cells are adjacent in memory, it is possible to quickly calculate the address of any array cell, given the address of the first cell.
+Because each cell has the same type (and thus the same size), and because the cells are adjacent in memory, it is possible to quickly calculate the address of any array cell, given the address of the first cell, which is why arrays are good for RANDOM ACCESS of elements
 
 Say we allocate memory for an array of `N` elements (the total number of cells of the array must be defined beforehand), where the elements of the array are of a type that has a size of `b` bytes (e.g. a C++ int has a size of 4 bytes), and the resulting array is allocated starting at memory address `x`. 
 
