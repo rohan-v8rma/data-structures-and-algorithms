@@ -19,69 +19,39 @@ public class MergeSortInPlace {
         mergeSortInPlace(unsortedArr, start, middle);
         mergeSortInPlace(unsortedArr, middle, end);
 
-        int[] mergedArray = new int[subArrLen];
+        mergeInPlace(unsortedArr, start, middle, end);
+        
+    }
+
+    static void mergeInPlace(int[] arr, int start, int middle, int end) {
+        int[] mergedArray = new int[end - start];
 
         int leftPtr = start;
         int rightPtr = middle;
         int mergePtr = 0;
 
         while( (leftPtr < middle) && (rightPtr < end) ) {
-            if(unsortedArr[leftPtr] < unsortedArr[rightPtr]) {
-                mergedArray[mergePtr++] = unsortedArr[leftPtr++];
+            if(arr[leftPtr] < arr[rightPtr]) {
+                mergedArray[mergePtr++] = arr[leftPtr++];
             }
             else {
-                mergedArray[mergePtr++] = unsortedArr[rightPtr++];
+                mergedArray[mergePtr++] = arr[rightPtr++];
             }
         }
         while(leftPtr < middle) {
-            mergedArray[mergePtr++] = unsortedArr[leftPtr++];
+            mergedArray[mergePtr++] = arr[leftPtr++];
         }
         while (rightPtr < end) {
-            mergedArray[mergePtr++] = unsortedArr[rightPtr++];
+            mergedArray[mergePtr++] = arr[rightPtr++];
         }
 
         mergePtr = 0;
 
+
         // CHECKED
         // For changing the values in the sub-array, using the values of the mixed array.
         for(int index = start; index < end; index++) {
-            unsortedArr[index] = mergedArray[mergePtr++];
+            arr[index] = mergedArray[mergePtr++];
         }
-
-
-    }
-
-    static int[] merge(int[] left, int[] right) {
-        int[] sortedArr = new int[left.length + right.length];
-
-        int minSize = (left.length < right.length) ? left.length : right.length;
-
-        int leftIndex = 0;
-        int rightIndex = 0;
-        int mainIndex = 0;
-
-        
-        while( (leftIndex < left.length) && (rightIndex < right.length) ) { // While both the left and the right arrays have elements left over, we will compare the elements of the left and right arrays.
-
-                if(left[leftIndex] < right[rightIndex]) {
-                    sortedArr[mainIndex++] = left[leftIndex++];
-                }
-                else {
-                    sortedArr[mainIndex++] = right[rightIndex++];
-                }
-
-        }
-        
-        while (leftIndex < left.length) { // If only the LEFT array has elements left over, since the LEFT and RIGHT arrays are already sorted, we just add the elements of the LEFT array to the end of the combined array.
-
-            sortedArr[mainIndex++] = left[leftIndex++];
-        }
-        
-        while (rightIndex < right.length) { // If only the RIGHT array has elements left over, since the LEFT and RIGHT arrays are already sorted, we just add the elements of the RIGHT array into the combined array.
-
-            sortedArr[mainIndex++] = right[rightIndex++];
-        }
-
-        return sortedArr;
     }
 }
