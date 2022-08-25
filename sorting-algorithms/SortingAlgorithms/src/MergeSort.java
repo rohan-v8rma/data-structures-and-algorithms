@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class MergeSort {
     public static void main(String[] args) {
-        int[] arr = {3, 4, 8, 5, 6, 12};
+        int[] arr = {21, 3, 4, 8, 5, 6, 12, 13};
         System.out.println( Arrays.toString( mergeSort(arr)) );
     }
     static int[] mergeSort(int[] unsortedArr) {
@@ -27,31 +27,29 @@ public class MergeSort {
 
         int leftIndex = 0;
         int rightIndex = 0;
+        int mainIndex = 0;
 
-        for(int index = 0; index < (2 * minSize); index++)  {
-
-            if( (leftIndex < left.length) && (rightIndex < right.length) ) { // While both the left and the right arrays have elements left over, we will compare the elements of the left and right arrays.
+        
+        // It is better to use while-loop in this situation because it takes certain amount of processing to figure out how long the for-loop should be run. Using the while-loop allows us to run the process until a required condition is NOT met anymore.
+        while( (leftIndex < left.length) && (rightIndex < right.length) ) { // While both the left and the right arrays have elements left over, we will compare the elements of the left and right arrays.
 
                 if(left[leftIndex] < right[rightIndex]) {
-                    sortedArr[index] = left[leftIndex++];
+                    sortedArr[mainIndex++] = left[leftIndex++];
                 }
                 else {
-                    sortedArr[index] = right[rightIndex++];
+                    sortedArr[mainIndex++] = right[rightIndex++];
                 }
 
-            }
-            else if (leftIndex < left.length) { // If only the LEFT array has elements left over, since the LEFT and RIGHT arrays are already sorted, we just add the elements of the LEFT array to the end of the combined array.
-
-                sortedArr[index] = left[leftIndex++];
-            }
-            else if (rightIndex < right.length) { // If only the RIGHT array has elements left over, since the LEFT and RIGHT arrays are already sorted, we just add the elements of the RIGHT array into the combined array.
-
-                sortedArr[index] = right[rightIndex++];
-            }
         }
+        
+        while (leftIndex < left.length) { // If only the LEFT array has elements left over, since the LEFT and RIGHT arrays are already sorted, we just add the elements of the LEFT array to the end of the combined array.
 
-        if(left.length < right.length) { // If suppose the combined array had 5 elements, dividing
-            sortedArr[sortedArr.length - 1] = right[right.length - 1];
+            sortedArr[mainIndex++] = left[leftIndex++];
+        }
+        
+        while (rightIndex < right.length) { // If only the RIGHT array has elements left over, since the LEFT and RIGHT arrays are already sorted, we just add the elements of the RIGHT array into the combined array.
+
+            sortedArr[mainIndex++] = right[rightIndex++];
         }
 
         return sortedArr;
