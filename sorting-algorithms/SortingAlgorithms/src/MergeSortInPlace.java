@@ -10,7 +10,7 @@ public class MergeSortInPlace {
 
         int subArrLen = end - start;
 
-        if(subArrLen <= 1) { // Base condition of recursive function, where no elements are in the unsorted array
+        if(subArrLen == 1) { // Base condition of recursive function, where no elements are in the unsorted array
             return;
         }
 
