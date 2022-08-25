@@ -11,8 +11,9 @@
     - [Factorial calculator using regular vs. tail recursion](#factorial-calculator-using-regular-vs-tail-recursion)
   - [How function calls work in languages](#how-function-calls-work-in-languages)
   - [Complexity Analysis in Recursive Algorithms](#complexity-analysis-in-recursive-algorithms)
-    - [Space Complexity](#space-complexity)
+    - [Space Complexity (Auxiliary Space in ACTUALITY)](#space-complexity-auxiliary-space-in-actuality)
 - [Dynamic Programming](#dynamic-programming)
+- [Arrays](#arrays)
 - [Abstract Data Types](#abstract-data-types)
   - [Classification of Abstract Data Types](#classification-of-abstract-data-types)
 - [Linked List](#linked-list)
@@ -30,7 +31,7 @@
   - [Queue operations](#queue-operations)
   - [Queue implementation in CPP](#queue-implementation-in-cpp)
 - [Time Complexity](#time-complexity)
-- [Space Complexity](#space-complexity-1)
+- [Space Complexity](#space-complexity)
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
   - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
 - [Sorting Algorithms](#sorting-algorithms)
@@ -50,15 +51,30 @@
       - [Best case - $O(N)$](#best-case---on-1)
       - [Worst case - $O(N^2)$](#worst-case---on2-1)
   - [Merge Sort](#merge-sort)
+    - [Steps followed in Merge Sort](#steps-followed-in-merge-sort)
+    - [Time Complexity of Merge Sort](#time-complexity-of-merge-sort)
+      - [Solving using Recursion Tree Method](#solving-using-recursion-tree-method)
+      - [Solving Recurrence Relation using Akra-Bazzi Theorem](#solving-recurrence-relation-using-akra-bazzi-theorem)
+      - [Best case - $O(N.\log{N})$  & Worst case - $O(N.\log{N})$](#best-case---onlogn---worst-case---onlogn)
+    - [Space Complexity of Merge Sort](#space-complexity-of-merge-sort)
+      - [In-place Merge Sort](#in-place-merge-sort)
+      - [Not in-place Merge Sort](#not-in-place-merge-sort)
   - [Quick Sort](#quick-sort)
     - [What is Pivot?](#what-is-pivot)
     - [Picking a Pivot](#picking-a-pivot)
     - [Time Complexity](#time-complexity-4)
       - [Recurrence Relation](#recurrence-relation)
-      - [Best case - $O(N.logN)$](#best-case---onlogn)
+      - [Best case - $O(N.\log N)$](#best-case---onlog-n)
       - [Worst case - $O(N^2)$](#worst-case---on2-2)
     - [Why use Quick Sort?](#why-use-quick-sort)
   - [Hybrid Sorting Algorithms](#hybrid-sorting-algorithms)
+- [Searching Algorithms](#searching-algorithms)
+- [Binary Search](#binary-search)
+  - [Time Complexity](#time-complexity-5)
+    - [Recurrence Relation](#recurrence-relation-1)
+    - [Best case - $O(1)$](#best-case---o1)
+    - [Worst case - $O(\log_{2}N)$](#worst-case---olog_2n)
+- [Rotated Binary Search](#rotated-binary-search)
 - [Tips & Tricks for DSA](#tips--tricks-for-dsa)
   - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
   - [Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)](#calculating-nth-fibonacci-number-regular-recursion-vs-recurrence-relation-formula)
@@ -195,9 +211,11 @@ When a function finishes executing, it is removed from the stack and the flow of
 
 ## Complexity Analysis in Recursive Algorithms
 
-### Space Complexity
+### Space Complexity (Auxiliary Space in ACTUALITY)
 
 ![](/images/recursive-space-complexity.jpg)
+
+As the recursive functions are calling itself again and again, addresses are added into stack. So, if the function is called **N** times recursively, it will take $O(N)$ auxiliary space.
 
 # Dynamic Programming
 
@@ -206,6 +224,23 @@ Dynamic Programming is a technique in computer programming that helps to efficie
 If any problem can be divided into sub-problems, which in turn are divided into smaller sub-problems, and if there are overlapping among these subproblems, then the solutions to these subproblems can be saved for future reference. 
 
 In this way, efficiency of the CPU can be enhanced. This method of solving a solution is referred to as dynamic programming.
+
+# Arrays
+
+An array is a homogenous data structure: all elements are of the same type. Also, the elements of an array are stored in adjacent memory locations. 
+
+Because each cell has the same type (and thus the same size), and because the cells are adjacent in memory, it is possible to quickly calculate the address of any array cell, given the address of the first cell.
+
+Say we allocate memory for an array of `N` elements (the total number of cells of the array must be defined beforehand), where the elements of the array are of a type that has a size of `b` bytes (e.g. a C++ int has a size of 4 bytes), and the resulting array is allocated starting at memory address `x`. 
+
+Using 0-based indexing:
+- the element at index `i = 0` is at memory address `x`
+- the element at index `i = 1` is at memory address `x + b`
+- the element at index `i` is at memory address `x + bi`. 
+
+Below is the same example array, where the number inside each cell is the index of that cell, and the number below each cell is the memory address at which that cell begins.
+
+![](images/array.png)
 
 # Abstract Data Types
 
@@ -508,7 +543,39 @@ When the array is already sorted, but in reverse order.
 
 ## Merge Sort
 
-TODO
+### Steps followed in Merge Sort
+
+- Divide array into 2 parts
+- Get both parts sorted via recursion
+- Merge the sorted parts
+
+### Time Complexity of Merge Sort
+
+#### Solving using Recursion Tree Method
+
+![](./images/merge-sort-recursion-tree-1.jpg)
+![](./images/merge-sort-recursion-tree-2.jpg)
+
+#### Solving Recurrence Relation using Akra-Bazzi Theorem
+
+![](./images/merge-sort-recurrence-relation-solve.jpg)
+
+#### Best case - $O(N.\log{N})$  & Worst case - $O(N.\log{N})$
+
+The time complexity of MergeSort is $O(N.\log{N})$ in all the 3 cases (worst, average and best) as the merge sort algorithm always divides the array into two halves and takes linear time to merge two halves.
+
+### Space Complexity of Merge Sort
+
+![](./images/merge-sort-space-complexity-common.jpg)
+
+#### In-place Merge Sort
+
+![](images/merge-sort-inplace-space-comp.jpg)
+
+#### Not in-place Merge Sort
+
+![](images/merge-sort-notinplace-space-comp-1.jpg)
+![](images/merge-sort-notinplace-space-comp-2.jpg)
 
 ## Quick Sort
 
@@ -550,7 +617,7 @@ We use 4 variables in quick sort:
 <!-- TODO: Add picture from notebook -->
 ![]()
 
-#### Best case - $O(N.logN)$
+#### Best case - $O(N.\log N)$
 
 <!-- TODO: Add picture from notebook -->
 ![]()
@@ -576,6 +643,36 @@ We use 4 variables in quick sort:
 The sorting algorithm used by the in-built `sort()` method in Python is Tim Sort which is a combination of [Merge Sort](#merge-sort) and [Insertion Sort](#insertion-sort) (works well with partially sorted arrays).
 
 TODO : Understand in detail
+
+# Searching Algorithms
+
+# Binary Search
+
+## Time Complexity
+
+### Recurrence Relation
+
+<!-- TODO: Do in notebok and add picture -->
+![]()
+
+### Best case - $O(1)$
+
+This is when the target element is found in the very FIRST pass.
+
+<!-- TODO: Do in notebok and add picture -->
+![]()
+
+### Worst case - $O(\log_{2}N)$
+
+This is when the target element is found in the very LAST pass.
+
+<!-- TODO: Do in notebok and add picture -->
+![]()
+
+
+# Rotated Binary Search
+
+TODO
 
 # Tips & Tricks for DSA
 
