@@ -57,27 +57,6 @@ public class QuickSort1 {
 
 
 
-        //? This algorithm is also faulty as the pivot element is not reaching its correct index position after reach pass. Try taking the example {1, 2, 4, 5, 3}. The middle element 4, when taken as pivot, would be at last position after first pass, when it should be second-last index. BUT IT DOES WORK and is MORE EFFICIENT since shifting of elements is less.
-
-//        while(left <= right) {
-//            while(unsortedArr[left] < pivotElement) { // So, even if `left` reaches the pivotElement, it will stop. Since the pivotElement is definitely present in the array, this helps safeguard against `left` index going out of bounds of the array.
-//                left++;
-//            }
-//            while(unsortedArr[right] > pivotElement) { // So, even if `right` reaches the pivotElement, it will stop. Since the pivotElement is definitely present in the array, this helps safeguard against `right` index going out of bounds of the array.
-//                right--;
-//            }
-//
-//            if(left <= right) { // It is possible that in the above two while loops,
-//                temp = unsortedArr[left];
-//                unsortedArr[left] = unsortedArr[right];
-//                unsortedArr[right] = temp;
-//                left++;
-//                right--;
-//            }
-//        }
-//        quickSort(unsortedArr, left, end);
-//        quickSort(unsortedArr, start, right);
-
 
         //? This logic is a bit flawed considering the algorithm of quick sort. We are swapping elements in the beginning of the array with elements in the end of the array, irrespective of their size with respect to the pivot
 //        while( start != end ) {
