@@ -1,6 +1,21 @@
 #include <iostream>
 #define SIZE 6
 
+// Function for printing the array
+void printArr(int *arr, int size) {
+
+    std::cout << "{";
+
+    for(int index = 0; index < size; index++) {
+        std::cout << *(arr + index);
+        if(index + 1 != size) {
+            std::cout << ", ";
+        }
+        
+    }
+    std::cout << "}\n";
+}
+
 int main() {
     int array[SIZE] = {2, 8, 6 , 4, 10, 9};
     int temp, swap;
@@ -22,8 +37,7 @@ int main() {
         };
     }
 
-    for(int index = 0; index < SIZE; index++) {
-        std::cout << array[index] << "\n";
-    }
+    // Function for printing the array
+    printArr(array, SIZE);
 
 }

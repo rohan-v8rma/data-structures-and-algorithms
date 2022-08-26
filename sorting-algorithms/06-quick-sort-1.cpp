@@ -1,7 +1,23 @@
 #include <iostream>
+#define SIZE 7
 using namespace::std;
 
 // In this algorithm, the pivot element is moved to the end, and then the comparisons take place. This is a bit inefficient because of the two extra swapping operations along with the conditions for keeping the 'left' and 'right' pointers within bounds.
+
+// Function for printing the array
+void printArr(int *arr, int size) {
+
+    std::cout << "{";
+
+    for(int index = 0; index < size; index++) {
+        std::cout << *(arr + index);
+        if(index + 1 != size) {
+            std::cout << ", ";
+        }
+        
+    }
+    std::cout << "}\n";
+}
 
 void quickSort(int* unsortedArr, int start, int end) { // end is inclusive
 
@@ -52,13 +68,11 @@ void quickSort(int* unsortedArr, int start, int end) { // end is inclusive
 }
 
 int main() {
-    int arr[] = {1, 2, 4, 5, 10, 7, 3};
-    quickSort(arr, 0, 6);
+    int arr[SIZE] = {1, 2, 4, 5, 10, 7, 3};
+    quickSort(arr, 0, SIZE-1);
     
-    // Loop for printing the array
-    for(int index = 0; index < (sizeof(arr)/sizeof(int)); index++) {
-        std::cout << arr[index] << "\n";
-    }
+    // function for printing the array
+    printArr(arr, SIZE);
 }
 
     

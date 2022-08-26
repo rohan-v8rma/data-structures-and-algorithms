@@ -3,6 +3,21 @@
 
 // Sort should be in ascending order from LEFT to RIGHT
 
+// Function for printing the array
+void printArr(int *arr, int size) {
+
+    std::cout << "{";
+
+    for(int index = 0; index < size; index++) {
+        std::cout << *(arr + index);
+        if(index + 1 != size) {
+            std::cout << ", ";
+        }
+        
+    }
+    std::cout << "}\n";
+}
+
 int main() {
     int array[SIZE] = {5, 2, 4, 3, 1};
     
@@ -22,9 +37,7 @@ int main() {
         }
     }
 
-    // Loop for printing the array
-    for(int index = 0; index < SIZE; index++) {
-        std::cout << array[index] << "\n";
-    }
+    // Function for printing the array
+    printArr(array, SIZE);
 
 }
