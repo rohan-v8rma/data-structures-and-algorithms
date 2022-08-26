@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace::std;
 
+// In this algorithm, the pivot element is moved to the end, and then the comparisons take place. This is a bit inefficient because of the two extra swapping operations along with the conditions for keeping the 'left' and 'right' pointers within bounds.
 
 void quickSort(int* unsortedArr, int start, int end) { // end is inclusive
 
