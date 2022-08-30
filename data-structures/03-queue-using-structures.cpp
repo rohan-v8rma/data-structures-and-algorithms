@@ -46,13 +46,15 @@ void enQueue(struct queue* queuePtr, int element) {
     else {
         if( (queuePtr -> rear) + 1 == queuePtr -> size) { // This is the condition where, due to dequeueing, the front of the queue is empty but the queue is full at the end, so we have to shift the elements to the front in order to make space for enqueueing.
             int insertIndex = 0;
-            for(int index = (queuePtr -> front) ; index < (queuePtr -> rear) ; index++) {
+
+            for(int index = ((queuePtr -> front) + 1); index <= (queuePtr -> rear) ; index++) {
                 (queuePtr -> queueArray)[insertIndex] = (queuePtr -> queueArray)[index];
                 insertIndex++;
             }
+            
             int size = (queuePtr -> rear) - (queuePtr -> front);
             (queuePtr -> front) = -1;
-            (queuePtr -> rear) = size - 1; // Since `(size - 1) - (-1) = size so size of the array remains same`
+            (queuePtr -> rear) = size - 1; // Since (`size` - 1) - (-1) = `size`, so size of the queue, calculated using the front and rear pointers remains same
         };
 
         (queuePtr -> rear)++;
@@ -66,8 +68,8 @@ int deQueue(struct queue* queuePtr) {
         return -1;
     }
     else {
-        (queuePtr -> front)++;
-        return *( (queuePtr -> queueArray) + (queuePtr -> front)); // Since front anyways stores the index before the first element.
+        // We increment the front pointer before accessing the element that is now deQueued, since front anyways stores the index before the first element.
+        return *( (queuePtr -> queueArray) + (++(queuePtr -> front)) ); 
     };
     return -1;
 }
