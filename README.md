@@ -30,6 +30,9 @@
 - [Queue](#queue)
   - [Queue operations](#queue-operations)
   - [Queue implementation in CPP](#queue-implementation-in-cpp)
+  - [Double-Ended Queue](#double-ended-queue)
+    - [Input Restricted DE-Queue](#input-restricted-de-queue)
+    - [Output Restricted DE-Queue](#output-restricted-de-queue)
 - [Time Complexity](#time-complexity)
 - [Space Complexity](#space-complexity)
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
@@ -229,7 +232,7 @@ In this way, efficiency of the CPU can be enhanced. This method of solving a sol
 
 An array is a homogenous data structure: all elements are of the same type. Also, the elements of an array are stored in adjacent memory locations. 
 
-Because each cell has the same type (and thus the same size), and because the cells are adjacent in memory, it is possible to quickly calculate the address of any array cell, given the address of the first cell, which is why arrays are good for RANDOM ACCESS of elements
+Because each cell has the same type (and thus the same size), and because the cells are adjacent in memory, it is possible to quickly calculate the address of any array cell, given the address of the first cell, which is why arrays are good for RANDOM ACCESS of elements.
 
 Say we allocate memory for an array of `N` elements (the total number of cells of the array must be defined beforehand), where the elements of the array are of a type that has a size of `b` bytes (e.g. a C++ int has a size of 4 bytes), and the resulting array is allocated starting at memory address `x`. 
 
@@ -389,6 +392,20 @@ Whenever `front` = `rear`, queue is empty.
 - Using arrays: Here, enqueueing and dequeueing is an O(1) operation but when the queue isn't full and an element has to be enqueued then shifting has to take place which is an O(n) operation.
 - Using linked list: Here, both enqueueing and dequeueing is an O(1)
 - Using other ADTs
+
+## Double-Ended Queue
+
+A double-ended queue is similar to a [Queue ADT](#queue) with the added functionality of being able to enqueue and dequeue from both ends of the queue.
+
+DE-queues can further be classified into two types:
+
+### Input Restricted DE-Queue
+
+In restricted INPUT DE-Queue, enqueueing from front is NOT permitted, however dequeueing from end is permitted.
+
+### Output Restricted DE-Queue
+
+In restricted OUTPUT DE-Queue, dequeueing from end is NOT permitted, however enqueueing from front is permitted.
 
 # Time Complexity 
 
@@ -607,8 +624,8 @@ There are many different versions of quick sort that pick [pivot](#what-is-pivot
 We use 4 variables in quick sort:
 - `start` : This is the starting index of the partitioned array.
 - `end` : This is the ending index of the partitioned array.
-- `low` : This is a dynamic variable used to swap elements which are greater than the pivot, but are present on the LHS of the pivot.
-- `high` : This is a dynamic variable used to swap elements which are less than the pivot, but are present on the RHS of the pivot.
+- `left` : This is a dynamic variable used to swap elements which are greater than the pivot, but are present on the LHS of the pivot.
+- `right` : This is a dynamic variable used to swap elements which are less than the pivot, but are present on the RHS of the pivot.
 
 ### Time Complexity
 
@@ -630,13 +647,16 @@ We use 4 variables in quick sort:
 
 ### Why use Quick Sort?
 
-- An advantage Quick Sort has over [Merge Sort](#merge-sort) is that if an array is already sorted, Merge Sort will still run till the base condition is reached. Here, that will NOT happen.
+- An advantage Quick Sort has over [Merge Sort](#merge-sort) is that if an array is already sorted, Merge Sort will still run till the base condition (the sub-array has only 1 element) is reached, and merge the sub-arrays back to the original array by comparing the elements of the sub-arrays. 
+  
+  Here, that will NOT happen. The only process happening will be incrementation of the left and right pointers.
   
   TODO: How?
 
 - For arrays, Quick Sort is preferred over Merge Sort, because Merge Sort takes O(N) extra space.
 
-  But, in the case of linked lists, memory allocation is random so Merge Sort is preferred over Quick Sort.
+  But, in the case of linked lists, memory allocation is random so Merge Sort is preferred over Quick Sort. 
+  TODO: Why?
 
 ## Hybrid Sorting Algorithms
 
