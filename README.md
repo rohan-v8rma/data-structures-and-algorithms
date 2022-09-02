@@ -631,18 +631,17 @@ We use 4 variables in quick sort:
 
 #### Recurrence Relation
 
-<!-- TODO: Add picture from notebook -->
-![]()
+![](/images/quick-sort-recurrence-relation.jpg)
 
 #### Best case - $O(N.\log N)$
 
-<!-- TODO: Add picture from notebook -->
-![]()
+![](/images/quick-sort-best-case-1.jpg)
+![](/images/quick-sort-best-case-2.jpg)
 
 #### Worst case - $O(N^2)$
 
-<!-- TODO: Add picture from notebook -->
-![]()
+![](/images/quick-sort-worst-case-1.jpg)
+![](/images/quick-sort-worst-case-2.jpg)
 
 
 ### Why use Quick Sort?
@@ -743,7 +742,7 @@ So, this is an ideal method for calculating the number of digits of a number.
 
 See the code [here](practice-questions/07-fibonacci-formula-calc.cpp).
 
-<!-- TODO: Added picture of calculation done in notebook -->
-![]()
+![](/images/fibonacci-recurrence-relation-1.jpg)
+![](/images/fibonacci-recurrence-relation-2.jpg)
 
 # TODO 
