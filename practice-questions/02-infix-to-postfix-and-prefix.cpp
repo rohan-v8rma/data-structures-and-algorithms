@@ -151,6 +151,52 @@ std::string inToPre1(std::string infix) {
 
 }
 
+std::string inToPre2(std::string infix) {
+    /*
+    In this infix to prefix converter function, we just iterate over the infix expression from left to right, applying infix to postfix conversion rules, and at the end, reverse the output before returning it.
+    */
+
+    std::string reverse = "";
+    int infixLength = infix.length();
+
+    stack<char> opStack(50);
+    char current;
+    
+    // We just replace right brackets with left brackets and vice versa in the for loop used for iterating over the characters of the infix expression, since we are iterating over the infix expression from right to left, unlike in `inToPost`
+
+    for(int index = infixLength - 1; index >= 0; index--) {
+        current = infix[index];
+        
+        if(current == ')') { 
+            opStack.stackPush(current);
+        }
+        else if(current == '(') {
+            while((opStack.stackArray)[opStack.top] != ')') {
+                reverse += opStack.stackPop();
+            }
+            opStack.stackPop();
+        }
+        else if( precedOpCheck(current) ) {
+            if( precedOpCheck(*( (opStack.stackArray) + (opStack.top) )) < precedOpCheck(current) ) {
+                opStack.stackPush(current);
+            }
+            else {
+                while( precedOpCheck( *( (opStack.stackArray) + (opStack.top) ) ) >= precedOpCheck(current) ) {
+                    reverse += opStack.stackPop();
+                };
+                opStack.stackPush(current);
+
+            };
+        }
+        else if( ( (65 <= (int)(current)) && (90 >= (int)(current)) ) || ( (97 <= (int)(current)) && (122 >= (int)(current)) )) {
+            reverse += current;
+        };
+    }
+
+    return reverseString(reverse);
+}
+
+
 int main() {
     //* Test Expression 1
     // std::string infix = "(K + L - M*N + (O^P) * W/U/V * T + Q)";
@@ -173,6 +219,9 @@ int main() {
 
     std::string prefix1 = inToPre1(infix);
     std::cout << prefix1 << std::endl;
+
+    std::string prefix2 = inToPre2(infix);
+    std::cout << prefix2 << std::endl;
 
     return 0;
 }
