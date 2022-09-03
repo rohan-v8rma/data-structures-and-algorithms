@@ -41,10 +41,22 @@ void quickSort(int* unsortedArr, int start, int end) { // end is inclusive
     right--; // Moving `right` pointer ahead of the pivot element.
 
     while(left <= right) {
-        while( (left <= end) && (unsortedArr[left] < pivotElement) ) { // The first condition is to ensure 'left' pointer doesn't go out of bounds. The second condition is for stopping the 'left' pointer as soon as an element greater than or equal to the pivot is found.
+        while( (left <= end) && (unsortedArr[left] < pivotElement) ) { 
+            /* 
+            The first condition is to ensure 'left' pointer doesn't go out of bounds. The second condition is for stopping the 'left' pointer as soon as an element greater than or equal to the pivot is found. 
+            
+            The 'left' pointer anyways won't go out of bounds because the pivotElement is shifted to the end anyways, so the second condition will be violated before 'left' can go out of bounds.
+            */
             left++;
         }
-        while( (right >= start) && (unsortedArr[right] > pivotElement) && (left <= right) ) { // The first condition is to ensure 'right' pointer doesn't go out of bounds. The second condition is for stopping the 'right' pointer as soon as an element greater than or equal to the pivot is found. The third condition is for stopping the 'right' pointer as soon as the 'right' pointer crosses the 'left' pointer. If the 'right' pointer crosses the 'left' pointer, it means all element to the right of the 'right' pointer are greater than or equal to the pivot. So, we can replace the element just to the right of the 'right' pointer, which is pointed to by the 'left' pointer.
+        while( (right >= start) && (unsortedArr[right] > pivotElement) && (left <= right) ) { 
+            /* 
+            The first condition is to ensure 'right' pointer doesn't go out of bounds. The second condition is for stopping the 'right' pointer as soon as an element greater than or equal to the pivot is found. The third condition is for stopping the 'right' pointer as soon as the 'right' pointer crosses the 'left' pointer. 
+            
+            If the 'right' pointer crosses the 'left' pointer, it means all element to the right of the 'right' pointer are greater than or equal to the pivot. So, we can replace the element just to the right of the 'right' pointer, which is pointed to by the 'left' pointer.
+
+            It is necessary that the 'right' pointer crosses the 'left' pointer, as it gives us confirmation that all elements to the right of the 'right' pointer, including the element pointed to by the 'left' pointer, are greater than or equal to pivot element, meaning it would be okay if we swapped the 'left' pointer element, with the end element, which is the where the pivot is temporarily placed.
+            */
             right--;
         }
 
@@ -69,6 +81,7 @@ void quickSort(int* unsortedArr, int start, int end) { // end is inclusive
 
 int main() {
     int arr[SIZE] = {1, 2, 4, 5, 10, 7, 3};
+    // int arr[SIZE] = {1, 2, 4, 5, 10, 7, 3};
     quickSort(arr, 0, SIZE-1);
     
     // function for printing the array
