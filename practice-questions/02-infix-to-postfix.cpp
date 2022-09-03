@@ -115,13 +115,64 @@ std::string inToPost(std::string infix) {
     return postfix;
 }
 
-int main() {
-    //* Test Expression
-    std::string infix = "(K + L - M*N + (O^P) * W/U/V * T + Q)";
+std::string reverseString(std::string str) {
+
+    std::string reverse = "";
+   
+    for(int index = str.length() - 1; index >= 0; index--) {
+        if(str[index] == '(') {
+            reverse += ')';
+        }
+        else if(str[index] == ')') {
+            reverse += '(';
+        }
+        else {
+            reverse += str[index];
+        }
+    }
+
+    return reverse;
+}
+
+std::string inToPre1(std::string infix) { 
+    /* 
+    In this infix to prefix convertor function, we reverse the infix string and then use the inToPost function on the reversed string. 
     
-    //? Expected Output : KL+MN∗−OP^W∗U/V/T∗+Q+
+    Since it would require multiple passes for implementing an actual infix to prefix converter, as we would have to require prior knowledge on what operators come ahead, it is just easier to reverse the infix string, apply postfix conversion and reverse the output string once again.
+    */
+
+    std::string reverse = reverseString(infix);
+
+    std::string temp = inToPost(reverse);
+
+    std::string prefix = reverseString(temp);
+
+    return prefix;
+
+}
+
+int main() {
+    //* Test Expression 1
+    // std::string infix = "(K + L - M*N + (O^P) * W/U/V * T + Q)";
+    //? Expected Postfix Output : KL+MN∗−OP^W∗U/V/T∗+Q+
+    //! Expected Prefix Output : +K-L+*MN+*^OP/W/U*VTQ
+
+    //* Test Expression 2
+    // std::string infix = "(A + B / C * (D + E ^ Z) - F)";
+    //? Expected Postfix Output : ABC/DEZ^+*+F-
+    //! Expected Prefix Output : +A-/B*C+D^EZF
+
+    //* Test Expression 2
+    std::string infix = "(B - C * A + (D * E - F) / G)";
+    //? Expected Postfix Output : BCA*-DE*F-G/+
+    //! Expected Prefix Output : -B+*CA/-*DEFG
+    
 
     std::string postfix = inToPost(infix);
     std::cout << postfix << std::endl;
+
+    std::string prefix1 = inToPre1(infix);
+    std::cout << prefix1 << std::endl;
+
     return 0;
 }
