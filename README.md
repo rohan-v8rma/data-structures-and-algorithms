@@ -33,6 +33,7 @@
   - [Double-Ended Queue](#double-ended-queue)
     - [Input Restricted DE-Queue](#input-restricted-de-queue)
     - [Output Restricted DE-Queue](#output-restricted-de-queue)
+  - [Circular Queue](#circular-queue)
 - [Time Complexity](#time-complexity)
 - [Space Complexity](#space-complexity)
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
@@ -80,6 +81,7 @@
 - [Rotated Binary Search](#rotated-binary-search)
 - [Tips & Tricks for DSA](#tips--tricks-for-dsa)
   - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
+  - [Calculating the approximate number of times a loop runs](#calculating-the-approximate-number-of-times-a-loop-runs)
   - [Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)](#calculating-nth-fibonacci-number-regular-recursion-vs-recurrence-relation-formula)
     - [Regular Recursion](#regular-recursion)
     - [Recurrence Relation Formula](#recurrence-relation-formula)
@@ -407,6 +409,8 @@ In restricted INPUT DE-Queue, enqueueing from front is NOT permitted, however de
 
 In restricted OUTPUT DE-Queue, dequeueing from end is NOT permitted, however enqueueing from front is permitted.
 
+## Circular Queue
+
 # Time Complexity 
 
 ![Time-Complexity-1.png](./images/Time-Complexity-1.png)
@@ -730,6 +734,38 @@ The value of $\log_{10}x$ increases by an integer only when the number crosses a
 This is also when an extra digit is added to the number.
 
 So, this is an ideal method for calculating the number of digits of a number.
+
+## Calculating the approximate number of times a loop runs
+
+- When a loop varaiable is incremented by 1 uptil $N$, it runs $N$ times. Looking at an example:
+  
+  ```cpp
+  for(int i = 1; i <= N; i++) {
+    for(int j = 1, j <= K; j++) {
+      // an operation that takes time `T`
+    }
+  }
+  ```
+
+  - $(K * T)$ is the time taken by the inner for-loop.
+  - The outer for-loop runs $N$ times.
+  - Approx. time taken by the outer for-loop in the above case = $(N * K * T)$
+
+- When it is incremented by $K$ uptil $N$, it runs $N/K$ times, approximately. Looking at another example:
+  
+  ```cpp
+  for(int i = 1; i <= N;) {
+    for(int j = 1, j <= K; j++) {
+      // an operation that takes time `T`
+    }
+    i += K;
+  }
+  ```
+  
+  - $(K * T)$ is the time taken by the inner for-loop.
+  - The outer for-loop runs $N/K$ times.
+  - Approx. time taken by the outer for-loop in the above case = $\frac{(N * K * T)}{K}$ = $(N * T)$
+
 
 
 ## Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)
