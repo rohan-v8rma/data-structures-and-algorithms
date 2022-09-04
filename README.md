@@ -33,6 +33,7 @@
   - [Double-Ended Queue](#double-ended-queue)
     - [Input Restricted DE-Queue](#input-restricted-de-queue)
     - [Output Restricted DE-Queue](#output-restricted-de-queue)
+  - [Drawbacks of Queue implemented using Arrays](#drawbacks-of-queue-implemented-using-arrays)
   - [Circular Queue](#circular-queue)
 - [Time Complexity](#time-complexity)
 - [Space Complexity](#space-complexity)
@@ -85,6 +86,7 @@
   - [Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)](#calculating-nth-fibonacci-number-regular-recursion-vs-recurrence-relation-formula)
     - [Regular Recursion](#regular-recursion)
     - [Recurrence Relation Formula](#recurrence-relation-formula)
+  - [Concept of Circular Incrementation](#concept-of-circular-incrementation)
 - [TODO](#todo)
 
 # Recursion
@@ -409,7 +411,14 @@ In restricted INPUT DE-Queue, enqueueing from front is NOT permitted, however de
 
 In restricted OUTPUT DE-Queue, dequeueing from end is NOT permitted, however enqueueing from front is permitted.
 
+## Drawbacks of Queue implemented using Arrays
+
+- Space is not used efficiently.
+- The queue may not be full but the rear pointer may reach the end, requiring us to shift elements for enqueueing to take place.
+
 ## Circular Queue
+
+A circular queue is the extended version of a regular queue where the last element is connected to the first element. Thus forming a circle-like structure. The circular queue solves the major limitations of the normal queue, listed [above](#drawbacks-of-queue-implemented-using-arrays).
 
 # Time Complexity 
 
@@ -766,13 +775,13 @@ So, this is an ideal method for calculating the number of digits of a number.
   - The outer for-loop runs $N/K$ times.
   - Approx. time taken by the outer for-loop in the above case = $\frac{(N * K * T)}{K}$ = $(N * T)$
 
-
-
 ## Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)
 
 ### Regular Recursion
 
 ![](/images/fibonacci-example.jpg)
+
+---
 
 ### Recurrence Relation Formula
 
@@ -780,5 +789,50 @@ See the code [here](practice-questions/07-fibonacci-formula-calc.cpp).
 
 ![](/images/fibonacci-recurrence-relation-1.jpg)
 ![](/images/fibonacci-recurrence-relation-2.jpg)
+
+---
+
+## Concept of Circular Incrementation
+
+When we are iterating over the elements of an array, we use incrementation similar to this:
+
+```cpp
+int size = 3;
+
+int index = 0;
+
+while(index < size) {
+  int arr[size] = {1, 2, 4};
+
+  printf("%d\n", *(arr + index));
+
+  index++;
+}
+```
+
+Here, 0 is incremented to 1, 1 is incremented 2, 2 is incremented to 3.
+
+This would run the while-loop once, since the `index` variable would reach out of bounds of the indices available in the array `arr`.
+
+---
+
+The concept of **Circular Incrementation** would let this while-loop run infinitely.
+
+Increment operation works in the regular way, 0 is incremented to 1, 1 is incremented 2, BUT 2 is incremented to 0, staying within the index bounds.
+
+The code would look something like this:
+```cpp
+int size = 3;
+
+int index = 0;
+
+while(index < size) {
+  int arr[size] = {1, 2, 4};
+
+  printf("%d\n", *(arr + index));
+
+  index = (index + 1) % size;
+}
+```
 
 # TODO 
