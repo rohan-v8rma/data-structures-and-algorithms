@@ -173,8 +173,9 @@ int main() {
     // Calling quick sort
     quickSort(list, 0, 4);
     
-    // for(int index = 0; index < 5; index++) {
-    //     cout << list[index].name << endl;
-    // } 
+    for(int index = 0; index < 5; index++) {
+        cout << list[index].name << endl;
+    } 
+    
     return 0;
 }
