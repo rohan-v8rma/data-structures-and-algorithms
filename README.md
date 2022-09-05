@@ -474,7 +474,7 @@ A typical implementation of [Merge Sort](#merge-sort) is not in-place, also the 
 
 This sorting technique is just like bubbles in a water column, coming up one by one. 
 
-![Bubble Sort](./images/bubble-sort.ppm)
+![Bubble Sort](./images/bubble-sort.png)
 
 In bubble sort, with each subsequent pass, the next largest element is settled at the end of the array.
 
@@ -521,7 +521,7 @@ It is an [unstable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as
 
 ### Why use Selection Sort?
 
-- The good thing about selection sort is that never makes more than $O(N^2)$ swaps so it can be useful when memory write is a costly operation.
+- The good thing about selection sort is that never makes more than $(N-1)$ swaps which is a linear i.e., $O(N)$ complexity, so it can be useful when memory write is a costly operation.
 - It performs well for smaller values of N. 
 
 ### Time Complexity
@@ -538,13 +538,13 @@ Minor difference can be no time spent in swap operations in the Best Case and al
 
 ## Insertion Sort
 
-Insertion sort is a simple sorting algorithm that works similar to the way you sort playing cards in your hands. The array is virtually split into a sorted and an unsorted part. Values from the unsorted part are picked and placed at the correct position in the sorted part.
+Insertion sort is a simple sorting algorithm that works similar to the way you sort playing cards in your hands. 
 
-Putting the first index position of the unsorted array into the correct position in the sorted array. 
-
-The problem encountered here is that we need to shift elements to the right, in order to insert the element that has to be sorted into the correct position.
+The array is virtually split into a sorted and an unsorted part. Values from the unsorted part are gradually inserted place-by-place into the sorted part until they reach their correct position.
 
 After every pass, a larger and larger portion of the array would be sorted.
+
+![](/images/insertion-sort.jpg)
 
 It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as well as an [in-place sorting algorithm](#in-place-sorting-algorithms).
 
@@ -563,7 +563,7 @@ When the array is already sorted, only comparison takes place per pass. Number o
 
 So, it takes minimum amount of time (order of N).
 
-![](/images/insertion-sort.jpg)
+![](/images/insertion-sort-best.jpg)
 
 #### Worst case - $O(N^2)$
 
@@ -582,6 +582,8 @@ When the array is already sorted, but in reverse order.
 ### Time Complexity of Merge Sort
 
 #### Solving using Recursion Tree Method
+
+TODO: correct logic of this
 
 ![](./images/merge-sort-recursion-tree-1.jpg)
 ![](./images/merge-sort-recursion-tree-2.jpg)
