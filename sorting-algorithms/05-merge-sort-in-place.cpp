@@ -61,8 +61,26 @@ void mergeSortInPlace(int* unsortedArr, int start, int end) { // end is EXCLUSIV
         return;
     }
 
-    int middle = (start + end) / 2;
+    int middle = (start + end) / 2; 
+    /*
+    Because we obtain `middle` in this way, there is NO way that the the BASE-CONDITION stated above gets bypassed. 
     
+    * Taking the case where have a 3-element array and start is 0, end is 3. Middle will be obtained as 1.
+
+    ? So the first sub-array will have start - 0, end - 1 : meaning 1 element in the sub-array
+    ! BASE-CONDITION HIT
+    ? And the second sub-array will have start - 1, end - 3 : meaning 2 elements in the sub-array
+      BASE-CONDITION not HIT
+
+    * Taking the above 2-element array, where start is 1, end is 3. Middle will be obtained as 2.
+
+    ? So the first sub-array will have start - 1, end - 2 : meaning 1 element in the sub-array
+    ! BASE-CONDITION HIT
+    ? And the second sub-array will have start - 2, end - 3 : meaning 1 element in the sub-array
+    ! BASE-CONDITION HIT
+
+    So, it is NOT possible that directly the length of the sub-array becomes 0, BYPASSING the base-case.
+    */
 
     mergeSortInPlace(unsortedArr, start, middle);
     mergeSortInPlace(unsortedArr, middle, end);
