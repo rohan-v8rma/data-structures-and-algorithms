@@ -138,8 +138,6 @@ void quickSort(studrec* list, int start, int end) {
             temp = list[left];
             list[left] = list[right];
             list[right] = temp;
-            left++;
-            right--;
         };
     }
     
@@ -164,7 +162,7 @@ int main() {
     // calling binary search
     cout << "b present at index : " << binSearch(listsorted, 0, 4, "b") << endl;
 
-    studrec list[5] = {	 	  	 	 		     	      	      	  	  	 	
+    studrec list[5] = {
         {"d", 4, 6.9},
         {"b", 2, 8.9},
         {"a", 1, 9.9},
