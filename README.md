@@ -45,22 +45,22 @@
   - [Bubble Sort (Sinking Sort OR Exchange Sort)](#bubble-sort-sinking-sort-or-exchange-sort)
     - [Time Complexity](#time-complexity-1)
       - [Best case - O(N)](#best-case---on)
-      - [Worst case - $O(N^2)$](#worst-case---on2)
+      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup)
   - [Selection Sort](#selection-sort)
     - [Why use Selection Sort?](#why-use-selection-sort)
     - [Time Complexity](#time-complexity-2)
-      - [Best case - $O(N^2)$ & Worst case - $O(N^2)$](#best-case---on2--worst-case---on2)
+      - [Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)](#best-case---onsup2sup--worst-case---onsup2sup)
   - [Insertion Sort](#insertion-sort)
     - [Why use Insertion Sort?](#why-use-insertion-sort)
     - [Time Complexity](#time-complexity-3)
-      - [Best case - $O(N)$](#best-case---on-1)
-      - [Worst case - $O(N^2)$](#worst-case---on2-1)
+      - [Best case - O(N)](#best-case---on-1)
+      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup-1)
   - [Merge Sort](#merge-sort)
     - [Steps followed in Merge Sort](#steps-followed-in-merge-sort)
     - [Time Complexity of Merge Sort](#time-complexity-of-merge-sort)
       - [Solving using Recursion Tree Method](#solving-using-recursion-tree-method)
       - [Solving Recurrence Relation using Akra-Bazzi Theorem](#solving-recurrence-relation-using-akra-bazzi-theorem)
-      - [Best case - $O(N.\log{N})$  & Worst case - $O(N.\log{N})$](#best-case---onlogn---worst-case---onlogn)
+      - [Best case - O(N.logN) & Worst case - O(N.logN)](#best-case---onlogn--worst-case---onlogn)
     - [Space Complexity of Merge Sort](#space-complexity-of-merge-sort)
       - [In-place Merge Sort](#in-place-merge-sort)
       - [Not in-place Merge Sort](#not-in-place-merge-sort)
@@ -69,16 +69,16 @@
     - [Picking a Pivot](#picking-a-pivot)
     - [Time Complexity](#time-complexity-4)
       - [Recurrence Relation](#recurrence-relation)
-      - [Best case - $O(N.\log N)$](#best-case---onlog-n)
-      - [Worst case - $O(N^2)$](#worst-case---on2-2)
+      - [Best case - O(N.logN)](#best-case---onlogn)
+      - [Worst case - O( N<sup>2</sup> )](#worst-case---o-nsup2sup-)
     - [Why use Quick Sort?](#why-use-quick-sort)
   - [Hybrid Sorting Algorithms](#hybrid-sorting-algorithms)
 - [Searching Algorithms](#searching-algorithms)
 - [Binary Search](#binary-search)
   - [Time Complexity](#time-complexity-5)
     - [Recurrence Relation](#recurrence-relation-1)
-    - [Best case - $O(1)$](#best-case---o1)
-    - [Worst case - $O(\log_{2}N)$](#worst-case---olog_2n)
+    - [Best case - O(1)](#best-case---o1)
+    - [Worst case - O(log<sub>2</sub>N)](#worst-case---ologsub2subn)
 - [Rotated Binary Search](#rotated-binary-search)
 - [Tips & Tricks for DSA](#tips--tricks-for-dsa)
   - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
@@ -420,6 +420,19 @@ In restricted OUTPUT DE-Queue, dequeueing from end is NOT permitted, however enq
 
 A circular queue is the extended version of a regular queue where the last element is connected to the first element. Thus forming a circle-like structure. The circular queue solves the major limitations of the normal queue, listed [above](#drawbacks-of-queue-implemented-using-arrays).
 
+
+Coming to the indexing of the circular queue: 
+
+Unlike normal queues where initially, `front` = -1 and `rear` = -1, and when one element is queued, `front` is still -1 and `rear` is 0; in the case of circular queues, both `front` and `rear` are equal to the last index in the array.
+
+In a case where the circular queue has space for 5 elements, the last index would be 4.
+
+So initially, `front` = 4 and `rear` = 4.
+
+When one element is queued `front` is still 4 and `rear` is 0.
+
+Whenever `front` = `rear`, queue is empty.
+
 # Time Complexity 
 
 ![Time-Complexity-1.png](./images/Time-Complexity-1.png)
@@ -502,7 +515,7 @@ else {
 - If no swaps occur in a particular pass, then it is clear that the array is already sorted and we need not make any more passes.
 - Else, we reset the swap variable for the next pass.
 
-#### Worst case - $O(N^2)$
+#### Worst case - O(N<sup>2</sup>)
 
 When the array is already sorted, but in reverse order.
 
@@ -530,7 +543,7 @@ The average time complexity is $O(N^2)$.
 
 ![](/images/selection-sort-avg.jpg)
 
-#### Best case - $O(N^2)$ & Worst case - $O(N^2)$
+#### Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)
 
 In both the Best and Worst case, all the comparisons will still be made for finding the index position of the next largest element so the time complexity will be almost the same as the average case.
 
@@ -557,7 +570,7 @@ It is a [stable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as we
 
 ### Time Complexity
 
-#### Best case - $O(N)$
+#### Best case - O(N)
 
 When the array is already sorted, only comparison takes place per pass. Number of passes is **(N-1)** so total comparisons are also **(N-1)**
 
@@ -565,7 +578,7 @@ So, it takes minimum amount of time (order of N).
 
 ![](/images/insertion-sort-best.jpg)
 
-#### Worst case - $O(N^2)$
+#### Worst case - O(N<sup>2</sup>)
 
 When the array is already sorted, but in reverse order.
 
@@ -592,7 +605,7 @@ TODO: correct logic of this
 
 ![](./images/merge-sort-recurrence-relation-solve.jpg)
 
-#### Best case - $O(N.\log{N})$  & Worst case - $O(N.\log{N})$
+#### Best case - O(N.logN) & Worst case - O(N.logN)
 
 The time complexity of MergeSort is $O(N.\log{N})$ in all the 3 cases (worst, average and best) as the merge sort algorithm always divides the array into two halves and takes linear time to merge two halves.
 
@@ -648,12 +661,12 @@ We use 4 variables in quick sort:
 
 ![](/images/quick-sort-recurrence-relation.jpg)
 
-#### Best case - $O(N.\log N)$
+#### Best case - O(N.logN)
 
 ![](/images/quick-sort-best-case-1.jpg)
 ![](/images/quick-sort-best-case-2.jpg)
 
-#### Worst case - $O(N^2)$
+#### Worst case - O( N<sup>2</sup> )
 
 ![](/images/quick-sort-worst-case-1.jpg)
 ![](/images/quick-sort-worst-case-2.jpg)
@@ -689,14 +702,14 @@ TODO : Understand in detail
 <!-- TODO: Do in notebok and add picture -->
 ![]()
 
-### Best case - $O(1)$
+### Best case - O(1)
 
 This is when the target element is found in the very FIRST pass.
 
 <!-- TODO: Do in notebok and add picture -->
 ![]()
 
-### Worst case - $O(\log_{2}N)$
+### Worst case - O(log<sub>2</sub>N)
 
 This is when the target element is found in the very LAST pass.
 
