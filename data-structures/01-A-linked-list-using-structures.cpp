@@ -13,12 +13,12 @@ struct node* createLinkedList(int elementCt) {
     struct node* tempPtr;
     tempPtr = head; // Since we have assigned addresses stored in head to tempPtr, tempPtr can be incremented and used to assign values for nodes, without affecting the address `head` is pointing to
 
-    for(int index = 0; index < elementCt; index++) {
-        printf("Enter element %d : ", index + 1);
+    for(int elementNo = 1; elementNo <= elementCt; elementNo++) {
+        printf("Enter element %d : ", elementNo);
         scanf("%d", &(tempPtr -> value));
         // printf("%d\n", tempPtr -> value);
 
-        if (index == (elementCt - 1)) { // Since index starts from 0 and elements start from 1, this is the last element of the linked list
+        if (elementNo == elementCt) {
             tempPtr -> next = NULL; //the next pointer of the last element will point to NULL
         }
         else {
