@@ -16,25 +16,34 @@
 - [Arrays](#arrays)
 - [Abstract Data Types](#abstract-data-types)
   - [Classification of Abstract Data Types](#classification-of-abstract-data-types)
-- [Linked List](#linked-list)
-  - [Linked List Implementation in CPP](#linked-list-implementation-in-cpp)
+- [Linear Abstract Datatypes](#linear-abstract-datatypes)
+  - [Linked List](#linked-list)
+    - [Linked List Implementation in CPP](#linked-list-implementation-in-cpp)
       - [More about `NULL`](#more-about-null)
-- [Stack Abstract Data Type](#stack-abstract-data-type)
-  - [Stack Operations](#stack-operations)
-  - [Applications of Stacks](#applications-of-stacks)
-    - [Infix to Postfix/Prefix](#infix-to-postfixprefix)
-    - [Reversing Data](#reversing-data)
-    - [Backtracking](#backtracking)
-    - [Function calls](#function-calls)
-  - [Stack Implementation in CPP](#stack-implementation-in-cpp)
-- [Queue](#queue)
-  - [Queue operations](#queue-operations)
-  - [Queue implementation in CPP](#queue-implementation-in-cpp)
-  - [Double-Ended Queue](#double-ended-queue)
-    - [Input Restricted DE-Queue](#input-restricted-de-queue)
-    - [Output Restricted DE-Queue](#output-restricted-de-queue)
-  - [Drawbacks of Queue implemented using Arrays](#drawbacks-of-queue-implemented-using-arrays)
-  - [Circular Queue](#circular-queue)
+  - [Stack](#stack)
+    - [Stack Operations](#stack-operations)
+    - [Applications of Stacks](#applications-of-stacks)
+      - [**Infix to Postfix/Prefix**](#infix-to-postfixprefix)
+      - [**Reversing Data**](#reversing-data)
+      - [**Backtracking**](#backtracking)
+      - [**Function calls**](#function-calls)
+    - [Stack Implementation in CPP](#stack-implementation-in-cpp)
+  - [Queue](#queue)
+    - [Queue operations](#queue-operations)
+    - [Queue implementation in CPP](#queue-implementation-in-cpp)
+    - [Double-Ended Queue](#double-ended-queue)
+      - [**Input Restricted DE-Queue**](#input-restricted-de-queue)
+      - [**Output Restricted DE-Queue**](#output-restricted-de-queue)
+    - [Drawbacks of Queue implemented using Arrays](#drawbacks-of-queue-implemented-using-arrays)
+    - [Circular Queue](#circular-queue)
+- [Non-Linear Abstract Data Types](#non-linear-abstract-data-types)
+  - [Graphs](#graphs)
+  - [Trees](#trees)
+    - [Tree Traversal Algorithms](#tree-traversal-algorithms)
+      - [**Pre-order Traversal**](#pre-order-traversal)
+      - [**In-order Traversal**](#in-order-traversal)
+      - [**Post-order Traversal**](#post-order-traversal)
+      - [**Level-order Traversal**](#level-order-traversal)
 - [Time Complexity](#time-complexity)
 - [Space Complexity](#space-complexity)
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
@@ -260,7 +269,9 @@ An Abstract Data Type specifies:
 
 ![](./images/adt-classification.png)
 
-# Linked List
+# Linear Abstract Datatypes
+
+## Linked List
 
 There is no need for contiguous memory like in an array.
 
@@ -272,7 +283,7 @@ Head of linked list points to the first node.
 
 The last node of the linked list points to a null value.
 
-## Linked List Implementation in CPP
+### Linked List Implementation in CPP
 
 We define a `struct` containing an number as well as a pointer to the same `struct` (Self Referential structure).
 
@@ -310,7 +321,9 @@ This is done at the time of variable declaration.
 
 A pointer that is assigned `NULL` is called a null pointer.
 
-# Stack Abstract Data Type
+---
+
+## Stack
 
 Stack is an ADT that manages data elements linearly but provides access to only one end i.e., data element can be inserted and removed from one end only.
 
@@ -318,7 +331,7 @@ It is a Last-in-First-Out data structure.
 
 It consists of a an array whose size is set by the user and can't be changed along with a top pointer to point to the 'top of the stack' or the last filled element. 
 
-## Stack Operations
+### Stack Operations
 
 - `create()` - 
 - `push()` - for adding an element onto the top of the stack.
@@ -327,21 +340,21 @@ It consists of a an array whose size is set by the user and can't be changed alo
 - `isempty()` - for checking whether the stack is empty before trying to pop. 
 - `isfull()` - for checking whether the stack is full before trying to add an element.
 
-## Applications of Stacks
+### Applications of Stacks
 
-### Infix to Postfix/Prefix
+#### **Infix to Postfix/Prefix**
 
+TODO
 
-
-### Reversing Data
+#### **Reversing Data**
 
 We can use stacks to reverse data. (example: files, strings).  Very useful for finding palindromes.
 
-### Backtracking
+#### **Backtracking**
 
 It is an algorithmic technique for solving problems recursively by trying to build a solution incrementally, one piece at a time, removing those solutions that fail to satisfy the constraints of the problem at any point in time.
 
-### Function calls
+#### **Function calls**
 
 Stacks are used to implement function calls by creating a **stack frame** in memory where local variables are stored.
 
@@ -354,7 +367,7 @@ Stacks are used to implement function calls by creating a **stack frame** in mem
 
 TODO: Understand java bytecode is evaluated on virtual stack based processor
 
-## Stack Implementation in CPP
+### Stack Implementation in CPP
 
 We can start entering elements from the end or the beginning of the array.
 
@@ -362,7 +375,9 @@ We usually implement the `top` pointer in a simple manner where `top` is just an
 
 Stack implementation using Linked List
 
-# Queue
+---
+
+## Queue
 
 - The `front` pointer points to the oldest element in the queue
 - The `rear` pointer points to the newest element in the queue
@@ -370,7 +385,7 @@ Stack implementation using Linked List
 - front is actually the first element of the array
 - rear is actually the last element of the array
 
-## Queue operations
+### Queue operations
 
 - `isEmpty()` 
 - `isFull()`
@@ -378,7 +393,7 @@ Stack implementation using Linked List
 - `deQueue()`
 - `printQueue()`
 
-## Queue implementation in CPP
+### Queue implementation in CPP
 
 It is opposite to the implementation of stacks using arrays. In stacks, the beginning of the array represented the bottom of the stack for easy pushing and popping.
 
@@ -397,26 +412,26 @@ Whenever `front` = `rear`, queue is empty.
 - Using linked list: Here, both enqueueing and dequeueing is an O(1)
 - Using other ADTs
 
-## Double-Ended Queue
+### Double-Ended Queue
 
 A double-ended queue is similar to a [Queue ADT](#queue) with the added functionality of being able to enqueue and dequeue from both ends of the queue.
 
 DE-queues can further be classified into two types:
 
-### Input Restricted DE-Queue
+#### **Input Restricted DE-Queue**
 
 In restricted INPUT DE-Queue, enqueueing from front is NOT permitted, however dequeueing from end is permitted.
 
-### Output Restricted DE-Queue
+#### **Output Restricted DE-Queue**
 
 In restricted OUTPUT DE-Queue, dequeueing from end is NOT permitted, however enqueueing from front is permitted.
 
-## Drawbacks of Queue implemented using Arrays
+### Drawbacks of Queue implemented using Arrays
 
 - Space is not used efficiently.
 - The queue may not be full but the rear pointer may reach the end, requiring us to shift elements for enqueueing to take place.
 
-## Circular Queue
+### Circular Queue
 
 A circular queue is the extended version of a regular queue where the last element is connected to the first element. Thus forming a circle-like structure. The circular queue solves the major limitations of the normal queue, listed [above](#drawbacks-of-queue-implemented-using-arrays).
 
@@ -432,6 +447,84 @@ So initially, `front` = 4 and `rear` = 4.
 When one element is queued `front` is still 4 and `rear` is 0.
 
 Whenever `front` = `rear`, queue is empty.
+
+# Non-Linear Abstract Data Types
+
+## Graphs
+
+## Trees
+
+<!-- TODO: Add pictures from notebook -->
+
+### Tree Traversal Algorithms
+
+With rooted binary trees (and rooted trees in general), we typically only maintain a pointer to the root because all other nodes in the tree can be accessed via some traversal starting at the root.
+
+Because we typically only keep track of the root node, to traverse all of the nodes in a rooted binary tree, there are four traversal algorithms: 
+
+- [pre-order](#pre-order-traversal)
+- [in-order](#in-order-traversal)
+- [post-order](#post-order-traversal)
+- [level-order](#level-order-traversal)
+
+
+In all four, the verb "visit" simply denotes whatever action we perform when we are at a given node **u** (whether it be printing **u**'s label, or modifying **u** in some way, or incrementing some global count, etc.).
+
+Take the following example of a Tree:
+```
+  1
+ / \
+2   3
+   / \
+  4   5
+```
+
+---
+
+#### **Pre-order Traversal**
+
+1. First visit the current node
+2. Then recurse on the left child (if one exists)
+3. Then recurse on the right child (if one exists) 
+
+Put simply, **VLR** (Visit-Left-Right). 
+
+In the example above, a pre-order traversal starting at the root would visit the nodes in the following order: 1 2 3 4 5
+
+---
+
+#### **In-order Traversal**
+
+1. First recurse on the left child (if one exists)
+2. Then visit the current node
+3. Then recurse on the right child (if one exists)
+
+Put simply, **LVR** (Left-Visit-Right). 
+
+In the example above, an in-order traversal starting at the root would visit the nodes in the following order: 2 1 4 3 5
+
+---
+
+#### **Post-order Traversal**
+
+1. First recurse on the left child (if one exists)
+2. Then recurse on the right child (if one exists)
+3. Then visit the current node
+   
+Put simply, **LRV** (Left-Right-Visit). 
+
+In the example above, a post-order traversal starting at the root would visit the nodes in the following order: 2 4 5 3 1
+
+---
+
+#### **Level-order Traversal**
+
+1. Visit nodes level-by-level (where the root is the "first level," its children are the "second level," etc.).
+2. On a given level, visit nodes left-to-right. 
+ 
+In the example above, a level-order traversal starting at the root would visit the nodes in the following order: 1 2 3 4 5
+
+---
 
 # Time Complexity 
 
@@ -849,5 +942,7 @@ while(index < size) {
   index = (index + 1) % size;
 }
 ```
+
+ 
 
 # TODO 
