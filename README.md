@@ -38,12 +38,17 @@
     - [Circular Queue](#circular-queue)
 - [Non-Linear Abstract Data Types](#non-linear-abstract-data-types)
   - [Graphs](#graphs)
+    - [Graph Traversals](#graph-traversals)
+      - [**Depth First Search**](#depth-first-search)
+      - [**Breadth First Search**](#breadth-first-search)
   - [Trees](#trees)
     - [Tree Traversal Algorithms](#tree-traversal-algorithms)
       - [**Pre-order Traversal**](#pre-order-traversal)
       - [**In-order Traversal**](#in-order-traversal)
       - [**Post-order Traversal**](#post-order-traversal)
       - [**Level-order Traversal**](#level-order-traversal)
+    - [Binary Search Trees](#binary-search-trees)
+    - [Tree Searching Algorithms](#tree-searching-algorithms)
 - [Time Complexity](#time-complexity)
 - [Space Complexity](#space-complexity)
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
@@ -452,6 +457,18 @@ Whenever `front` = `rear`, queue is empty.
 
 ## Graphs
 
+<!-- TODO: Add pictures from notebook -->
+
+### Graph Traversals
+
+#### **Depth First Search**
+
+Once a possible path is found, continue the search until the end of the path.
+
+#### **Breadth First Search**
+
+Start several paths at a time, and advance in each one step at a time
+
 ## Trees
 
 <!-- TODO: Add pictures from notebook -->
@@ -525,6 +542,15 @@ In the example above, a post-order traversal starting at the root would visit th
 In the example above, a level-order traversal starting at the root would visit the nodes in the following order: 1 2 3 4 5
 
 ---
+
+### Binary Search Trees
+
+<!-- TODO: Add pictures from notebook -->
+
+### Tree Searching Algorithms
+
+- Depth-First Search
+- Breadth-First Search
 
 # Time Complexity 
 
