@@ -6,6 +6,8 @@ class Node {
     friend void preOrderTraversal(Node rootNode);
     friend void postOrderTraversal(Node rootNode);
     friend void inOrderTraversal(Node rootNode);
+    friend int recursiveSearch(Node* rootPtr, int target);
+    friend int iterativeSearch(Node* rootPtr, int target);
 
     private:
         int value;
@@ -32,7 +34,6 @@ class Node {
             this -> left = left; 
             this -> right = right;
         }
-
 };
 
 // Visit the root node, then the left node, then the right node
@@ -78,6 +79,54 @@ void inOrderTraversal(Node rootNode) {
 
 }
 
+
+int recursiveSearch(Node* rootPtr, int target) {
+
+    if(target == (rootPtr -> value)) { // target element present
+        return 1;
+    
+    }
+    // If target less than root, but left is NULL, then no chance of target element being present, so 0 is returned
+    else if( (target < (rootPtr -> value)) && ((rootPtr -> left) != NULL) ) { 
+        
+        return recursiveSearch(rootPtr -> left, target);
+
+    }
+    // If target greater than root, but right is NULL, then no chance of target element being present, so 0 is returned
+    else if( (target > (rootPtr -> value)) && ((rootPtr -> right) != NULL) ) {
+        
+        return recursiveSearch(rootPtr -> right, target);
+        
+    }
+    
+    return 0;
+}
+
+int iterativeSearch(Node* rootPtr, int target) {
+
+    while(true) {
+        if(target == (rootPtr -> value)) { // target element present
+            return 1;
+        }
+        else if( (target < (rootPtr -> value)) && ((rootPtr -> left) != NULL) ) { 
+        
+            rootPtr = rootPtr -> left;
+            continue;
+        }
+        else if( (target > (rootPtr -> value)) && ((rootPtr -> right) != NULL) ) {
+        
+            rootPtr = rootPtr -> right;
+            continue;
+        }
+        else {
+            break;
+        }
+    }
+
+    return 0;
+    
+}
+
 int main() {
 
     //! Why couldn't we use this?
@@ -85,7 +134,7 @@ int main() {
     //? We couldn't use this because we required pointers to these nodes, and these are just Rvalues so they don't have a defined storage location.
 
 
-    Node rootNode(0, new Node(1, new Node(3), new Node(4)), new Node(2, new Node(5), new Node(6)));
+    Node rootNode(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12)));
     
     preOrderTraversal(rootNode);
     printf("\n");
@@ -93,6 +142,14 @@ int main() {
     printf("\n");
     inOrderTraversal(rootNode);
     printf("\n");
+
+
+    if(recursiveSearch(&rootNode, 12)) {
+        cout << "Key present\n";
+    }
+    else {
+        cout << "Key NOT present\n";
+    }
 
     return 0;
 }
