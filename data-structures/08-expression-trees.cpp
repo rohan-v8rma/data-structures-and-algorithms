@@ -10,8 +10,6 @@ class Node
 
     friend Node* xpTreeCreate(string infix);
 
-    friend void insert(Node* rootPtr, int element);
-    
     friend int main();
 
 private:
@@ -197,7 +195,6 @@ Node* xpTreeCreate(string infix) {
         }
         else if(current == '(') {
             operatorStack.stackPush(current);
-            cout << current << endl;
         }
         else if(current == ')') {
             while((operatorStack.stackArray)[operatorStack.top] != '(') {
@@ -233,6 +230,8 @@ Node* xpTreeCreate(string infix) {
 
 
 int main() {
+    
+    //! It is important to give the infix expression enclosed in brackets.
     string infix = "((A + B) * (C + D))";
 
     Node* xpTree = xpTreeCreate(infix);
