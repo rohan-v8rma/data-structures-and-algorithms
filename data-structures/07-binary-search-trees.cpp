@@ -14,7 +14,8 @@ class Node
     
     friend Node* successor(Node *elementPtr);
     friend Node* predecessor(Node *elementPtr);
-    
+
+    friend void insert(Node* rootPtr, int element);
     friend void keyDelete(Node* rootPtr, int target);
     friend int main();
 
@@ -51,8 +52,14 @@ public:
         this->left = left;
         this->right = right;
 
-        this->left->parent = this;
-        this->right->parent = this;
+        if(this-> left != NULL) { 
+            this->left->parent = this;
+        }
+        
+        if(this-> right != NULL) {
+            this->right->parent = this;
+        }
+        
     }
 };
 
@@ -251,14 +258,52 @@ Node *predecessor(Node *elementPtr)
     return NULL; // Ancestor not found.
 }
 
+void insert(Node* rootPtr, int element) 
+{
+    
+    if( element < (rootPtr -> key) ) 
+    {
+        if((rootPtr -> left) == NULL) 
+        {
+            rootPtr -> left = new Node(element);
+            rootPtr -> left -> parent = rootPtr; // Setting the parent of the newly added node
+        }
+        else 
+        {
+            insert(rootPtr -> left, element);
+        }
+    }
+    
+    else if( element > (rootPtr -> key) ) 
+    {
+        if((rootPtr -> right) == NULL) 
+        {
+            rootPtr -> right = new Node(element);
+            rootPtr -> right -> parent = rootPtr; // Setting the parent of the newly added node
+        }
+        else 
+        {
+            insert(rootPtr -> right, element);
+        }
+    }
+    
+    else 
+    { 
+        printf("Duplicate element, not inserted");   
+    }
+}
+
 void keyDelete(Node* rootPtr, int target) {
     Node* targetPtr = iterativeSearch(rootPtr, target);
     
+    
+
     if(targetPtr == NULL) {
         printf("Target element not present. Deletion not possible\n");
         return;
     }
-    
+
+
     if( (targetPtr->left == NULL) && (targetPtr->right == NULL) ) 
     { // Case 1 (Element to be deleted has no children)
         
@@ -267,7 +312,9 @@ void keyDelete(Node* rootPtr, int target) {
             printf("This tree has only one node. If that is deleted, this would no longer be a BST. So, deletion not possible\n");
         }
         
+        //TODO: Try using free
         else { // Checking whether the target is the left or right child node of parent.
+            
             if (targetPtr->parent->left == targetPtr) {
                 targetPtr->parent->left = NULL;
             }
@@ -279,36 +326,33 @@ void keyDelete(Node* rootPtr, int target) {
         return;
     }
     
-    else if( (targetPtr->left == NULL) || (targetPtr->right == NULL) ) 
-    { // Case 2 (Element to be deleted has 1 child)
-        
-        if(targetPtr->left != NULL) 
-        {
-            // We have placed the root element in the left sub-tree of the pseudo parent (OF THE ROOT NODE), so this if-condition will always be met.
-            if (targetPtr->parent->left == targetPtr)  
-            {
-                targetPtr->parent->left = targetPtr -> left;
-            }
-            else 
-            {
-                targetPtr->parent->right = targetPtr -> left;
-            }
-        }
-        else if(targetPtr->right != NULL) 
-        {
-            if (targetPtr->parent->left == targetPtr) 
-            {
-                targetPtr->parent->left = targetPtr -> right;
-            }
-            else 
-            {
-                targetPtr->parent->right = targetPtr -> right;
-            }
-        }
-        
-        return;
     
+    // Case 2 (Element to be deleted has 1 child)
+        
+    else if(targetPtr->left != NULL) 
+    {
+        // We have placed the root element in the left sub-tree of the pseudo parent (OF THE ROOT NODE), so this if-condition will always be met.
+        if (targetPtr->parent->left == targetPtr)  
+        {
+            targetPtr->parent->left = targetPtr -> left;
+        }
+        else 
+        {
+            targetPtr->parent->right = targetPtr -> left;
+        }
     }
+    else if(targetPtr->right != NULL) 
+    {
+        if (targetPtr->parent->left == targetPtr) 
+        {
+            targetPtr->parent->left = targetPtr -> right;
+        }
+        else 
+        {
+            targetPtr->parent->right = targetPtr -> right;
+        }
+    }    
+    
     else 
     { // Case 3 (Element to be deleted has 2 children)
     
@@ -345,10 +389,14 @@ int main()
     // Node rootNode(0, Node(1, Node(3), Node(4)), Node(2, Node(5), Node(6)));
     //? We couldn't use this because we required pointers to these nodes, and these are just Rvalues so they don't have a defined storage location.
 
-    Node rootNode(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12)));
+    //* If a node has only one child, it should be in the left sub-tree only
+    //TODO Add support for child in right sub-tree also
 
+    Node rootNode(15, new Node(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))), NULL);
     rootNode.parent = new Node(INT_MAX); // Getting a parent for the root node.
     /*
+          15
+          /
          8
        /   \
       6    10
@@ -356,7 +404,7 @@ int main()
     3   7 9  12
 
     */
-
+    
     preOrderTraversal(rootNode);
     printf("\n");
     postOrderTraversal(rootNode);
@@ -364,7 +412,29 @@ int main()
     inOrderTraversal(rootNode);
     printf("\n");
 
-    if (recursiveSearch(&rootNode, 12))
+    insert(&rootNode, 11);
+    insert(&rootNode, 13);
+
+    preOrderTraversal(rootNode);
+    printf("\n");
+    
+    // Deleting a leaf node
+    keyDelete(&rootNode, 9);
+    
+    preOrderTraversal(rootNode);
+    printf("\n");
+    
+
+    // * Deleting a node with 1 child (since 9 was removed, 10 has only 1 child)
+    keyDelete(&rootNode, 10);
+    
+    preOrderTraversal(rootNode);
+    printf("\n");
+    
+    preOrderTraversal(rootNode);
+    printf("\n");
+
+    if (recursiveSearch(&rootNode, 7))
     {
         cout << "Key present\n";
     }
@@ -373,9 +443,10 @@ int main()
         cout << "Key NOT present\n";
     }
 
-    Node* s = predecessor(iterativeSearch(&rootNode, 12));
 
-    printf("%d\n", s->key);
+    //TODO: hello   
+
+    
 
     return 0;
 }
