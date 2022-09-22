@@ -15,7 +15,6 @@ int getMax(int num1, int num2) {
 class Node {
 
     friend void preOrderTraversal(Node* rootNode);
-    friend void postOrderTraversal(Node* rootNode);
     friend void inOrderTraversal(Node* rootNode);
 
     friend Node* rightRotate(Node* rootPtr);
@@ -76,19 +75,6 @@ void preOrderTraversal(Node* rootNode) {
     
     preOrderTraversal(rootNode->right);
     
-}
-
-// Visit the left node, the right node, then the root node.
-void postOrderTraversal(Node* rootNode) {
-    if(rootNode == NULL) {
-        return;
-    }
-
-    postOrderTraversal(rootNode->left);
-        
-    postOrderTraversal(rootNode->right);
-    
-    printf("%d, ", rootNode->key);
 }
 
 // Visit the left node, then the root node, then the right node.
@@ -221,9 +207,6 @@ int main() {
     //! Why couldn't we use this?
     // Node rootNode(0, Node(1, Node(3), Node(4)), Node(2, Node(5), Node(6)));
     //? We couldn't use this because we required pointers to these nodes, and these are just Rvalues so they don't have a defined storage location.
-
-    //* If a node has only one child, it should be in the left sub-tree only
-    //TODO Add support for child in right sub-tree also
 
     Node* rootNode = new Node(15, new Node(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))), NULL);
     // rootNode->parent = new Node(INT_MAX); // Getting a parent for the root node.
