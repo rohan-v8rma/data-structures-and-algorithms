@@ -15,7 +15,7 @@ class Node
     friend Node* successor(Node *elementPtr);
     friend Node* predecessor(Node *elementPtr);
 
-    friend void insert(Node* rootPtr, int element);
+    friend Node* insert(Node* rootPtr, int element);
     friend void keyDelete(Node* rootPtr, int target);
     friend int main();
 
@@ -26,23 +26,20 @@ private:
     Node *right;
 
 public:
-    Node()
-    {
+    Node() {
         key = 0;
         parent = NULL;
         left = NULL;
         right = NULL;
     }
 
-    Node(int key)
-    {
+    Node(int key) {
         this->key = key;
         left = NULL;
         right = NULL;
     }
 
-    Node(int key, Node *left, Node *right)
-    {
+    Node(int key, Node *left, Node *right) {
 
         this->parent = NULL;
 
@@ -105,38 +102,40 @@ void inOrderTraversal(Node* rootNode){
 
 Node* recursiveSearch(Node *rootPtr, int target) {
     
-    if(rootPtr == NULL) {
-        return NULL;
+    if(rootPtr != NULL) {
+        if (target == (rootPtr->key)) { // target element present
+            return rootPtr;
+        }
+        else if ((target < (rootPtr->key))) {
+            return recursiveSearch(rootPtr->left, target);
+        }
+        else if ((target > (rootPtr->key))) {
+            return recursiveSearch(rootPtr->right, target);
+        }
     }
-    else if (target == (rootPtr->key)) { // target element present
-        return rootPtr;
-    }
-    else if ((target < (rootPtr->key))) {
-        return recursiveSearch(rootPtr->left, target);
-    }
-    else if ((target > (rootPtr->key))) {
-        return recursiveSearch(rootPtr->right, target);
-    }
-
+    
     return NULL;
+        
 }
 
 Node *iterativeSearch(Node *rootPtr, int target) {
-    while (true)
-    {
-        if(rootPtr == NULL) {
+
+    while (true) {
+        if(rootPtr != NULL) {
+            if (target == (rootPtr->key)) { // target element present
+                return rootPtr;
+            }
+            else if (target < (rootPtr->key)) {
+                rootPtr = rootPtr->left;
+                continue;
+            }
+            else if (target > (rootPtr->key)) {
+                rootPtr = rootPtr->right;
+                continue;
+            }
+        }
+        else {
             return NULL;
-        }
-        else if (target == (rootPtr->key)) { // target element present
-            return rootPtr;
-        }
-        else if (target < (rootPtr->key)) {
-            rootPtr = rootPtr->left;
-            continue;
-        }
-        else if (target > (rootPtr->key)) {
-            rootPtr = rootPtr->right;
-            continue;
         }
     }
 
@@ -145,19 +144,15 @@ Node *iterativeSearch(Node *rootPtr, int target) {
 
 //! Read inline explanations to understand how `successor` works.
 
-Node* successor(Node* elementPtr)
-{
-    if(elementPtr == NULL) 
-    { // Element not present in the tree, so no way of having successor
+Node* successor(Node* elementPtr) {
+    if(elementPtr == NULL) { // Element not present in the tree, so no way of having successor
         return NULL;
     }
 
-    if (elementPtr->right != NULL)
-    { // If the element whose successor we need to find has a right sub-tree, the successor can be easily found by left traversing in its right sub-tree, in order to get the minimum element greater than the element whose successor we need.
+    if (elementPtr->right != NULL) { // If the element whose successor we need to find has a right sub-tree, the successor can be easily found by left traversing in its right sub-tree, in order to get the minimum element greater than the element whose successor we need.
         elementPtr = elementPtr->right;
 
-        while (elementPtr->left != NULL)
-        { // Finding the leftmost element in the right sub-tree.
+        while (elementPtr->left != NULL) { // Finding the leftmost element in the right sub-tree.
             elementPtr = elementPtr->left;
         }
 
@@ -175,11 +170,9 @@ Node* successor(Node* elementPtr)
 
     If the element is in an ancestor's left sub-tree, then the element is obviously less than the ancestor, meaning the ancestor is the next greatest element since the ancestor's right sub-tree would be having elements EVEN greater than the ancestor.
     */
-    while (elementPtr->parent != NULL)
-    {
+    while (elementPtr->parent != NULL) {
 
-        if (elementPtr == (elementPtr->parent)->left)
-        {
+        if (elementPtr == (elementPtr->parent)->left) {
             return (elementPtr->parent);
         }
 
@@ -189,20 +182,16 @@ Node* successor(Node* elementPtr)
     return NULL; // Ancestor not found.
 }
 
-Node *predecessor(Node *elementPtr)
-{
-    if(elementPtr == NULL) 
-    { // Element not present in the tree, so no way of having predecessor
+Node *predecessor(Node *elementPtr) {
+    if(elementPtr == NULL) { // Element not present in the tree, so no way of having predecessor
         return NULL;
     }
 
 
-    if (elementPtr->left != NULL)
-    { // If the element whose predecessor we need to find has a LEFT sub-tree, the predecessor can be easily found by right traversing in its left sub-tree, in order to get the maximum element lesser than the element whose predecessor we need.
+    if (elementPtr->left != NULL) { // If the element whose predecessor we need to find has a LEFT sub-tree, the predecessor can be easily found by right traversing in its left sub-tree, in order to get the maximum element lesser than the element whose predecessor we need.
         elementPtr = elementPtr->left;
 
-        while (elementPtr->right != NULL)
-        { // Finding the rightmost element in the left sub-tree.
+        while (elementPtr->right != NULL) { // Finding the rightmost element in the left sub-tree.
             elementPtr = elementPtr->right;
         }
 
@@ -220,11 +209,9 @@ Node *predecessor(Node *elementPtr)
 
     If the element is in an ancestor's right sub-tree, then the element is obviously greater than the ancestor, meaning the ancestor is the next lowest element since the ancestor's left sub-tree would be having elements EVEN lesser than the ancestor.
     */
-    while (elementPtr->parent != NULL)
-    {
+    while (elementPtr->parent != NULL) {
 
-        if (elementPtr == (elementPtr->parent)->right)
-        {
+        if (elementPtr == (elementPtr->parent)->right) {
             return (elementPtr->parent);
         }
 
@@ -234,44 +221,30 @@ Node *predecessor(Node *elementPtr)
     return NULL; // Ancestor not found.
 }
 
-void insert(Node* rootPtr, int element) 
-{
+// Recursive insertion function
+Node* insert(Node* rootPtr, int element) {
     
-    if( element < (rootPtr -> key) ) 
-    {
-        if((rootPtr -> left) == NULL) 
-        {
-            rootPtr -> left = new Node(element);
-            rootPtr -> left -> parent = rootPtr; // Setting the parent of the newly added node
-        }
-        else 
-        {
-            insert(rootPtr -> left, element);
-        }
+    if (rootPtr == NULL) { // Either the BST was empty OR we have reached a the empty sub-tree of a leaf where the element will fit.
+        return (new Node(element));
+    }
+
+    if( element < (rootPtr -> key) ) {
+        rootPtr->left = insert(rootPtr->left, element);
+        rootPtr->left->parent = rootPtr; // Important to assign parent as well. This won't give segmentation fault, because insert will never be NULL, it will either be a new Node or a sub-tree ALWAYS.
+    }
+    else if( element > (rootPtr -> key) ) {
+        rootPtr->right = insert(rootPtr->right, element);
+        rootPtr->right->parent = rootPtr; // Important to assign parent as well. This won't give segmentation fault, because insert will never be NULL, it will either be a new Node or a sub-tree ALWAYS.
+    }
+    else {
+        printf("Duplicate element. NOT inserted.");
     }
     
-    else if( element > (rootPtr -> key) ) 
-    {
-        if((rootPtr -> right) == NULL) 
-        {
-            rootPtr -> right = new Node(element);
-            rootPtr -> right -> parent = rootPtr; // Setting the parent of the newly added node
-        }
-        else 
-        {
-            insert(rootPtr -> right, element);
-        }
-    }
-    
-    else 
-    { 
-        printf("Duplicate element, not inserted");   
-    }
+    return rootPtr; // For the cases where a new Node wasn't added, but we still need to return the root to reflect the changes in the top-most BST.
 }
 
 void keyDelete(Node* rootPtr, int target) {
     Node* targetPtr = iterativeSearch(rootPtr, target);
-    
     
 
     if(targetPtr == NULL) {
@@ -368,8 +341,8 @@ int main()
     //* If a node has only one child, it should be in the left sub-tree only
     //TODO Add support for child in right sub-tree also
 
-    Node rootNode(15, new Node(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))), NULL);
-    rootNode.parent = new Node(INT_MAX); // Getting a parent for the root node.
+    Node* rootNode = new Node(15, new Node(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))), NULL);
+    rootNode->parent = new Node(INT_MAX); // Getting a parent for the root node.
     /*
           15
           /
@@ -381,36 +354,36 @@ int main()
 
     */
     
-    preOrderTraversal(&rootNode);
+    preOrderTraversal(rootNode);
     printf("\n");
-    postOrderTraversal(&rootNode);
+    postOrderTraversal(rootNode);
     printf("\n");
-    inOrderTraversal(&rootNode);
+    inOrderTraversal(rootNode);
     printf("\n");
 
-    insert(&rootNode, 11);
-    insert(&rootNode, 13);
+    rootNode = insert(rootNode, 11);
+    rootNode = insert(rootNode, 13);
 
-    preOrderTraversal(&rootNode);
+    preOrderTraversal(rootNode);
     printf("\n");
     
     // Deleting a leaf node
-    keyDelete(&rootNode, 9);
+    keyDelete(rootNode, 9);
     
-    preOrderTraversal(&rootNode);
+    preOrderTraversal(rootNode);
     printf("\n");
     
 
     // * Deleting a node with 1 child (since 9 was removed, 10 has only 1 child)
-    keyDelete(&rootNode, 10);
+    keyDelete(rootNode, 10);
     
-    preOrderTraversal(&rootNode);
+    preOrderTraversal(rootNode);
     printf("\n");
     
-    preOrderTraversal(&rootNode);
+    preOrderTraversal(rootNode);
     printf("\n");
 
-    if (recursiveSearch(&rootNode, 7))
+    if (recursiveSearch(rootNode, 7))
     {
         cout << "Key present\n";
     }
