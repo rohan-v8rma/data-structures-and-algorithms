@@ -5,9 +5,9 @@ using namespace ::std;
 class Node
 {
 
-    friend void preOrderTraversal(Node rootNode);
-    friend void postOrderTraversal(Node rootNode);
-    friend void inOrderTraversal(Node rootNode);
+    friend void preOrderTraversal(Node* rootNode);
+    friend void postOrderTraversal(Node* rootNode);
+    friend void inOrderTraversal(Node* rootNode);
     
     friend Node* recursiveSearch(Node *rootPtr, int target);
     friend Node* iterativeSearch(Node *rootPtr, int target);
@@ -64,103 +64,79 @@ public:
 };
 
 // Visit the root node, then the left node, then the right node
-void preOrderTraversal(Node rootNode)
-{
+void preOrderTraversal(Node* rootNode) {
+    if(rootNode == NULL) {
+        return;
+    }
 
-    printf("%d, ", rootNode.key);
+    printf("%d, ", rootNode->key);
 
-    if (rootNode.left != NULL)
-    {
-        preOrderTraversal(*(rootNode.left));
-    };
-
-    if (rootNode.right != NULL)
-    {
-        preOrderTraversal(*(rootNode.right));
-    };
+    preOrderTraversal(rootNode->left);
+    
+    preOrderTraversal(rootNode->right);
+    
 }
 
 // Visit the left node, the right node, then the root node.
-void postOrderTraversal(Node rootNode)
-{
+void postOrderTraversal(Node* rootNode) {
+    if(rootNode == NULL) {
+        return;
+    }
 
-    if (rootNode.left != NULL)
-    {
-        postOrderTraversal(*(rootNode.left));
-    };
-
-    if (rootNode.right != NULL)
-    {
-        postOrderTraversal(*(rootNode.right));
-    };
-
-    printf("%d, ", rootNode.key);
+    postOrderTraversal(rootNode->left);
+        
+    postOrderTraversal(rootNode->right);
+    
+    printf("%d, ", rootNode->key);
 }
 
 // Visit the left node, then the root node, then the right node.
-void inOrderTraversal(Node rootNode)
-{
+void inOrderTraversal(Node* rootNode){
+    if(rootNode == NULL) {
+        return;
+    }
 
-    if (rootNode.left != NULL)
-    {
-        inOrderTraversal(*(rootNode.left));
-    };
+    inOrderTraversal(rootNode->left);   
 
-    printf("%d, ", rootNode.key);
+    printf("%d, ", rootNode->key);
 
-    if (rootNode.right != NULL)
-    {
-        inOrderTraversal(*(rootNode.right));
-    };
+    inOrderTraversal(rootNode->right);
 }
 
-Node* recursiveSearch(Node *rootPtr, int target)
-{
-
-    if (target == (rootPtr->key))
-    { // target element present
+Node* recursiveSearch(Node *rootPtr, int target) {
+    
+    if(rootPtr == NULL) {
+        return NULL;
+    }
+    else if (target == (rootPtr->key)) { // target element present
         return rootPtr;
     }
-    // If target less than root, but left is NULL, then no chance of target element being present, so 0 is returned
-    else if ((target < (rootPtr->key)) && ((rootPtr->left) != NULL))
-    {
-
+    else if ((target < (rootPtr->key))) {
         return recursiveSearch(rootPtr->left, target);
     }
-    // If target greater than root, but right is NULL, then no chance of target element being present, so 0 is returned
-    else if ((target > (rootPtr->key)) && ((rootPtr->right) != NULL))
-    {
-
+    else if ((target > (rootPtr->key))) {
         return recursiveSearch(rootPtr->right, target);
     }
 
     return NULL;
 }
 
-Node *iterativeSearch(Node *rootPtr, int target)
-{
-
+Node *iterativeSearch(Node *rootPtr, int target) {
     while (true)
     {
-        if (target == (rootPtr->key))
-        { // target element present
+        if(rootPtr == NULL) {
+            return NULL;
+        }
+        else if (target == (rootPtr->key)) { // target element present
             return rootPtr;
         }
-        else if ((target < (rootPtr->key)) && ((rootPtr->left) != NULL))
-        {
-
+        else if (target < (rootPtr->key)) {
             rootPtr = rootPtr->left;
             continue;
         }
-        else if ((target > (rootPtr->key)) && ((rootPtr->right) != NULL))
-        {
-
+        else if (target > (rootPtr->key)) {
             rootPtr = rootPtr->right;
             continue;
-        }
-        else
-        {
-            break;
         }
     }
 
@@ -405,33 +381,33 @@ int main()
 
     */
     
-    preOrderTraversal(rootNode);
+    preOrderTraversal(&rootNode);
     printf("\n");
-    postOrderTraversal(rootNode);
+    postOrderTraversal(&rootNode);
     printf("\n");
-    inOrderTraversal(rootNode);
+    inOrderTraversal(&rootNode);
     printf("\n");
 
     insert(&rootNode, 11);
     insert(&rootNode, 13);
 
-    preOrderTraversal(rootNode);
+    preOrderTraversal(&rootNode);
     printf("\n");
     
     // Deleting a leaf node
     keyDelete(&rootNode, 9);
     
-    preOrderTraversal(rootNode);
+    preOrderTraversal(&rootNode);
     printf("\n");
     
 
     // * Deleting a node with 1 child (since 9 was removed, 10 has only 1 child)
     keyDelete(&rootNode, 10);
     
-    preOrderTraversal(rootNode);
+    preOrderTraversal(&rootNode);
     printf("\n");
     
-    preOrderTraversal(rootNode);
+    preOrderTraversal(&rootNode);
     printf("\n");
 
     if (recursiveSearch(&rootNode, 7))
