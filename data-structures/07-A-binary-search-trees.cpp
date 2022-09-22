@@ -2,8 +2,7 @@
 #include <limits.h>
 using namespace ::std;
 
-class Node
-{
+class Node {
 
     friend void preOrderTraversal(Node* rootNode);
     friend void postOrderTraversal(Node* rootNode);
@@ -11,12 +10,12 @@ class Node
     
     friend Node* recursiveSearch(Node *rootPtr, int target);
     friend Node* iterativeSearch(Node *rootPtr, int target);
-    
-    friend Node* successor(Node *elementPtr);
-    friend Node* predecessor(Node *elementPtr);
 
-    friend Node* insert(Node* rootPtr, int element);
-    friend void keyDelete(Node* rootPtr, int target);
+    friend Node* minimumNodeFinder(Node* rootPtr);
+
+    friend Node* insertNode(Node* rootPtr, int element);
+    friend Node* deleteNode(Node* rootPtr, int element);
+
     friend int main();
 
 private:
@@ -142,98 +141,19 @@ Node *iterativeSearch(Node *rootPtr, int target) {
     return NULL;
 }
 
-//! Read inline explanations to understand how `successor` works.
-
-Node* successor(Node* elementPtr) {
-    if(elementPtr == NULL) { // Element not present in the tree, so no way of having successor
-        return NULL;
-    }
-
-    if (elementPtr->right != NULL) { // If the element whose successor we need to find has a right sub-tree, the successor can be easily found by left traversing in its right sub-tree, in order to get the minimum element greater than the element whose successor we need.
-        elementPtr = elementPtr->right;
-
-        while (elementPtr->left != NULL) { // Finding the leftmost element in the right sub-tree.
-            elementPtr = elementPtr->left;
-        }
-
-        return elementPtr;
-    }
-
-    /*
-    We reach here only when the element doesn't have a right sub-tree.
-
-    So, now we need to search in its parents.
-
-    ? We actually need to find the FIRST ancestor of the element, in whose left sub-tree this element lies.
-
-    Since, if the element lies in the right sub-tree, the element is obviously greater than the ancestor, WHICH IS NOT WHAT WE NEED.
-
-    If the element is in an ancestor's left sub-tree, then the element is obviously less than the ancestor, meaning the ancestor is the next greatest element since the ancestor's right sub-tree would be having elements EVEN greater than the ancestor.
-    */
-    while (elementPtr->parent != NULL) {
-
-        if (elementPtr == (elementPtr->parent)->left) {
-            return (elementPtr->parent);
-        }
-
-        elementPtr = elementPtr->parent;
-    }
-
-    return NULL; // Ancestor not found.
-}
-
-Node *predecessor(Node *elementPtr) {
-    if(elementPtr == NULL) { // Element not present in the tree, so no way of having predecessor
-        return NULL;
-    }
-
-
-    if (elementPtr->left != NULL) { // If the element whose predecessor we need to find has a LEFT sub-tree, the predecessor can be easily found by right traversing in its left sub-tree, in order to get the maximum element lesser than the element whose predecessor we need.
-        elementPtr = elementPtr->left;
-
-        while (elementPtr->right != NULL) { // Finding the rightmost element in the left sub-tree.
-            elementPtr = elementPtr->right;
-        }
-
-       return elementPtr;
-    }
-
-    /*
-    We reach here only when the element doesn't have a left sub-tree.
-
-    So, now we need to search in its parents.
-
-    ? We actually need to find the FIRST ancestor of the element, in whose right sub-tree this element lies.
-
-    Since, if the element lies in the left sub-tree, the element is obviously lesser than the ancestor, WHICH IS NOT WHAT WE NEED.
-
-    If the element is in an ancestor's right sub-tree, then the element is obviously greater than the ancestor, meaning the ancestor is the next lowest element since the ancestor's left sub-tree would be having elements EVEN lesser than the ancestor.
-    */
-    while (elementPtr->parent != NULL) {
-
-        if (elementPtr == (elementPtr->parent)->right) {
-            return (elementPtr->parent);
-        }
-
-        elementPtr = elementPtr->parent;
-    }
-
-    return NULL; // Ancestor not found.
-}
-
-// Recursive insertion function
-Node* insert(Node* rootPtr, int element) {
+//? Recursive insertion function
+Node* insertNode(Node* rootPtr, int element) {
     
     if (rootPtr == NULL) { // Either the BST was empty OR we have reached a the empty sub-tree of a leaf where the element will fit.
         return (new Node(element));
     }
 
     if( element < (rootPtr -> key) ) {
-        rootPtr->left = insert(rootPtr->left, element);
+        rootPtr->left = insertNode(rootPtr->left, element);
         rootPtr->left->parent = rootPtr; // Important to assign parent as well. This won't give segmentation fault, because insert will never be NULL, it will either be a new Node or a sub-tree ALWAYS.
     }
     else if( element > (rootPtr -> key) ) {
-        rootPtr->right = insert(rootPtr->right, element);
+        rootPtr->right = insertNode(rootPtr->right, element);
         rootPtr->right->parent = rootPtr; // Important to assign parent as well. This won't give segmentation fault, because insert will never be NULL, it will either be a new Node or a sub-tree ALWAYS.
     }
     else {
@@ -243,96 +163,73 @@ Node* insert(Node* rootPtr, int element) {
     return rootPtr; // For the cases where a new Node wasn't added, but we still need to return the root to reflect the changes in the top-most BST.
 }
 
-void keyDelete(Node* rootPtr, int target) {
-    Node* targetPtr = iterativeSearch(rootPtr, target);
+Node* minimumNodeFinder(Node* treePtr) {
     
-
-    if(targetPtr == NULL) {
-        printf("Target element not present. Deletion not possible\n");
-        return;
+    while(treePtr != NULL && treePtr->left != NULL) { // Sequence of conditions is important in this case because if treePtr is actually NULL and we try to access 'left', we will get segmentation fault.
+        
+        treePtr = treePtr -> left; //? This is perfectly fine to do and won't mutate the original pointer since we are not derefencing the pointer before assignment.
     }
-
-
-    if( (targetPtr->left == NULL) && (targetPtr->right == NULL) ) 
-    { // Case 1 (Element to be deleted has no children)
         
-        if(targetPtr->parent->key == INT_MAX) // Checking whether this is the root node.
-        { // No children and no parent so it is a trivial BST.
-            printf("This tree has only one node. If that is deleted, this would no longer be a BST. So, deletion not possible\n");
-        }
-        
-        //TODO: Try using free
-        else { // Checking whether the target is the left or right child node of parent.
-            
-            if (targetPtr->parent->left == targetPtr) {
-                targetPtr->parent->left = NULL;
-            }
-            else {
-                targetPtr->parent->right = NULL;
-            }
-        }
-        
-        return;
-    }
-    
-    
-    // Case 2 (Element to be deleted has 1 child)
-        
-    else if(targetPtr->left != NULL) 
-    {
-        // We have placed the root element in the left sub-tree of the pseudo parent (OF THE ROOT NODE), so this if-condition will always be met.
-        if (targetPtr->parent->left == targetPtr)  
-        {
-            targetPtr->parent->left = targetPtr -> left;
-        }
-        else 
-        {
-            targetPtr->parent->right = targetPtr -> left;
-        }
-    }
-    else if(targetPtr->right != NULL) 
-    {
-        if (targetPtr->parent->left == targetPtr) 
-        {
-            targetPtr->parent->left = targetPtr -> right;
-        }
-        else 
-        {
-            targetPtr->parent->right = targetPtr -> right;
-        }
-    }    
-    
-    else 
-    { // Case 3 (Element to be deleted has 2 children)
-    
-        
-        // Getting pointers to both the successor and predecessor elements
-        Node* sucPtr = successor(targetPtr);
-        Node* prePtr = predecessor(targetPtr);
-        
-        if(sucPtr != NULL) {
-            
-            // First deleting the successor from the tree
-            keyDelete(rootPtr, sucPtr->key); 
-            
-            // Then inserting the successor in place of the target, to avoid duplicate successor values.
-            targetPtr->key = sucPtr->key; 
-        }
-        
-        else if(prePtr != NULL) {
-        
-            keyDelete(rootPtr, prePtr->key);
-        
-            targetPtr->key = prePtr->key;
-        }
-        
-        return;
-    }
-    
+    return treePtr;
 }
 
-int main()
-{
+//? Recursive deletion function
+Node* deleteNode(Node* rootPtr, int element) {
+    if(rootPtr == NULL) {
+        return NULL;
+    }
+
+    if(element < rootPtr->key) {
+        rootPtr->left = deleteNode(rootPtr->left, element);
+    }
+    else if(element > rootPtr->key) {
+        rootPtr->right = deleteNode(rootPtr->right, element);
+    }
+    else { // when element == rootPtr->key, this is the element to be deleted.
+        
+        //? Node with 0 children
+        if(rootPtr -> left == NULL && rootPtr -> right == NULL) {
+            
+            return NULL; // Instead of returning rootPtr, which would mean that the element would stay in the BST, we returned NULL which means the element would no longer be in BST.
+
+        }
+
+        //* Node with 1 child
+        else if(rootPtr -> left == NULL) { // The left sub-tree is not present but right sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its right sub-tree, removing the link to rootPtr.
+            
+            rootPtr->right->parent = rootPtr->parent;
+            
+            delete rootPtr; //? de-allocating the memory allocated to rootPtr
+            
+            return (rootPtr->right);
+
+        }
+        //* Node with 1 child
+        else if(rootPtr -> right == NULL) { // The right sub-tree is not present but left sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its left sub-tree, removing the link to rootPtr.
+            
+            rootPtr->left->parent = rootPtr->parent;
+            
+            delete rootPtr; //? de-allocating the memory allocated to rootPtr
+
+            return (rootPtr->left);
+
+        }
+
+        //! Node with 2 children
+
+        Node* rootSuccessor = minimumNodeFinder(rootPtr->right); // This won't be NULL in any case, since rootPtr will DEFINITELY have 2 children, as cases of 0 and 1 children have been taken care of above.
+        rootPtr->key = rootSuccessor->key;
+
+        // No need to modify parents, because the relative position of the node is staying same, just its value changed
+
+        //? Deleting the node we just used to replace rootPtr's value
+        deleteNode(rootPtr->right, rootSuccessor->key);
+        // This will go on recursively, if the successor's keep having 2 children, otherwise the above conditions will be satisfied
+    }
+}
+
+
+int main() {
 
     //! Why couldn't we use this?
     // Node rootNode(0, Node(1, Node(3), Node(4)), Node(2, Node(5), Node(6)));
@@ -361,21 +258,21 @@ int main()
     inOrderTraversal(rootNode);
     printf("\n");
 
-    rootNode = insert(rootNode, 11);
-    rootNode = insert(rootNode, 13);
+    rootNode = insertNode(rootNode, 11);
+    rootNode = insertNode(rootNode, 13);
 
     preOrderTraversal(rootNode);
     printf("\n");
     
     // Deleting a leaf node
-    keyDelete(rootNode, 9);
+    rootNode = deleteNode(rootNode, 9);
     
     preOrderTraversal(rootNode);
     printf("\n");
     
 
     // * Deleting a node with 1 child (since 9 was removed, 10 has only 1 child)
-    keyDelete(rootNode, 10);
+    rootNode = deleteNode(rootNode, 10);
     
     preOrderTraversal(rootNode);
     printf("\n");
