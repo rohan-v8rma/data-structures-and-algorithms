@@ -20,14 +20,12 @@ class Node {
 
 private:
     int key;
-    Node *parent;
     Node *left;
     Node *right;
 
 public:
     Node() {
         key = 0;
-        parent = NULL;
         left = NULL;
         right = NULL;
     }
@@ -40,22 +38,12 @@ public:
 
     Node(int key, Node *left, Node *right) {
 
-        this->parent = NULL;
-
         this->key = key;
 
         // Objects are created and stored somewhere in memory so we can get their address and store it in the `left` and `right` pointer
         this->left = left;
         this->right = right;
 
-        if(this-> left != NULL) { 
-            this->left->parent = this;
-        }
-        
-        if(this-> right != NULL) {
-            this->right->parent = this;
-        }
-        
     }
 };
 
@@ -150,11 +138,9 @@ Node* insertNode(Node* rootPtr, int element) {
 
     if( element < (rootPtr -> key) ) {
         rootPtr->left = insertNode(rootPtr->left, element);
-        rootPtr->left->parent = rootPtr; // Important to assign parent as well. This won't give segmentation fault, because insert will never be NULL, it will either be a new Node or a sub-tree ALWAYS.
     }
     else if( element > (rootPtr -> key) ) {
         rootPtr->right = insertNode(rootPtr->right, element);
-        rootPtr->right->parent = rootPtr; // Important to assign parent as well. This won't give segmentation fault, because insert will never be NULL, it will either be a new Node or a sub-tree ALWAYS.
     }
     else {
         printf("Duplicate element. NOT inserted.");
@@ -175,7 +161,7 @@ Node* minimumNodeFinder(Node* treePtr) {
 
 //? Recursive deletion function
 Node* deleteNode(Node* rootPtr, int element) {
-    if(rootPtr == NULL) {
+    if(rootPtr == NULL) { // Reached a sub-tree of a leaf node but the element to be deleted wasn't found, so we just return the rootPtr itself. No deletion takes place.
         return NULL;
     }
 
@@ -197,21 +183,21 @@ Node* deleteNode(Node* rootPtr, int element) {
         //* Node with 1 child
         else if(rootPtr -> left == NULL) { // The left sub-tree is not present but right sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its right sub-tree, removing the link to rootPtr.
             
-            rootPtr->right->parent = rootPtr->parent;
+            Node* temp = rootPtr -> right;
             
             delete rootPtr; //? de-allocating the memory allocated to rootPtr
             
-            return (rootPtr->right);
+            return temp;
 
         }
         //* Node with 1 child
         else if(rootPtr -> right == NULL) { // The right sub-tree is not present but left sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its left sub-tree, removing the link to rootPtr.
             
-            rootPtr->left->parent = rootPtr->parent;
+            Node* temp = rootPtr -> left;
             
             delete rootPtr; //? de-allocating the memory allocated to rootPtr
 
-            return (rootPtr->left);
+            return temp;
 
         }
 
@@ -226,6 +212,10 @@ Node* deleteNode(Node* rootPtr, int element) {
         deleteNode(rootPtr->right, rootSuccessor->key);
         // This will go on recursively, if the successor's keep having 2 children, otherwise the above conditions will be satisfied
     }
+
+    return rootPtr; 
+    // After the above if and FIRST else-if block, control comes over here, so we just return rootPtr, even though we don't need to because we modified rootPtr by dereferencing in the above if and FIRST else-if block.
+    // We did this mainly for consistency between the recursive return statements, because the last ELSE block requires returns.
 }
 
 
@@ -235,12 +225,10 @@ int main() {
     // Node rootNode(0, Node(1, Node(3), Node(4)), Node(2, Node(5), Node(6)));
     //? We couldn't use this because we required pointers to these nodes, and these are just Rvalues so they don't have a defined storage location.
 
-    //* If a node has only one child, it should be in the left sub-tree only
-    //TODO Add support for child in right sub-tree also
-
-    Node* rootNode = new Node(15, new Node(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))), NULL);
-    rootNode->parent = new Node(INT_MAX); // Getting a parent for the root node.
+    Node* rootNode = new Node(2, NULL, new Node(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))));
+    
     /*
+
           15
           /
          8
@@ -261,38 +249,31 @@ int main() {
     rootNode = insertNode(rootNode, 11);
     rootNode = insertNode(rootNode, 13);
 
-    preOrderTraversal(rootNode);
+    inOrderTraversal(rootNode);
     printf("\n");
     
     // Deleting a leaf node
     rootNode = deleteNode(rootNode, 9);
     
-    preOrderTraversal(rootNode);
+    inOrderTraversal(rootNode);
     printf("\n");
     
 
     // * Deleting a node with 1 child (since 9 was removed, 10 has only 1 child)
     rootNode = deleteNode(rootNode, 10);
     
-    preOrderTraversal(rootNode);
+    inOrderTraversal(rootNode);
     printf("\n");
     
-    preOrderTraversal(rootNode);
+    inOrderTraversal(rootNode);
     printf("\n");
 
-    if (recursiveSearch(rootNode, 7))
-    {
+    if (recursiveSearch(rootNode, 7)) {
         cout << "Key present\n";
     }
-    else
-    {
+    else {
         cout << "Key NOT present\n";
     }
-
-
-    //TODO: hello   
-
-    
 
     return 0;
 }
