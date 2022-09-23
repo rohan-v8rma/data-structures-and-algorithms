@@ -23,7 +23,10 @@ class Node {
     friend int getHeight(Node* node);
     friend int getBalanceFactor(Node* node);
 
-    friend Node* insertNode(Node* rootPtr, int element);
+    friend Node* insertNode(Node* node, int element);
+
+    friend Node* minimumNodeFinder(Node* treePtr);
+    friend Node* deleteNode(Node* node, int element);
 
     friend int main();
 
@@ -102,6 +105,9 @@ int getHeight(Node* node) {
 
 
 Node* rightRotate(Node* rootPtr) {
+    if(rootPtr == NULL || (rootPtr -> left == NULL) ) {
+        return rootPtr;
+    }
 
     Node* newRoot = rootPtr -> left;    
     
@@ -121,6 +127,9 @@ Node* rightRotate(Node* rootPtr) {
 }
 
 Node* leftRotate(Node* rootPtr) {
+    if( (rootPtr == NULL) || (rootPtr -> right == NULL) ) {
+        return rootPtr;
+    }
     
     Node* newRoot = rootPtr -> right;
     
@@ -202,6 +211,103 @@ Node* insertNode(Node* node, int element) {
     return node; 
 }
 
+Node* minimumNodeFinder(Node* treePtr) {
+    
+    while(treePtr != NULL && treePtr->left != NULL) { // Sequence of conditions is important in this case because if treePtr is actually NULL and we try to access 'left', we will get segmentation fault.
+        
+        treePtr = treePtr -> left; //? This is perfectly fine to do and won't mutate the original pointer since we are not derefencing the pointer before assignment.
+    }
+        
+    return treePtr;
+}
+
+Node* deleteNode(Node* node, int element) {
+    if(node == NULL) {
+        return node;
+    }
+
+    if(element < node->key) {
+        node->left = deleteNode(node->left, element);
+    }
+    else if(element > node->key) {
+        node->right = deleteNode(node->right, element);
+    }
+    else { // Node to be deleted found
+
+        //? Node with 0 children
+        if(node -> left == NULL && node -> right == NULL) {
+            
+            return NULL; // Instead of returning node, which would mean that the element would stay in the BST, we returned NULL which means the element would no longer be in BST.
+
+        }
+
+        //* Node with 1 child
+        else if(node -> left == NULL) { // The left sub-tree is not present but right sub-tree is. So, instead of returning node, we directly return the pointer to its right sub-tree, removing the link to node.
+            
+            Node* temp = node -> right;
+            
+            delete node; //? de-allocating the memory allocated to node
+            
+            return temp;
+
+        }
+        //* Node with 1 child
+        else if(node -> right == NULL) { // The right sub-tree is not present but left sub-tree is. So, instead of returning node, we directly return the pointer to its left sub-tree, removing the link to node.
+            
+            Node* temp = node -> left;
+            
+            delete node; //? de-allocating the memory allocated to node
+
+            return temp;
+
+        }
+
+        //! Node with 2 child nodes
+        Node* nodeSuccessor = minimumNodeFinder(node->right); // This won't be NULL in any case, since 'node' will DEFINITELY have 2 children, as cases of 0 and 1 children have been taken care of above.
+        node->key = nodeSuccessor->key;
+
+        //? Deleting the node we just used to replace value of 'node'
+        //! It is logically OK to delete this key from RIGHT sub-tree, because, at this point, this key is unique in the right sub-tree of 'node' (NOT unique in the entire node BST, because node->key is also same)
+        deleteNode(node->right, nodeSuccessor->key); 
+        // This will go on recursively, if the successor's keep having 2 children, otherwise the above conditions will be satisfied
+    }
+    
+    // 2. Updating height of the current node
+    node->height = 1 + getMax(getHeight(node->left), getHeight(node->right));
+    // We don't perform a simple incrementation because it is possible that before insertion the left sub-tree had a height of 4 and right sub-tree had a height of 5. An element is inserted in the left sub-tree but still the height of the parent node remains same. 
+
+    int balanceFactor = getBalanceFactor(node);
+
+    // If this node becomes unbalanced, then
+    // there are 4 cases
+ 
+    // Left Left Case (since balance factor is greater than 1 {left sub-tree larger, so right rotation needed} & element to be inserted is less than key of LEFT child node, meaning it would have been inserted as the LEFT child {in the previous nested recursive call} of the LEFT child node of the parent node.)
+    if (balanceFactor > 1 && element < node->left->key) {
+        return rightRotate(node);
+    }
+        
+    // Right Right Case (since balance factor is less than -1 {right sub-tree larger, so left rotation need} & element to be inserted is greate than key of RIGHT child node, meaning it would have been inserted as the RIGHT child {in the previous nested recursive call} of the RIGHT child node of the parent node.)
+    if (balanceFactor < -1 && element > node->right->key) {
+        return leftRotate(node);
+    }
+
+    // Left Right Case
+    if (balanceFactor > 1 && element > node->left->key) {
+        node->left = leftRotate(node->left);
+
+        return rightRotate(node);
+    }
+ 
+    // Right Left Case
+    if (balanceFactor < -1 && element < node->right->key) {
+        node->right = rightRotate(node->right);
+
+        return leftRotate(node);
+    }
+        
+    return node; 
+}
+
 int main() {
 
     //! Why couldn't we use this?
@@ -220,19 +326,39 @@ int main() {
     3   7 9  12
     */
 
-
+    printf("Original BST:\n");
     preOrderTraversal(rootNode);
     printf("\n");
-    // inOrderTraversal(rootNode);
+
+    // Right rotation of BST
+    printf("Right rotation of BST:\n");
+    rootNode = rightRotate(rootNode);
+    preOrderTraversal(rootNode);
+    printf("\n");
+
+    // Left rotation of BST
+    printf("Left rotation of BST (back to Original):\n");
+    rootNode = leftRotate(rootNode);
+    preOrderTraversal(rootNode);
+    printf("\n");
+    
+    // Balancing the BST
+    // printf("Balanced BST (now AVL tree):\n");
+    // rootNode = balanceBST(rootNode);
+    // preOrderTraversal(rootNode);
     // printf("\n");
 
-    rootNode = rightRotate(rootNode);
 
+    // Inserting an element in AVL tree
+    printf("Inserted 11 in AVL tree:\n");
+    rootNode = insertNode(rootNode, 11);
     preOrderTraversal(rootNode);
     printf("\n");
 
-    rootNode = leftRotate(rootNode);
-    
+    // Deleting a node from AVL tree
+    printf("Deleted 11 from AVL tree (back to Original AVL):\n");
+    rootNode = deleteNode(rootNode, 11);
+
     preOrderTraversal(rootNode);
     printf("\n");
 
