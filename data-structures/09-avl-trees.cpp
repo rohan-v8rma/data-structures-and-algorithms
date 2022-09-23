@@ -22,6 +22,8 @@ class Node {
 
     friend int getHeight(Node* node);
     friend int getBalanceFactor(Node* node);
+    
+    friend Node* balanceBST(Node* node);
 
     friend Node* insertNode(Node* node, int element);
 
@@ -105,21 +107,23 @@ int getHeight(Node* node) {
 
 
 Node* rightRotate(Node* rootPtr) {
-    if(rootPtr == NULL || (rootPtr -> left == NULL) ) {
+    if(rootPtr == NULL) {
         return rootPtr;
     }
 
     Node* newRoot = rootPtr -> left;    
     
-    if( (newRoot->right) != NULL) {
-        rootPtr->left = newRoot->right; // Assigning the right branch of the left child node of rootPtr (rootPtr -> left -> right), which is about to become root itself, to the left of rootPtr.
-        
-        // Updating height of rootPtr after adding a branch to it.
-        rootPtr->height = 1 + getMax(getHeight(rootPtr->left), getHeight(rootPtr->right));
-    }
+    if( newRoot == NULL) { //! To prevent segmentation fault and since there is no newRoot
+        return rootPtr;
+    } 
     
-    newRoot -> right = rootPtr; // Assigning the old rootPtr to the right sub-tree of the NEW root (which is 'rootPtr -> left' i.e., 'newRoot')
-
+    // Assigning the right branch of the left child node of rootPtr (rootPtr -> left -> right), which is about to become root itself, to the left of rootPtr.
+    rootPtr->left = newRoot->right;     
+    // Updating height of rootPtr after adding a branch to it.
+    rootPtr->height = 1 + getMax(getHeight(rootPtr->left), getHeight(rootPtr->right));
+    
+    // Assigning the old rootPtr to the right sub-tree of the NEW root (which is 'rootPtr -> left' i.e., 'newRoot')
+    newRoot -> right = rootPtr; 
     // Updating height of newRoot after adding a branch to it.
     newRoot->height = 1 + getMax(getHeight(newRoot->left), getHeight(newRoot->right));
 
@@ -127,21 +131,24 @@ Node* rightRotate(Node* rootPtr) {
 }
 
 Node* leftRotate(Node* rootPtr) {
-    if( (rootPtr == NULL) || (rootPtr -> right == NULL) ) {
+    if(rootPtr == NULL) {
         return rootPtr;
     }
     
     Node* newRoot = rootPtr -> right;
     
-    if( (newRoot->left) != NULL) {
-        rootPtr->right = newRoot->left; // Assigning the left branch of the right child node of rootPtr (rootPtr -> right -> left), which is about to become root itself, to the right of rootPtr.
-        
-        // Updating height of rootPtr after adding a branch to it.
-        rootPtr->height = 1 + getMax(getHeight(rootPtr->left), getHeight(rootPtr->right));
+    if(newRoot == NULL) { //! To prevent segmentation fault and since there is no newRoot
+        return rootPtr;
     }
     
-    newRoot -> left = rootPtr; // Assigning the old rootPtr to the left sub-tree of the NEW root (which is 'rootPtr -> right' i.e., 'newRoot')
+    // Assigning the left branch of the right child node of rootPtr (rootPtr -> right -> left), which is about to become root itself, to the right of rootPtr.
+    rootPtr->right = newRoot->left; 
 
+    // Updating height of rootPtr after adding a branch to it.
+    rootPtr->height = 1 + getMax(getHeight(rootPtr->left), getHeight(rootPtr->right));
+
+    // Assigning the old rootPtr to the left sub-tree of the NEW root (which is 'rootPtr -> right' i.e., 'newRoot')
+    newRoot -> left = rootPtr; 
     // Updating height of newRoot after adding a branch to it.
     newRoot->height = 1 + getMax(getHeight(newRoot->left), getHeight(newRoot->right));
 
@@ -155,6 +162,54 @@ int getBalanceFactor(Node* node) {
     else {
         return ( getHeight(node->left) - getHeight(node->right) );
     }
+}
+
+
+// TODO: Not working with a normal bst. Only working as a helper
+Node* balanceBST(Node* node) {
+    if(node == NULL) {
+        return node;
+    }
+
+    node->left = balanceBST(node->left);
+    node->right = balanceBST(node->right);
+
+    node->height = 1 + getMax(getHeight(node->left), getHeight(node->right));
+    // We don't perform a simple incrementation because it is possible that before insertion the left sub-tree had a height of 4 and right sub-tree had a height of 5. An element is inserted in the left sub-tree but still the height of the parent node remains same. 
+
+    int balanceFactor = getBalanceFactor(node);
+
+    // If this node becomes unbalanced, then
+    // there are 4 cases
+ 
+    // Left Left Case (since balance factor is greater than 1 {left sub-tree larger, so right rotation needed} & balance factor of the left sub-tree is greater than or equal to 0 meaning there are more/equal nodes in the left sub-tree OF THE LEFT SUB-TREE compared to right sub-tree of the child node, so we can apply right rotation directly, unlike LR case.
+    if (balanceFactor > 1 && getBalanceFactor(node->left) >= 0) {
+        return rightRotate(node);
+    }
+        
+    // Right Right Case (since balance factor is less than -1 {right sub-tree larger, so left rotation need} & balance factor of the right sub-tree is less than 0 meaning there are more/equal nodes in the right sub-tree OF THE RIGHT SUB-TREE compared to left sub-tree of the child node, so we can apply left rotation directly, unlike RL case.
+    if (balanceFactor < -1 && getBalanceFactor(node->right) < 0) {
+        return leftRotate(node);
+    }
+
+    // Left Right Case
+    if (balanceFactor > 1 && getBalanceFactor(node->left) < 0) {
+        
+        node->left = leftRotate(node->left);        
+
+        return rightRotate(node);
+    }
+ 
+    // Right Left Case
+    if (balanceFactor < -1 && getBalanceFactor(node->right) >= 0) {
+        node->right = rightRotate(node->right);
+
+        return leftRotate(node);
+    }    
+
+    
+
+    return node; // -1 <= balanceFactor <= 1
 }
 
 Node* insertNode(Node* node, int element) {
@@ -175,40 +230,7 @@ Node* insertNode(Node* node, int element) {
         return node; // No need to go any further since no insertion took place
     }
     
-    // 2. Updating height of the current node
-    node->height = 1 + getMax(getHeight(node->left), getHeight(node->right));
-    // We don't perform a simple incrementation because it is possible that before insertion the left sub-tree had a height of 4 and right sub-tree had a height of 5. An element is inserted in the left sub-tree but still the height of the parent node remains same. 
-
-    int balanceFactor = getBalanceFactor(node);
-
-    // If this node becomes unbalanced, then
-    // there are 4 cases
- 
-    // Left Left Case (since balance factor is greater than 1 {left sub-tree larger, so right rotation needed} & element to be inserted is less than key of LEFT child node, meaning it would have been inserted as the LEFT child {in the previous nested recursive call} of the LEFT child node of the parent node.)
-    if (balanceFactor > 1 && element < node->left->key) {
-        return rightRotate(node);
-    }
-        
-    // Right Right Case (since balance factor is less than -1 {right sub-tree larger, so left rotation need} & element to be inserted is greate than key of RIGHT child node, meaning it would have been inserted as the RIGHT child {in the previous nested recursive call} of the RIGHT child node of the parent node.)
-    if (balanceFactor < -1 && element > node->right->key) {
-        return leftRotate(node);
-    }
-
-    // Left Right Case
-    if (balanceFactor > 1 && element > node->left->key) {
-        node->left = leftRotate(node->left);
-
-        return rightRotate(node);
-    }
- 
-    // Right Left Case
-    if (balanceFactor < -1 && element < node->right->key) {
-        node->right = rightRotate(node->right);
-
-        return leftRotate(node);
-    }
-        
-    return node; 
+    return balanceBST(node); 
 }
 
 Node* minimumNodeFinder(Node* treePtr) {
@@ -272,40 +294,7 @@ Node* deleteNode(Node* node, int element) {
         // This will go on recursively, if the successor's keep having 2 children, otherwise the above conditions will be satisfied
     }
     
-    // 2. Updating height of the current node
-    node->height = 1 + getMax(getHeight(node->left), getHeight(node->right));
-    // We don't perform a simple incrementation because it is possible that before insertion the left sub-tree had a height of 4 and right sub-tree had a height of 5. An element is inserted in the left sub-tree but still the height of the parent node remains same. 
-
-    int balanceFactor = getBalanceFactor(node);
-
-    // If this node becomes unbalanced, then
-    // there are 4 cases
- 
-    // Left Left Case (since balance factor is greater than 1 {left sub-tree larger, so right rotation needed} & element to be inserted is less than key of LEFT child node, meaning it would have been inserted as the LEFT child {in the previous nested recursive call} of the LEFT child node of the parent node.)
-    if (balanceFactor > 1 && element < node->left->key) {
-        return rightRotate(node);
-    }
-        
-    // Right Right Case (since balance factor is less than -1 {right sub-tree larger, so left rotation need} & element to be inserted is greate than key of RIGHT child node, meaning it would have been inserted as the RIGHT child {in the previous nested recursive call} of the RIGHT child node of the parent node.)
-    if (balanceFactor < -1 && element > node->right->key) {
-        return leftRotate(node);
-    }
-
-    // Left Right Case
-    if (balanceFactor > 1 && element > node->left->key) {
-        node->left = leftRotate(node->left);
-
-        return rightRotate(node);
-    }
- 
-    // Right Left Case
-    if (balanceFactor < -1 && element < node->right->key) {
-        node->right = rightRotate(node->right);
-
-        return leftRotate(node);
-    }
-        
-    return node; 
+    return balanceBST(node);
 }
 
 int main() {
@@ -314,16 +303,18 @@ int main() {
     // Node rootNode(0, Node(1, Node(3), Node(4)), Node(2, Node(5), Node(6)));
     //? We couldn't use this because we required pointers to these nodes, and these are just Rvalues so they don't have a defined storage location.
 
-    Node* rootNode = new Node(15, new Node(8, new Node(6, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))), NULL);
+    Node* rootNode = new Node(15, new Node(10, new Node(6, new Node(3),new Node(8, new Node(7), new Node(9))), NULL), NULL);
     // rootNode->parent = new Node(INT_MAX); // Getting a parent for the root node.
     /*
           15
           /
-         8
-       /   \
-      6    10
-     / \   / \
-    3   7 9  12
+        10
+       /  
+      6   
+     / \  
+    3   8
+       / \
+      7   9
     */
 
     printf("Original BST:\n");
@@ -341,14 +332,13 @@ int main() {
     rootNode = leftRotate(rootNode);
     preOrderTraversal(rootNode);
     printf("\n");
-    
+
     // Balancing the BST
     // printf("Balanced BST (now AVL tree):\n");
     // rootNode = balanceBST(rootNode);
     // preOrderTraversal(rootNode);
-    // printf("\n");
-
-
+    // printf("\n");  
+    
     // Inserting an element in AVL tree
     printf("Inserted 11 in AVL tree:\n");
     rootNode = insertNode(rootNode, 11);
