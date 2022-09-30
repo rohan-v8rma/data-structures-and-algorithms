@@ -117,7 +117,7 @@ Node* rightRotate(Node* rootPtr) {
         return rootPtr;
     } 
     
-    // Assigning the right branch of the left child node of rootPtr (rootPtr -> left -> right), which is about to become root itself, to the left of rootPtr.
+    // Assigning the right branch of the left child node of rootPtr (rootPtr -> left -> right), which is about to become root itself, to the left of rootPtr. Note that it can be NULL as well, which is okay, since we anyways need to remove the old left branch of rootPtr, other there would be duplicate branches in the tree.
     rootPtr->left = newRoot->right;     
     // Updating height of rootPtr after adding a branch to it.
     rootPtr->height = 1 + getMax(getHeight(rootPtr->left), getHeight(rootPtr->right));
@@ -141,7 +141,7 @@ Node* leftRotate(Node* rootPtr) {
         return rootPtr;
     }
     
-    // Assigning the left branch of the right child node of rootPtr (rootPtr -> right -> left), which is about to become root itself, to the right of rootPtr.
+    // Assigning the left branch of the right child node of rootPtr (rootPtr -> right -> left), which is about to become root itself, to the right of rootPtr. Note that it can be NULL as well, which is okay, since we anyways need to remove the old right branch of rootPtr, other there would be duplicate branches in the tree
     rootPtr->right = newRoot->left; 
 
     // Updating height of rootPtr after adding a branch to it.
@@ -170,9 +170,6 @@ Node* balanceBST(Node* node) {
     if(node == NULL) {
         return node;
     }
-
-    node->left = balanceBST(node->left);
-    node->right = balanceBST(node->right);
 
     node->height = 1 + getMax(getHeight(node->left), getHeight(node->right));
     // We don't perform a simple incrementation because it is possible that before insertion the left sub-tree had a height of 4 and right sub-tree had a height of 5. An element is inserted in the left sub-tree but still the height of the parent node remains same. 
@@ -208,7 +205,6 @@ Node* balanceBST(Node* node) {
     }    
 
     
-
     return node; // -1 <= balanceFactor <= 1
 }
 
