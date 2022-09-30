@@ -107,25 +107,20 @@ Node* recursiveSearch(Node *rootPtr, int target) {
 
 Node *iterativeSearch(Node *rootPtr, int target) {
 
-    while (true) {
-        if(rootPtr != NULL) {
-            if (target == (rootPtr->key)) { // target element present
-                return rootPtr;
-            }
-            else if (target < (rootPtr->key)) {
-                rootPtr = rootPtr->left;
-                continue;
-            }
-            else if (target > (rootPtr->key)) {
-                rootPtr = rootPtr->right;
-                continue;
-            }
+    while (rootPtr != NULL) {
+        if (target == (rootPtr->key)) { // target element present
+            return rootPtr;
         }
-        else {
-            return NULL;
+        else if (target < (rootPtr->key)) {
+            rootPtr = rootPtr->left;
+            continue;
+        }
+        else if (target > (rootPtr->key)) {
+            rootPtr = rootPtr->right;
+            continue;
         }
     }
-
+    
     return NULL;
 }
 
@@ -185,7 +180,7 @@ Node* deleteNode(Node* rootPtr, int element) {
             
             Node* temp = rootPtr -> right;
             
-            delete rootPtr; //? de-allocating the memory allocated to rootPtr
+            delete rootPtr; //? de-allocating the memory allocated for the rootPtr to point to
             
             return temp;
 
@@ -195,7 +190,7 @@ Node* deleteNode(Node* rootPtr, int element) {
             
             Node* temp = rootPtr -> left;
             
-            delete rootPtr; //? de-allocating the memory allocated to rootPtr
+            delete rootPtr; //? de-allocating the memory allocated for the rootPtr to point to
 
             return temp;
 
@@ -206,10 +201,9 @@ Node* deleteNode(Node* rootPtr, int element) {
         Node* rootSuccessor = minimumNodeFinder(rootPtr->right); // This won't be NULL in any case, since rootPtr will DEFINITELY have 2 children, as cases of 0 and 1 children have been taken care of above.
         rootPtr->key = rootSuccessor->key;
 
-        // No need to modify parents, because the relative position of the node is staying same, just its value changed
-
         //? Deleting the node we just used to replace rootPtr's value
-        deleteNode(rootPtr->right, rootSuccessor->key);
+        //! It is logically OK to delete this key from RIGHT sub-tree, because, at this point, this key is unique in the right sub-tree of rootPtr (NOT unique in the entire rootPtr BST, because rootPtr->key is also same)
+        deleteNode(rootPtr->right, rootSuccessor->key); 
         // This will go on recursively, if the successor's keep having 2 children, otherwise the above conditions will be satisfied
     }
 
@@ -251,7 +245,7 @@ int main() {
 
     inOrderTraversal(rootNode);
     printf("\n");
-    
+
     // Deleting a leaf node
     rootNode = deleteNode(rootNode, 9);
     
