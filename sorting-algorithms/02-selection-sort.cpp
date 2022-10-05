@@ -5,7 +5,11 @@
 
 // TODO : will having a function for these operations have any performance impact.
 // int returnMaxIndex(int arr[SIZE]);
-// int swap(int index1, int index2, int arr);
+void swap(int index1, int index2, int* arr) {
+    int temp = arr[index1];
+    arr[index1] = arr[index2];
+    arr[index2] = temp;
+}
 
 // Function for printing the array
 void printArr(int *arr, int size) {
@@ -40,9 +44,7 @@ int main() {
         }
         // Swap operation of the element of the next largest value with the last-most unsorted element.
         if (maxIndex != (SIZE - 1 - pass) ) { // if the position of the maxIndex is already at the end, we need not swap it.
-            temp = array[maxIndex];
-            array[maxIndex] = array[SIZE - 1 - pass];
-            array[SIZE - 1 - pass] = temp;
+            swap(maxIndex, SIZE - 1 - pass, array);
         };
     }
 

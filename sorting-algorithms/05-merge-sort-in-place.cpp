@@ -29,27 +29,27 @@ void mergeInPlace(int* arr, int start, int middle, int end) {
     int mergedPtr = 0;
 
     while( (leftPtr < middle) && (rightPtr < end) ) {
-        if( *(arr + leftPtr) < *(arr + rightPtr) ) {
-            mergedArr[mergedPtr++] = *(arr + leftPtr++);
+        if( arr[leftPtr] < arr[rightPtr] ) {
+            mergedArr[mergedPtr++] = arr[leftPtr++];
         }        
         else {
-            mergedArr[mergedPtr++] = *(arr + rightPtr++);
+            mergedArr[mergedPtr++] = arr[rightPtr++];
         }
     }
     
     while(leftPtr < middle) {
-        mergedArr[mergedPtr++] = *(arr + leftPtr++);
+        mergedArr[mergedPtr++] = arr[leftPtr++];
     } 
     
     while (rightPtr < end) {
-        mergedArr[mergedPtr++] = *(arr + rightPtr++);
+        mergedArr[mergedPtr++] = arr[rightPtr++];
     }
 
     mergedPtr = 0;
 
     // Loop for changing the values in the unsorted sub-array, using the values of the MERGED array.
     for(int index = start; index < end; index++) {
-        *(arr + index) = mergedArr[mergedPtr++];
+        arr[index] = mergedArr[mergedPtr++];
     }
 }
 
