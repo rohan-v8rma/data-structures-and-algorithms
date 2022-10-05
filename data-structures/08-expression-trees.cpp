@@ -181,7 +181,6 @@ Node* xpTreeCreate(string infix) {
 
     char current;
 
-
     Node *n1, *n2;
     char op;
 
@@ -208,11 +207,15 @@ Node* xpTreeCreate(string infix) {
             operatorStack.stackPop(); // Popping '('
         }
         else if( precedOpCheck(current) ) {
-            if( precedOpCheck(*( (operatorStack.stackArray) + (operatorStack.top) )) < precedOpCheck(current) ) {
+            if( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) < precedOpCheck(current) ) {
+                operatorStack.stackPush(current);
+            }
+            else if( ( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) == 4 ) && ( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) == precedOpCheck(current) ) ) {
+                // When we have the current operator as '^' and the one on the top of the stack also as '^'. In this condition, the precedence of the current operator is higher due to its right associativity. So it will be pushed into the operator stack.
                 operatorStack.stackPush(current);
             }
             else {
-                while( precedOpCheck( *( (operatorStack.stackArray) + (operatorStack.top) ) ) >= precedOpCheck(current) ) {
+                while( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) >= precedOpCheck(current) ) {
                     // operandStack.stackPush(operation(operatorStack.stackPop(), operandStack.stackPop(), operandStack.stackPop()));
                     n1 = nodeStack.stackPop();
                     n2 = nodeStack.stackPop();
@@ -232,13 +235,17 @@ Node* xpTreeCreate(string infix) {
 int main() {
     
     //! It is important to give the infix expression enclosed in brackets.
-    string infix = "((A + B) * (C + D))";
+    // string infix = "((A + B) * (C + D))";
+    // string infix = "(K + L - M*N + (O^P) * W/U/V * T + Q)";
+    string infix = "(K^L-M^N+(O^P^T))";
 
     Node* xpTree = xpTreeCreate(infix);
     
     inOrderTraversal(*xpTree);
     printf("\n");
     preOrderTraversal(*xpTree);
+    printf("\n");
+    postOrderTraversal(*xpTree);
     printf("\n");
 
     return 0;

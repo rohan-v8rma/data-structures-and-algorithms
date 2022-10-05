@@ -96,11 +96,15 @@ std::string inToPost(std::string infix) {
             opStack.stackPop();
         }
         else if( precedOpCheck(current) ) {
-            if( precedOpCheck(*( (opStack.stackArray) + (opStack.top) )) < precedOpCheck(current) ) {
+            if( precedOpCheck(opStack.stackArray[opStack.top]) < precedOpCheck(current) ) {
+                opStack.stackPush(current);
+            }
+            else if( ( precedOpCheck( opStack.stackArray[opStack.top] ) == 4 ) && ( precedOpCheck( opStack.stackArray[opStack.top] ) == precedOpCheck(current) ) ) {
+                // When we have the current operator as '^' and the one on the top of the stack also as '^'. In this condition, the precedence of the current operator is higher due to its right associativity. So it will be pushed into the operator stack.
                 opStack.stackPush(current);
             }
             else {
-                while( precedOpCheck( *( (opStack.stackArray) + (opStack.top) ) ) >= precedOpCheck(current) ) {
+                while( precedOpCheck( opStack.stackArray[opStack.top] ) >= precedOpCheck(current) ) {
                     postfix += opStack.stackPop();
                 };
                 opStack.stackPush(current);
@@ -177,11 +181,15 @@ std::string inToPre2(std::string infix) {
             opStack.stackPop();
         }
         else if( precedOpCheck(current) ) {
-            if( precedOpCheck(*( (opStack.stackArray) + (opStack.top) )) < precedOpCheck(current) ) {
+            if( precedOpCheck(opStack.stackArray[opStack.top]) < precedOpCheck(current) ) {
                 opStack.stackPush(current);
             }
-            else {
-                while( precedOpCheck( *( (opStack.stackArray) + (opStack.top) ) ) >= precedOpCheck(current) ) {
+            else if( ( precedOpCheck( opStack.stackArray[opStack.top] ) == 4 ) && ( precedOpCheck( opStack.stackArray[opStack.top] ) == precedOpCheck(current) ) ) {
+                // When we have the current operator as '^' and the one on the top of the stack also as '^'. In this condition, the precedence of the current operator is higher due to its right associativity. So it will be pushed into the operator stack.
+                opStack.stackPush(current);
+            }
+            else { // for left associative operators
+                while( precedOpCheck( opStack.stackArray[opStack.top] ) >= precedOpCheck(current) ) {
                     reverse += opStack.stackPop();
                 };
                 opStack.stackPush(current);
@@ -213,6 +221,7 @@ int main() {
     //? Expected Postfix Output : BCA*-DE*F-G/+
     //! Expected Prefix Output : -B+*CA/-*DEFG
     
+    // std::string infix = "(K^L-M^N+(O^P^T))";
 
     std::string postfix = inToPost(infix);
     std::cout << postfix << std::endl;
