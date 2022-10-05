@@ -122,7 +122,7 @@ class MinHeap {
             }
 
             int index = 0;
-            int smallesIndex;
+            int smallestIndex;
 
             // Swapping the element at the top of heap with the lastIndex, at the same time decreasing lastIndex, effectively removing the top-most element from the heap.
             swap(index, lastIndex--);
@@ -139,25 +139,25 @@ class MinHeap {
                 return; //? Returned from here.
             }
 
-            smallesIndex = index;
+            smallestIndex = index;
 
             while(true) {
-                if( hasLeftChild(index) && (leftChild(index) < heap[smallesIndex]) ) {
-                    smallesIndex = getLeftChildIndex(index);
+                if( hasLeftChild(index) && (leftChild(index) < heap[smallestIndex]) ) {
+                    smallestIndex = getLeftChildIndex(index);
                 }
 
-                // smallesIndex can be 0, or it can be leftChildIndex resulting from the previous if-condition.
-                if( hasRightChild(index) && (rightChild(index) < heap[smallesIndex]) ) {
-                    smallesIndex = getRightChildIndex(index);
+                // smallestIndex can be 0, or it can be leftChildIndex resulting from the previous if-condition.
+                if( hasRightChild(index) && (rightChild(index) < heap[smallestIndex]) ) {
+                    smallestIndex = getRightChildIndex(index);
                 }
                 
-                if(smallesIndex == index) {
+                if(smallestIndex == index) {
                     break;
                 }
                 
-                swap(index, smallesIndex);
+                swap(index, smallestIndex);
 
-                index = smallesIndex;
+                index = smallestIndex;
             }
             
         }
