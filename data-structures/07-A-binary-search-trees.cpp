@@ -49,7 +49,7 @@ public:
 
 // Visit the root node, then the left node, then the right node
 void preOrderTraversal(Node* rootNode) {
-    if(rootNode == NULL) {
+    if( !(rootNode) ) { //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
         return;
     }
 
@@ -63,7 +63,7 @@ void preOrderTraversal(Node* rootNode) {
 
 // Visit the left node, the right node, then the root node.
 void postOrderTraversal(Node* rootNode) {
-    if(rootNode == NULL) {
+    if( !(rootNode) ) { //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
         return;
     }
 
@@ -76,7 +76,7 @@ void postOrderTraversal(Node* rootNode) {
 
 // Visit the left node, then the root node, then the right node.
 void inOrderTraversal(Node* rootNode){
-    if(rootNode == NULL) {
+    if( !(rootNode) ) { //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
         return;
     }
 
@@ -89,7 +89,7 @@ void inOrderTraversal(Node* rootNode){
 
 Node* recursiveSearch(Node *rootPtr, int target) {
     
-    if(rootPtr != NULL) {
+    if( rootPtr ) { //? NULL has truth-value of 0, other pointer values have truth-value of 1
         if (target == (rootPtr->key)) { // target element present
             return rootPtr;
         }
@@ -107,7 +107,7 @@ Node* recursiveSearch(Node *rootPtr, int target) {
 
 Node *iterativeSearch(Node *rootPtr, int target) {
 
-    while (rootPtr != NULL) {
+    while ( rootPtr ) { //? NULL has truth-value of 0, while other pointer values have truth-value 1.
         if (target == (rootPtr->key)) { // target element present
             return rootPtr;
         }
@@ -127,7 +127,7 @@ Node *iterativeSearch(Node *rootPtr, int target) {
 //? Recursive insertion function
 Node* insertNode(Node* rootPtr, int element) {
     
-    if (rootPtr == NULL) { // Either the BST was empty OR we have reached a the empty sub-tree of a leaf where the element will fit.
+    if ( !(rootPtr) ) { // Either the BST was empty OR we have reached a the empty sub-tree of a leaf where the element will fit.
         return (new Node(element));
     }
 
@@ -146,7 +146,7 @@ Node* insertNode(Node* rootPtr, int element) {
 
 Node* minimumNodeFinder(Node* treePtr) {
     
-    while(treePtr != NULL && treePtr->left != NULL) { // Sequence of conditions is important in this case because if treePtr is actually NULL and we try to access 'left', we will get segmentation fault.
+    while( (treePtr) && (treePtr->left) ) { // Sequence of conditions is important in this case because if treePtr is actually NULL and we try to access 'left', we will get segmentation fault.
         
         treePtr = treePtr -> left; //? This is perfectly fine to do and won't mutate the original pointer since we are not derefencing the pointer before assignment.
     }
@@ -156,7 +156,8 @@ Node* minimumNodeFinder(Node* treePtr) {
 
 //? Recursive deletion function
 Node* deleteNode(Node* rootPtr, int element) {
-    if(rootPtr == NULL) { // Reached a sub-tree of a leaf node but the element to be deleted wasn't found, so we just return the rootPtr itself. No deletion takes place.
+    if( !(rootPtr) ) { // Reached a sub-tree of a leaf node but the element to be deleted wasn't found, so we just return the rootPtr itself. No deletion takes place.
+    //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
         return NULL;
     }
 
@@ -169,15 +170,16 @@ Node* deleteNode(Node* rootPtr, int element) {
     else { // when element == rootPtr->key, this is the element to be deleted.
         
         //? Node with 0 children
-        if(rootPtr -> left == NULL && rootPtr -> right == NULL) {
+        if( !(rootPtr -> left) && !(rootPtr -> right) ) { //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
             
             return NULL; // Instead of returning rootPtr, which would mean that the element would stay in the BST, we returned NULL which means the element would no longer be in BST.
 
         }
 
         //* Node with 1 child
-        else if(rootPtr -> left == NULL) { // The left sub-tree is not present but right sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its right sub-tree, removing the link to rootPtr.
-            
+        else if( !(rootPtr -> left) ) { // The left sub-tree is not present but right sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its right sub-tree, removing the link to rootPtr.
+        //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
+
             Node* temp = rootPtr -> right;
             
             delete rootPtr; //? de-allocating the memory allocated for the rootPtr to point to
@@ -186,8 +188,9 @@ Node* deleteNode(Node* rootPtr, int element) {
 
         }
         //* Node with 1 child
-        else if(rootPtr -> right == NULL) { // The right sub-tree is not present but left sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its left sub-tree, removing the link to rootPtr.
-            
+        else if( !(rootPtr -> right) ) { // The right sub-tree is not present but left sub-tree is. So, instead of returning rootPtr, we directly return the pointer to its left sub-tree, removing the link to rootPtr.
+        //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
+
             Node* temp = rootPtr -> left;
             
             delete rootPtr; //? de-allocating the memory allocated for the rootPtr to point to

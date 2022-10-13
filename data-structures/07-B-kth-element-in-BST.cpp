@@ -42,11 +42,11 @@ public:
         this->left = left;
         this->right = right;
 
-        if(this-> left != NULL) { 
+        if( this-> left ) { //? NULL has truth-value of 0, while other pointer values have truth-value 1.
             this->left->parent = this;
         }
         
-        if(this-> right != NULL) {
+        if( this-> right ) { //? NULL has truth-value of 0, while other pointer values have truth-value 1.
             this->right->parent = this;
         }
         

@@ -1,23 +1,23 @@
 #include <iostream>
 
 class Node {
-    private:
-        int value;
-        Node* next;
-        Node* previous;
-    public:
+private:
+    int value;
+    Node* next;
+    Node* previous;
+public:
 
-        Node() {
-            value = 0;
-            next = NULL;
-            previous = NULL;
-        };
+    Node() {
+        value = 0;
+        next = NULL;
+        previous = NULL;
+    };
 
-        Node(int value, Node* next, Node* previous) {
-            this -> value = value;
-            this -> next = next;
-            this -> previous = previous;
-        };
+    Node(int value, Node* next, Node* previous) {
+        this -> value = value;
+        this -> next = next;
+        this -> previous = previous;
+    };
     
     friend Node* createDoublyLinkedList(int elementCt);
     friend void printDoublyLinkedList(Node *head);
@@ -64,7 +64,7 @@ void printDoublyLinkedList(Node* head) {
     while(true) {
         printf("Element %d is : %d\n", ++elementCt, (head -> value) );
         
-        if( (head -> next) == NULL ) { 
+        if( !(head -> next) ) { //? (!NULL) has truth-value of 1, other pointer values have truth-value of 0 with `!`
             break;
         }
         else {
@@ -76,7 +76,7 @@ void printDoublyLinkedList(Node* head) {
     while(true) {
         printf("Element %d is : %d\n", elementCt--, (head -> value) );
         
-        if( (head -> previous) == NULL ) {
+        if( !(head -> previous) ) {
             break;
         }
         else {
