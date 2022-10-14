@@ -49,15 +49,12 @@ node* reverseLinkedList(node* head) {
 
     node* reversedHead;
 
-    if( !(head->next->next) ) { //! Base condition
-        reversedHead = head->next;
-        head->next = NULL; //? So that when we assign `head` to `next` of `reversedHead`, the elements after `head` aren't added to the reversed linked-list chain.
-        
-        reversedHead->next = head;
+    if( !(head->next) ) { //! Base condition, when there is no element after `head`, so we just return one element, which is `head`
+        return head;
     }
     else {
         reversedHead = reverseLinkedList(head->next);
-        head->next = NULL; //? So that when we assign `head` to `next` of `reversedHead`, the elements after `head` aren't added to the reversed linked-list chain.
+        head->next = NULL; //? So that when we assign `head` to `next` of `reversedHead`, the elements after `head` aren't CHAINED to the reversed linked-list.
         temp = reversedHead;
         while(temp->next) { // Reaching to the end of the reversedHead linked list using temp, and assigning the previous `head` to the end.
             temp = temp->next;
