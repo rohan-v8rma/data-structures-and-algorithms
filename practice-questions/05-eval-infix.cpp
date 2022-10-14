@@ -3,57 +3,56 @@
 #include <math.h>
 
 template <class T> class stack {
-    public:
-        int top;
-        int size;
-        T *stackArray;
+public:
+    int top;
+    int size;
+    T *stackArray;
 
-        stack() {
-            size = 100;
-        }
-        stack(int size) {            
-            this -> size = size;
-            top = -1;
-            stackArray = (T*)( malloc( size * sizeof(T) ) );
-        }; 
-        
+    stack() {
+        size = 100;
+    }
+    stack(int size) {            
+        this -> size = size;
+        top = -1;
+        stackArray = (T*)( malloc( size * sizeof(T) ) );
+    }; 
+    
 
-        int isEmpty() {
-            if(top == -1) {
-                return 1;
-            }   
-            else {
-                return 0;
-            };
-        }
-
-        int isFull() {
-            if( ( (top) + 1) == (size) ) {
-                return 1;
-            }
-            else {
-                return 0;
-            };
-        }
-        void stackPush (float element) {
-            if ( isFull() ) {
-            std::cout << "Stack overflow. Element not inserted.\n";
-            }
-            else {
-                ( top )++;
-                *(stackArray + top) = element;
-            };
+    int isEmpty() {
+        if(top == -1) {
+            return 1;
+        }   
+        else {
+            return 0;
         };
+    }
 
-        T stackPop () {
-            if ( isEmpty() ) {
-                std::cout << "Stack underflow. Stack is empty.\n";
-                return -1;
-            }
-            return ( *( stackArray + top-- ) );
-
+    int isFull() {
+        if( ( (top) + 1) == (size) ) {
+            return 1;
+        }
+        else {
+            return 0;
         };
+    }
+    void stackPush (float element) {
+        if ( isFull() ) {
+        std::cout << "Stack overflow. Element not inserted.\n";
+        }
+        else {
+            ( top )++;
+            *(stackArray + top) = element;
+        };
+    };
 
+    T stackPop () {
+        if ( isEmpty() ) {
+            std::cout << "Stack underflow. Stack is empty.\n";
+            return -1;
+        }
+        return ( *( stackArray + top-- ) );
+
+    };
 };
    
 

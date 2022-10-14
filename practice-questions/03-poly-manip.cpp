@@ -2,60 +2,60 @@
 
 // Each node contains a value and an address pointing to the next node
 class term {
+    friend std::ostream& operator << (std::ostream& out, term* polynomial);
+    friend term* addPolynomial(term* poly1, term* poly2);    
+private:
     int coeff;
     int pow;
     term* nextTerm = NULL; // This default value doesn't affect the work/non-working code in any way
-    public:
-        // Default Constructor
-        term() {
-            coeff = 0;
-            pow = 0;
-            nextTerm = NULL;
-        };
+public:
+    // Default Constructor
+    term() {
+        coeff = 0;
+        pow = 0;
+        nextTerm = NULL;
+    };
 
-        // Parameterized Constructor
-        term(int elementCt) {
-            printf("Please enter the terms with descending powers of 'x'. Failing to do this will trigger a prompt to enter the power again.\n");
+    // Parameterized Constructor
+    term(int elementCt) {
+        printf("Please enter the terms with descending powers of 'x'. Failing to do this will trigger a prompt to enter the power again.\n");
 
-            term* head = this; 
-            term* tempPtr;
-            tempPtr = head;
-            int max = -10000; 
-            for(int index = 0; index < elementCt; index++) {
-                printf("Enter coefficient of term %d : ", index + 1);
-                scanf("%d", &(tempPtr -> coeff));
-                
-                printf("Enter power of term %d : ", index + 1);
-                scanf("%d", &(tempPtr -> pow));
-                
-                if (max == -10000) {
-                    max = (tempPtr -> pow);
-                }
-                else {
-                    while ( max <= (tempPtr -> pow) ) {
-                        printf("The power of this term isn't less than the last one.\nKindly enter the power again for term %d : ", index + 1);
-                        scanf("%d", &(tempPtr -> pow));
-                    };
+        term* head = this; 
+        term* tempPtr;
+        tempPtr = head;
+        int max = -10000; 
+        for(int index = 0; index < elementCt; index++) {
+            printf("Enter coefficient of term %d : ", index + 1);
+            scanf("%d", &(tempPtr -> coeff));
+            
+            printf("Enter power of term %d : ", index + 1);
+            scanf("%d", &(tempPtr -> pow));
+            
+            if (max == -10000) {
+                max = (tempPtr -> pow);
+            }
+            else {
+                while ( max <= (tempPtr -> pow) ) {
+                    printf("The power of this term isn't less than the last one.\nKindly enter the power again for term %d : ", index + 1);
+                    scanf("%d", &(tempPtr -> pow));
                 };
-
-                if (index == (elementCt - 1)) { // Since index starts from 0 and elements start from 1, this is the last element of the linked list
-                    tempPtr -> nextTerm = NULL; //the next pointer of the last element will point to NULL
-                }
-                else {
-                    //* Working code, where we first allocate memory in next, then change tempPtr
-                    // This is because we need to allocate space fo
-                    
-                    (tempPtr -> nextTerm) = (term*)(malloc(sizeof(term))); 
-                    tempPtr = tempPtr -> nextTerm;          
-                };
-
             };
 
-            printf("\n");
+            if (index == (elementCt - 1)) { // Since index starts from 0 and elements start from 1, this is the last element of the linked list
+                tempPtr -> nextTerm = NULL; //the next pointer of the last element will point to NULL
+            }
+            else {
+                //* Working code, where we first allocate memory in next, then change tempPtr
+                // This is because we need to allocate space fo
+                
+                (tempPtr -> nextTerm) = (term*)(malloc(sizeof(term))); 
+                tempPtr = tempPtr -> nextTerm;          
+            };
+
         };
 
-        friend std::ostream& operator << (std::ostream& out, term* polynomial);
-        friend term* addPolynomial(term* poly1, term* poly2);    
+        printf("\n");
+    };
 };
 
 std::ostream& operator << (std::ostream& out, term* polynomial) { 

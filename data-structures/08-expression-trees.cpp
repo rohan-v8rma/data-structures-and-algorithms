@@ -1,8 +1,7 @@
 #include <iostream>
 using namespace::std;
 
-class Node
-{
+class Node {
 
     friend void preOrderTraversal(Node rootNode);
     friend void postOrderTraversal(Node rootNode);
@@ -19,23 +18,20 @@ private:
     Node *right;
 
 public:
-    Node()
-    {
+    Node() {
         key = ' ';
         parent = NULL;
         left = NULL;
         right = NULL;
     }
 
-    Node(char key)
-    {
+    Node(char key) {
         this->key = key;
         left = NULL;
         right = NULL;
     }
 
-    Node(char key, Node *left, Node *right)
-    {
+    Node(char key, Node *left, Node *right) {
 
         this->parent = NULL;
 
@@ -51,33 +47,27 @@ public:
 };
 
 // Visit the root node, then the left node, then the right node
-void preOrderTraversal(Node rootNode)
-{
+void preOrderTraversal(Node rootNode) {
 
     printf("%c", rootNode.key);
 
-    if (rootNode.left != NULL)
-    {
+    if (rootNode.left != NULL) {
         preOrderTraversal(*(rootNode.left));
     };
 
-    if (rootNode.right != NULL)
-    {
+    if (rootNode.right != NULL) {
         preOrderTraversal(*(rootNode.right));
     };
 }
 
 // Visit the left node, the right node, then the root node.
-void postOrderTraversal(Node rootNode)
-{
+void postOrderTraversal(Node rootNode) {
 
-    if (rootNode.left != NULL)
-    {
+    if (rootNode.left != NULL) {
         postOrderTraversal(*(rootNode.left));
     };
 
-    if (rootNode.right != NULL)
-    {
+    if (rootNode.right != NULL) {
         postOrderTraversal(*(rootNode.right));
     };
 
@@ -85,18 +75,15 @@ void postOrderTraversal(Node rootNode)
 }
 
 // Visit the left node, then the root node, then the right node.
-void inOrderTraversal(Node rootNode)
-{
+void inOrderTraversal(Node rootNode) {
 
-    if (rootNode.left != NULL)
-    {
+    if (rootNode.left != NULL) {
         inOrderTraversal(*(rootNode.left));
     };
 
     printf("%c", rootNode.key);
 
-    if (rootNode.right != NULL)
-    {
+    if (rootNode.right != NULL) {
         inOrderTraversal(*(rootNode.right));
     };
 }
