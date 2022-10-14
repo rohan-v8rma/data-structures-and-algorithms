@@ -32,7 +32,7 @@ public:
         node* tempPtr = this;
         int elementNo = 1;
         while( tempPtr ) { //? NULL has truth-value of 0, other pointer values have truth-value of 1
-            printf("Element %d : %d\n", elementNo, tempPtr -> value);
+            printf("Element %d : %d\n", elementNo++, tempPtr -> value);
             tempPtr = tempPtr -> next;
         }
     }
