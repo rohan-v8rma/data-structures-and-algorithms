@@ -157,7 +157,7 @@ std::string inToPre1(std::string infix) {
 
 std::string inToPre2(std::string infix) {
     /*
-    In this infix to prefix converter function, we just iterate over the infix expression from left to right, applying infix to postfix conversion rules, and at the end, reverse the output before returning it.
+    In this infix to prefix converter function, we just iterate over the infix expression from right to left, applying infix to postfix conversion rules, and at the end, reverse the output before returning it.
     */
 
     std::string reverse = "";
