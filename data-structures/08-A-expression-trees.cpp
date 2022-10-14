@@ -7,7 +7,7 @@ class Node {
     friend void postOrderTraversal(Node rootNode);
     friend void inOrderTraversal(Node rootNode);
 
-    friend Node* xpTreeCreate(string infix);
+    friend Node* createExpressionTree(string infix);
 
     friend int main();
 
@@ -110,57 +110,61 @@ int precedOpCheck(char op) {
 
 
 template <class T> class stack {
-    public:
-        int top;
-        int size;
-        T *stackArray;
+public:
+    int top;
+    int size;
+    T *stackArray;
 
-        stack() {
-            size = 100;
-        }
-        stack(int size) {            
-            this -> size = size;
-            top = -1;
-            stackArray = (T*)( malloc( size * sizeof(T) ) );
-        }; 
-        
+    stack() {
+        size = 100;
+    }
+    stack(int size) {            
+        this -> size = size;
+        top = -1;
+        stackArray = (T*)( malloc( size * sizeof(T) ) );
+    }; 
+    
 
-        int isEmpty() {
-            if(top == -1) {
-                return 1;
-            }   
-            else {
-                return 0;
-            };
-        }
-
-        int isFull() {
-            if( ( (top) + 1) == (size) ) {
-                return 1;
-            }
-            else {
-                return 0;
-            };
-        }
-        void stackPush (T element) {
-            if ( isFull() ) {
-            cout << "Stack overflow. Element not inserted.\n";
-            }
-            else {
-                ( top )++;
-                *(stackArray + top) = element;
-            };
+    int isEmpty() {
+        if(top == -1) {
+            return 1;
+        }   
+        else {
+            return 0;
         };
+    }
 
-        T stackPop () {
-
-            return ( *( stackArray + top-- ) );
-
+    int isFull() {
+        if( ( (top) + 1) == (size) ) {
+            return 1;
+        }
+        else {
+            return 0;
         };
+    }
+    void stackPush (T element) {
+        if ( isFull() ) {
+        cout << "Stack overflow. Element not inserted.\n";
+        }
+        else {
+            ( top )++;
+            *(stackArray + top) = element;
+        };
+    };
+
+    T stackPop () {
+
+        return ( *( stackArray + top-- ) );
+
+    };
 
 };
-   
-Node* xpTreeCreate(string infix) {
+
+
+//* This function is a slight modification of infix-to-postfix function. 
+//? Instead of appending operators and operands onto the postfix expression, we push and pop them from the node stack. 
+//? After reaching the end of the infix expression, we pop the node which is the root node of the expression tree (connected to all characters in the expression tree), from the node stack and return it.
+Node* createExpressionTree(string infix) {
 
     stack<char> operatorStack(50);
 
@@ -185,7 +189,7 @@ Node* xpTreeCreate(string infix) {
         else if(current == ')') {
             while((operatorStack.stackArray)[operatorStack.top] != '(') {
                 n1 = nodeStack.stackPop();
-                n2 = nodeStack.stackPop();
+                n2 = nodeStack.stackPop(); // This was inserted in the stack earlier than n1 so technically this should be the left child of op.
                 op = operatorStack.stackPop();
 
                 nodeStack.stackPush(new Node(op, n2, n1));
@@ -224,9 +228,10 @@ int main() {
     //! It is important to give the infix expression enclosed in brackets.
     // string infix = "((A + B) * (C + D))";
     // string infix = "(K + L - M*N + (O^P) * W/U/V * T + Q)";
-    string infix = "(K^L-M^N+(O^P^T))";
+    // string infix = "(K^L-M^N+(O^P^T))";
+    string infix = "(B - C * A + (D * E - F) / G)";
 
-    Node* xpTree = xpTreeCreate(infix);
+    Node* xpTree = createExpressionTree(infix);
     
     inOrderTraversal(*xpTree);
     printf("\n");
