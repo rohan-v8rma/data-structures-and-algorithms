@@ -328,12 +328,6 @@ int main() {
     rootNode = leftRotate(rootNode);
     preOrderTraversal(rootNode);
     printf("\n");
-
-    // Balancing the BST
-    // printf("Balanced BST (now AVL tree):\n");
-    // rootNode = balanceBST(rootNode);
-    // preOrderTraversal(rootNode);
-    // printf("\n");  
     
     // Inserting an element in AVL tree
     printf("Inserted 11 in AVL tree:\n");
