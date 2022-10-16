@@ -2,6 +2,10 @@
 #include <limits.h>
 using namespace::std;
 
+//* This code can be used for building a Min Heap.
+
+//* It also performs heap sort in descending order, since smaller elements are deleted and placed at the end of the heap array, resulting in the array having the largest element at the front and the smallest element at the end.
+
 class MinHeap {
 
 public:
@@ -183,7 +187,7 @@ MinHeap* buildMinHeap(int *arr, int size) {
 }
 
 //? Note that this display function could have been made a member function and much simpler with LESSER POINTER ARITHMETIC, but to isolate its variables (by not making it implicitly inline, as a member function), we made it a friend function.
-void displaySorted(MinHeap* heapObj) {
+void displayInDescendingOrder(MinHeap* heapObj) {
     MinHeap copy = *heapObj;
 
     int endOfSorted = copy.lastIndex;
@@ -211,7 +215,7 @@ int main() {
         printf("%d, ", heapVar->heap[index]);
     }
     printf("\n");
-    displaySorted(heapVar);
+    displayInDescendingOrder(heapVar);
     
 
     
@@ -226,7 +230,7 @@ int main() {
     }
     printf("\n");
 
-    displaySorted(heapVar2);
+    displayInDescendingOrder(heapVar2);
 
 
     return 0;
