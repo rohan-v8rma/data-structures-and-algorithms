@@ -12,13 +12,9 @@ public:
     MinHeap(int capacity = 10) {
         this -> capacity = capacity;
         heap = new int[capacity];
-        
-        // Uninitialized positions
-        for(int index = 0; index < capacity; index++) {
-            heap[index] = INT_MAX;
-        }
     }
     
+    //* It is better to have smaller functions like these as member functions because member functions are implicitly inline, which makes them faster.
     int getLeftChildIndex(int parentIndex) { 
         return ( (2 * parentIndex) + 1 );
     }
@@ -45,6 +41,7 @@ public:
         }
         
         return 0;
+
     }
 
     int hasParent(int index) {
@@ -53,13 +50,14 @@ public:
         }
 
         return 0;
+
     }
 
-    int leftChild(int index) {
+    int getLeftChild(int index) {
         return heap[getLeftChildIndex(index)];
     }
 
-    int rightChild(int index) {
+    int getRightChild(int index) {
         return heap[getRightChildIndex(index)];
     }
 
@@ -111,96 +109,124 @@ public:
             swap(index, getParentIndex(index));
             index = getParentIndex(index);
         }
-
+        //? We shouldn't call heapify in this because heapify compares an element with its children, with no regard for its parents. Here, we are inserting the new element at the bottom of the minHeap, so we need to compare the elemnt with its parents until it reaches its correct position.
     }
 
-    void deleteRoot() {
-        if(lastIndex == -1) {
-            printf("Heap empty. No deletion possible.");
-            return;
-        }
-
-        int index = 0;
-        int smallestIndex;
-
-        // Swapping the element at the top of heap with the lastIndex, at the same time decreasing lastIndex, effectively removing the top-most element from the heap.
-        swap(index, lastIndex--);
-
-        //! No elements left in heap, so we don't need to go through the below while loop.
-        if(lastIndex == -1) { // Meaning all elements of min-heap deleted, so the heap array contaings all ex-elements of heap sorted in descending order.
-            int index = 0;
-            while(heap[index] != INT_MAX) {
-                printf("%d, ", heap[index]);
-                index++;
-            }
-            printf("\n");
-            
-            return; //? Returned from here.
-        }
-
-        smallestIndex = index;
-
-        while(true) {
-            if( hasLeftChild(index) && (leftChild(index) < heap[smallestIndex]) ) {
-                smallestIndex = getLeftChildIndex(index);
-            }
-
-            // smallestIndex can be 0, or it can be leftChildIndex resulting from the previous if-condition.
-            if( hasRightChild(index) && (rightChild(index) < heap[smallestIndex]) ) {
-                smallestIndex = getRightChildIndex(index);
-            }
-            
-            if(smallestIndex == index) {
-                break;
-            }
-            
-            swap(index, smallestIndex);
-
-            index = smallestIndex;
-        }
-        
-    }
 };
 
-MinHeap heapify(int* arr, int size) {
-    MinHeap newHeap;
+//? This function has O(log(N)) time complexity, because it makes comparisons in constant time so best case time complexity would be O(1). But in worst case, it performs log(N) recursive calls (over the full height of the tree) 
+void heapify(int *arr, int size, int indexToHeapify) {
     
-    for(int index = 0; index < size; index++) {
-        newHeap.insert(arr[index]);
+    int minIndex;
+
+    minIndex = indexToHeapify;
+    
+    int leftChildIndex = (2 * indexToHeapify + 1);
+    int rightChildIndex = (2 * indexToHeapify + 2); 
+
+    if( ( leftChildIndex <= (size - 1) ) && ( arr[minIndex] > arr[leftChildIndex] ) ) { // left child
+        minIndex = leftChildIndex;
     }
 
-    return newHeap;
+    if( ( (rightChildIndex) <= (size - 1) ) && ( arr[minIndex] > arr[rightChildIndex] ) ) { // right child
+        minIndex = rightChildIndex;
+    }
+
+    int temp;
+    if(indexToHeapify != minIndex) {
+        temp = arr[indexToHeapify];
+        arr[indexToHeapify] = arr[minIndex];
+        arr[minIndex] = temp;
+
+        //! Whenever a swap is done, we check whether the index with which we replaced, still satisfies heap property w.r.t. its children. That is the reason for this recursive call.
+        heapify(arr, size, minIndex); 
+    }
+
+}
+
+//! It is better to have more complicated functions like this one, as friend functions instead of member functions, because member functions are implicitly inline.
+void deleteRoot(MinHeap* heapObj) {
+    if(heapObj->lastIndex == -1) {
+        printf("Heap empty. No deletion possible.");
+        return;
+    }
+
+    int index = 0;
+    int smallestIndex;
+
+    // Swapping the element at the top of heap with the lastIndex, at the same time decreasing lastIndex, effectively removing the top-most element from the heap.
+    heapObj->swap(index, (heapObj->lastIndex)--);
+
+    //! No elements left in heap, so we don't need to go through the below while loop.
+    if(heapObj->lastIndex == -1) { // Meaning all elements of min-heap deleted, so the heap array contaings all ex-elements of heap sorted in descending order.            
+        return; //? Returned from here.
+    }
+    //* We only need to call heapify on the first index, because that is the index where are changing. If a swap occurs in this heapify call, there will be more recursive calls to heapify the sub-trees that need heapifying.  
+    heapify(heapObj->heap, (heapObj->lastIndex) + 1, index);        
+}
+
+//? Time complexity of this function is O(N.log(N)) because it calls heapify N times (for each element in the array). Assuming worst case time complexity of heapify, which is log(N).
+MinHeap* buildMinHeap(int *arr, int size) {
+    
+    int minIndex;
+
+    for(int index = size - 1; index >= 0; index--) {
+        heapify(arr, size, index);
+        // Here, we are calling heapify on every element of the array.
+    }
+
+    MinHeap* returnHeap = new MinHeap();
+    returnHeap->heap = arr;
+    returnHeap->lastIndex = size - 1;
+
+    return returnHeap;
+}
+
+//? Note that this display function could have been made a member function and much simpler with LESSER POINTER ARITHMETIC, but to isolate its variables (by not making it implicitly inline, as a member function), we made it a friend function.
+void displaySorted(MinHeap* heapObj) {
+    MinHeap copy = *heapObj;
+
+    int endOfSorted = copy.lastIndex;
+
+    for(int index = 0; index <= copy.lastIndex; index++) {
+        deleteRoot(&copy);
+    }
+
+    for(int index = 0; index <= endOfSorted; index++) {
+        printf("%d, ", copy.heap[index]);
+    }
+    printf("\n");
 }
 
 int main() {
-    MinHeap heapVar;
+    MinHeap* heapVar = new MinHeap;
 
-    heapVar.insert(7);
-    heapVar.insert(6);
-    heapVar.insert(5);
-    heapVar.insert(4);
-    heapVar.insert(3);
+    heapVar->insert(7);
+    heapVar->insert(6);
+    heapVar->insert(5);
+    heapVar->insert(4);
+    heapVar->insert(3);
 
-    heapVar.deleteRoot();
-    heapVar.deleteRoot();
-    heapVar.deleteRoot();
-    heapVar.deleteRoot();
-    heapVar.deleteRoot();
+    for(int index = 0; index < 5; index++) {
+        printf("%d, ", heapVar->heap[index]);
+    }
+    printf("\n");
+    displaySorted(heapVar);
+    
+
     
     int size = 7;
     int arr[size] = {25, 41, 2, 15, 32, 31, 10};
 
-    MinHeap heapVar2;
+    MinHeap* heapVar2 = buildMinHeap(arr, size);
 
-    heapVar2 = heapify(arr, size);
+    
+    for(int index = 0; index < size; index++) {
+        printf("%d, ", heapVar2->heap[index]);
+    }
+    printf("\n");
 
-    heapVar2.deleteRoot();
-    heapVar2.deleteRoot();
-    heapVar2.deleteRoot();
-    heapVar2.deleteRoot();
-    heapVar2.deleteRoot();
-    heapVar2.deleteRoot();
-    heapVar2.deleteRoot();
+    displaySorted(heapVar2);
 
 
     return 0;
