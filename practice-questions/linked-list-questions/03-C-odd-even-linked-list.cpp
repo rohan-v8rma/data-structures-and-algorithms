@@ -2,6 +2,7 @@
 using namespace::std;
 
 //? This solution makes a new linked list, instead of modifying the original one.
+//* Most easily understandable solution.
 
 class node { // Using classes helps us to keep our `value` and `next` pointer private
 
@@ -32,36 +33,38 @@ public:
 };
 
 node* oddEvenLinkedList(node* head) {
+    if(head == NULL) {
+        printf("Linked list is empty.");
+        return head;
+    }
 
-    node* returnList = new node(head->value);
-    node* temp = returnList;
-    node* temp1;
+    node* returnList = new node(head->value); // Pointer for storing the head of the list to be returned. 
+    node* firstPartPointer = returnList; // Pointer for adding elements to the first part.
+    node* secondPartHead = NULL; // Pointer for storing the head of the second part of the linked list, which we will connect to the tail of the first part.
+    node* secondPartPointer; // Pointer for adding elements to the second part.
+    
+    int isHeadOdd = (head->value % 2);
 
-
-    int isHeadOdd = ( (head->value) % 2 );
-
-    head = head->next; // Keeping position of original head unchanged.
+    head = head->next;
 
     while(head != NULL) {
-        if( (head->value % 2) == (isHeadOdd) ) { //next element is also odd
-            temp = returnList;
-            while( (temp->next != NULL) && (( temp->next->value % 2) == (isHeadOdd) ) ) {
-                temp = temp->next;
-            }
-            temp1 = temp->next;
-            temp->next = new node(head->value);
-            temp->next->next = temp1;
+        if( (head->value % 2) == isHeadOdd ) {
+            firstPartPointer->next = new node(head->value);
+            firstPartPointer = firstPartPointer->next;
         }
-        else if( (head->value % 2) != (isHeadOdd) ) { // next element is not odd
-            temp = returnList;
-            while(temp->next != NULL) {
-                temp = temp->next;
+        else if( (head->value % 2) != isHeadOdd ) {
+            if( !secondPartHead ) { // When head of second part is NULL.
+                secondPartHead = new node(head->value);
+                secondPartPointer = secondPartHead;
             }
-            temp->next = new node(head->value);
+            else {
+                secondPartPointer->next = new node(head->value);
+                secondPartPointer = secondPartPointer->next;
+            }
         }
-
         head = head -> next;
     }
+    firstPartPointer->next = secondPartHead;
 
     return returnList;
 }
