@@ -1,6 +1,11 @@
 # INDEX
 
 - [INDEX](#index)
+- [Time Complexity](#time-complexity)
+  - [Cheat Sheet for various Best, Worst and Average case Time Complexities](#cheat-sheet-for-various-best-worst-and-average-case-time-complexities)
+- [Space Complexity](#space-complexity)
+  - [What is Auxiliary Space?](#what-is-auxiliary-space)
+  - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
 - [Recursion](#recursion)
   - [How to understand & approach problems](#how-to-understand--approach-problems)
   - [Recursion Tree](#recursion-tree)
@@ -49,10 +54,6 @@
       - [**Level-order Traversal**](#level-order-traversal)
     - [Binary Search Trees](#binary-search-trees)
     - [Tree Searching Algorithms](#tree-searching-algorithms)
-- [Time Complexity](#time-complexity)
-- [Space Complexity](#space-complexity)
-  - [What is Auxiliary Space?](#what-is-auxiliary-space)
-  - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
 - [Sorting Algorithms](#sorting-algorithms)
   - [Stable vs. Unstable Sorting Algorithms](#stable-vs-unstable-sorting-algorithms)
   - [In-place Sorting Algorithms](#in-place-sorting-algorithms)
@@ -94,6 +95,12 @@
     - [Best case - O(1)](#best-case---o1)
     - [Worst case - O(log<sub>2</sub>N)](#worst-case---ologsub2subn)
 - [Rotated Binary Search](#rotated-binary-search)
+- [Hashing (using Hash Functions :P)](#hashing-using-hash-functions-p)
+  - [Use of Hashing](#use-of-hashing)
+  - [Hash Table](#hash-table)
+  - [Collisions in Hashing](#collisions-in-hashing)
+    - [1. Collision resolution by chaining](#1-collision-resolution-by-chaining)
+    - [2. Open Addressing: Linear/Quadratic Probing and Double Hashing](#2-open-addressing-linearquadratic-probing-and-double-hashing)
 - [Tips & Tricks for DSA](#tips--tricks-for-dsa)
   - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
   - [Calculating the approximate number of times a loop runs](#calculating-the-approximate-number-of-times-a-loop-runs)
@@ -102,6 +109,36 @@
     - [Recurrence Relation Formula](#recurrence-relation-formula)
   - [Concept of Circular Incrementation](#concept-of-circular-incrementation)
 - [TODO](#todo)
+
+# Time Complexity 
+
+![Time-Complexity-1.png](./images/Time-Complexity-1.png)
+
+![Time-Complexity-2.png](./images/Time-Complexity-2.png)
+
+![Time-Complexity-3.png](./images/Time-Complexity-3.png)
+
+![Time-Complexity-4.png](./images/Time-Complexity-4.png)
+
+## Cheat Sheet for various Best, Worst and Average case Time Complexities
+
+Access it [here](https://www.bigocheatsheet.com/).
+
+# Space Complexity 
+
+Space Complexity of an algorithm is the total space taken by an algorithm withm respect to the input size. Space complexity includes both Auxiliary space and space used by input.
+
+## What is Auxiliary Space?
+
+Auxiliary space is the extra space or the temporary space used by an algorithm.
+
+## Using Auxiliary Space as a criteria instead of Space Complexity.
+
+We can't really do anything about the input we are taking, but we can choose what algorithm to use, depending on which takes up the least amount of memory.
+
+For example, if we want to compare standard sorting algorithms on the basis of space, the auxiliary space would be a better criteria than Space Complexity. Merge Sort uses O(n) auxiliary space, Insertion sort and Heap Sort use O(1) auxiliary space. 
+
+Space complexity of all these sorting algorithms is O(n) though.
 
 # Recursion
 
@@ -237,6 +274,7 @@ When a function finishes executing, it is removed from the stack and the flow of
 ![](/images/recursive-space-complexity.jpg)
 
 As the recursive functions are calling itself again and again, addresses are added into stack. So, if the function is called **N** times recursively, it will take $O(N)$ auxiliary space.
+
 
 # Dynamic Programming
 
@@ -538,8 +576,10 @@ In the example above, a post-order traversal starting at the root would visit th
 
 1. Visit nodes level-by-level (where the root is the "first level," its children are the "second level," etc.).
 2. On a given level, visit nodes left-to-right. 
- 
+
 In the example above, a level-order traversal starting at the root would visit the nodes in the following order: 1 2 3 4 5
+
+> NOTE: This is achievable when Binary Tree is stored as an Array. Printing the array in sequence would give us level-order traversal.
 
 ---
 
@@ -552,31 +592,7 @@ In the example above, a level-order traversal starting at the root would visit t
 - Depth-First Search
 - Breadth-First Search
 
-# Time Complexity 
 
-![Time-Complexity-1.png](./images/Time-Complexity-1.png)
-
-![Time-Complexity-2.png](./images/Time-Complexity-2.png)
-
-![Time-Complexity-3.png](./images/Time-Complexity-3.png)
-
-![Time-Complexity-4.png](./images/Time-Complexity-4.png)
-
-# Space Complexity 
-
-Space Complexity of an algorithm is the total space taken by an algorithm withm respect to the input size. Space complexity includes both Auxiliary space and space used by input.
-
-## What is Auxiliary Space?
-
-Auxiliary space is the extra space or the temporary space used by an algorithm.
-
-## Using Auxiliary Space as a criteria instead of Space Complexity.
-
-We can't really do anything about the input we are taking, but we can choose what algorithm to use, depending on which takes up the least amount of memory.
-
-For example, if we want to compare standard sorting algorithms on the basis of space, the auxiliary space would be a better criteria than Space Complexity. Merge Sort uses O(n) auxiliary space, Insertion sort and Heap Sort use O(1) auxiliary space. 
-
-Space complexity of all these sorting algorithms is O(n) though.
 
 # Sorting Algorithms
 
@@ -653,12 +669,12 @@ It is an [unstable sorting algorithm](#stable-vs-unstable-sorting-algorithms) as
 
 ### Why use Selection Sort?
 
-- The good thing about selection sort is that never makes more than $(N-1)$ swaps which is a linear i.e., $O(N)$ complexity, so it can be useful when memory write is a costly operation.
+- The good thing about selection sort is that never makes more than *(N-1)* swaps which is a linear i.e., *O(N)* complexity, so it can be useful when memory write is a costly operation.
 - It performs well for smaller values of N. 
 
 ### Time Complexity
 
-The average time complexity is $O(N^2)$.
+The average time complexity is *O(N<sup>2</sup>)*.
 
 ![](/images/selection-sort-avg.jpg)
 
@@ -839,6 +855,64 @@ This is when the target element is found in the very LAST pass.
 # Rotated Binary Search
 
 TODO
+
+# Hashing (using Hash Functions :P)
+
+Hashing is the process of converting a given key into another value. 
+
+A *hash function* is used to generate the new value using the key, according to a mathematical algorithm. 
+
+The result of a *hash function* is known as a **hash value** or simply, a **hash**.
+
+A good hash function uses a **one-way** hashing algorithm (the hash cannot be converted back into the original key).
+
+> **_NOTE:_** It is an ideal method for representing dictionaries for large datasets.
+> 
+> This is because unlike Linear Search and Binary Search, which perform lookups/search with time complexity *O(N)* and *O(log(N))* respectively, Hashing allows lookups in constant time i.e. *O(1)*, since the index-position of the value of a particular key can be figured out using a simple calculation ***(passing the key into the hashing function, to get the hash value)***.
+
+## Use of Hashing
+
+- To make Hash Tables as shown [below](#hash-table).
+
+- In data encryption. Passwords can be stored in the form of their hash so that even if a database is breached, plaintext passwords are NOT accessible.
+
+  This is because as mentioned before, good hashing functions don't allow conversion of hash-values back to the original keys.
+
+## Hash Table
+
+In a hash table, **hashes** obtained by passing keys through hashing functions, are taken as indices.
+
+And, the element corresponding to that key is stored at that index in the hash table. 
+
+Considering a key-value pair `k`, `v`.
+
+Let `k` be a key and `h(x)` be a hash function.
+
+Here, `h(k)` will give us a new index to store the element `v`, which is linked with `k`.
+
+![](images/hash-table.png)
+
+## Collisions in Hashing
+
+When the *hash function* generates the same index for multiple keys, there will be a conflict (what value to be stored in that index).
+
+This is called a ***hash collision***.
+
+We can resolve the ***hash collision*** using one of the following techniques:
+
+### 1. Collision resolution by chaining
+
+In chaining, if a *hash function* produces the same index for multiple elements, these elements are stored in the same index by using a **doubly-linked list**.
+
+If `j` is the slot/index/hash for multiple elements, it contains a pointer to the head of the list of elements. 
+
+If no element is present, `j` contains `NIL`.
+
+![](images/hash-collision-resolution-by-chaining.png)
+
+### 2. Open Addressing: Linear/Quadratic Probing and Double Hashing
+
+Read more about on programiz [here](https://www.programiz.com/dsa/hash-table).
 
 # Tips & Tricks for DSA
 
