@@ -17,6 +17,7 @@
   - [How function calls work in languages](#how-function-calls-work-in-languages)
   - [Complexity Analysis in Recursive Algorithms](#complexity-analysis-in-recursive-algorithms)
     - [Space Complexity (Auxiliary Space in ACTUALITY)](#space-complexity-auxiliary-space-in-actuality)
+  - [Tower of Hanoi problem](#tower-of-hanoi-problem)
 - [Dynamic Programming](#dynamic-programming)
 - [Arrays](#arrays)
 - [Abstract Data Types](#abstract-data-types)
@@ -47,13 +48,20 @@
       - [**Depth First Search**](#depth-first-search)
       - [**Breadth First Search**](#breadth-first-search)
   - [Trees](#trees)
-    - [Tree Traversal Algorithms](#tree-traversal-algorithms)
+    - [Tree Traversal Algorithms (Applicable for all types of Trees, including B-trees)](#tree-traversal-algorithms-applicable-for-all-types-of-trees-including-b-trees)
       - [**Pre-order Traversal**](#pre-order-traversal)
       - [**In-order Traversal**](#in-order-traversal)
       - [**Post-order Traversal**](#post-order-traversal)
       - [**Level-order Traversal**](#level-order-traversal)
+    - [Binary Trees](#binary-trees)
     - [Binary Search Trees](#binary-search-trees)
-    - [Tree Searching Algorithms](#tree-searching-algorithms)
+    - [AVL Trees (Self-balancing BSTs)](#avl-trees-self-balancing-bsts)
+    - [Tree Searching Algorithms (TODO)](#tree-searching-algorithms-todo)
+    - [Heaps](#heaps)
+      - [Heap Sort](#heap-sort)
+      - [Priority Queues using Heaps](#priority-queues-using-heaps)
+      - [Heapify](#heapify)
+    - [B-trees](#b-trees)
 - [Sorting Algorithms](#sorting-algorithms)
   - [Stable vs. Unstable Sorting Algorithms](#stable-vs-unstable-sorting-algorithms)
   - [In-place Sorting Algorithms](#in-place-sorting-algorithms)
@@ -276,6 +284,10 @@ When a function finishes executing, it is removed from the stack and the flow of
 As the recursive functions are calling itself again and again, addresses are added into stack. So, if the function is called **N** times recursively, it will take $O(N)$ auxiliary space.
 
 
+## Tower of Hanoi problem
+
+![](images/tower-of-hanoi.jpg)
+
 # Dynamic Programming
 
 Dynamic Programming is a technique in computer programming that helps to efficiently solve a class of problems that have overlapping subproblems and optimal substructure property.
@@ -495,7 +507,8 @@ Whenever `front` = `rear`, queue is empty.
 
 ## Graphs
 
-<!-- TODO: Add pictures from notebook -->
+![](images/graphs-1.jpg)
+![](images/graphs-2.jpg)
 
 ### Graph Traversals
 
@@ -509,9 +522,14 @@ Start several paths at a time, and advance in each one step at a time
 
 ## Trees
 
-<!-- TODO: Add pictures from notebook -->
+![](images/trees-1.jpg)
+![](images/trees-2.jpg)
+![](images/trees-3.jpg)
 
-### Tree Traversal Algorithms
+
+### Tree Traversal Algorithms (Applicable for all types of Trees, including B-trees)
+
+![](images/tree-traversal.jpg)
 
 With rooted binary trees (and rooted trees in general), we typically only maintain a pointer to the root because all other nodes in the tree can be accessed via some traversal starting at the root.
 
@@ -583,16 +601,56 @@ In the example above, a level-order traversal starting at the root would visit t
 
 ---
 
+### Binary Trees
+
+![](images/binary-trees-1.jpg)
+![](images/binary-trees-2.jpg)
+
+---
+
 ### Binary Search Trees
 
-<!-- TODO: Add pictures from notebook -->
+![](images/binary-search-trees-1.jpg)
+![](images/binary-search-trees-2.jpg)
+![](images/binary-search-trees-3.jpg)
 
-### Tree Searching Algorithms
+### AVL Trees (Self-balancing BSTs)
+
+![](images/AVL-trees-1.jpg)
+![](images/AVL-trees-2.jpg)
+![](images/AVL-trees-3.jpg)
+![](images/AVL-trees-4.jpg)
+![](images/AVL-trees-5.jpg)
+
+### Tree Searching Algorithms (TODO)
 
 - Depth-First Search
 - Breadth-First Search
 
+---
 
+### Heaps
+
+![](images/heaps-1.jpg)
+![](images/heaps-2.jpg)
+![](images/heaps-3.jpg)
+
+#### Heap Sort
+
+![](images/heap-sort-1.jpg)
+![](images/heap-sort-2.jpg)
+
+#### Priority Queues using Heaps
+
+![](images/priority-queue.jpg)
+
+#### Heapify 
+
+![](images/heapify.jpg)
+
+---
+
+### B-trees
 
 # Sorting Algorithms
 
