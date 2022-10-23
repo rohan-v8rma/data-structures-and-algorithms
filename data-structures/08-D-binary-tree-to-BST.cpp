@@ -11,7 +11,7 @@ class Node {
     
     friend void overwriteInOrderElements(Node* rootNode, Array* arrayObjectPointer);
 
-    friend void binaryToBST(Node* rootNode);
+    friend void binaryTreeToBST(Node* rootNode);
 
     friend int main();
 
@@ -85,6 +85,16 @@ void overwriteInOrderElements(Node* rootNode, Array* arrayObjectPointer) {
     return;
 }
 
+
+void binaryTreeToBST(Node* rootNode) {
+    Array* newArrPtr = new Array;
+
+    writeInOrderTraversalArray(rootNode, newArrPtr);
+    newArrPtr->sortArray();
+
+    overwriteInOrderElements(rootNode, newArrPtr);
+}
+
 int main() {
 
     Node* rootNode = new Node(22, NULL, new Node(8, new Node(16, new Node(3), new Node(7)), new Node(10, new Node(9), new Node(12))));
@@ -98,20 +108,11 @@ int main() {
     16   10
     /\   /\
    3  7 9  12
-    
-
-
     */
     inOrderTraversal(rootNode);
 
-
-    Array* newArrPtr = new Array;
-
-    writeInOrderTraversalArray(rootNode, newArrPtr);
-    newArrPtr->sortArray();
-
-
-    overwriteInOrderElements(rootNode, newArrPtr);
+    binaryTreeToBST(rootNode);
+    // At this point, the binary tree is now converted to a binary SEARCH tree.
 
     printf("\n");
     inOrderTraversal(rootNode);
