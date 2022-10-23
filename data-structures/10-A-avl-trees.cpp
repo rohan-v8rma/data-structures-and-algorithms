@@ -1,6 +1,6 @@
 #include <iostream>
 #include <limits.h>
-using namespace ::std;
+using namespace::std;
 
 /*
 NOTE: Height of a node is the number of edges to a leaf node. 
