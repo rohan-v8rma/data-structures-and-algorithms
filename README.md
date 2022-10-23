@@ -61,7 +61,8 @@
       - [Heap Sort](#heap-sort)
       - [Priority Queues using Heaps](#priority-queues-using-heaps)
       - [Heapify](#heapify)
-    - [B-trees](#b-trees)
+    - [B-Trees](#b-trees)
+      - [Application of B-Trees](#application-of-b-trees)
 - [Sorting Algorithms](#sorting-algorithms)
   - [Stable vs. Unstable Sorting Algorithms](#stable-vs-unstable-sorting-algorithms)
   - [In-place Sorting Algorithms](#in-place-sorting-algorithms)
@@ -282,7 +283,6 @@ When a function finishes executing, it is removed from the stack and the flow of
 ![](/images/recursive-space-complexity.jpg)
 
 As the recursive functions are calling itself again and again, addresses are added into stack. So, if the function is called **N** times recursively, it will take $O(N)$ auxiliary space.
-
 
 ## Tower of Hanoi problem
 
@@ -650,7 +650,49 @@ In the example above, a level-order traversal starting at the root would visit t
 
 ---
 
-### B-trees
+### B-Trees
+
+A B-Tree is a self-balancing ***m-way*** tree data structure that allows searches, accesses, insertions, and deletions in logarithmic time. 
+
+Each node in a B-Tree of order ***m*** can have, at most, ***m*** children and ***m-1*** keys. 
+
+In addition to having multiple children, each node in a B-Tree can have more than one key, which keeps the height of the tree relatively small. This helps with data locality​.
+
+![](images/b-trees.png)
+
+In summary, a B-Tree of the order ***m*** has the following properties:
+
+- each node has at most ***m*** children
+- a node with ***n*** children must have ***n-1*** keys
+- all leaf nodes are at the same level
+- every node, except the root, is at least half full
+- root has at least two children if it is not a leaf
+
+Read more about it [here](https://www.educative.io/answers/what-is-a-b-tree).
+
+#### Application of B-Trees
+
+Let us take a case where we wish to store a large amount of data in a tree, that cannot possible fit entirely in our main memory (i.e., RAM) and we would need to use secondary storage devices (e.g., hard disk).
+
+Since the data cannot fit entirely in main memory, it is read from a disk in contiguous chunks or blocks, and written to main memory for processing. 
+
+However, reading from a disk is costly as disk access times are far higher than memory access times.
+
+> ***NOTE:*** Secondary storage devices, like spinnable disks have slower disk access speeds, but have a larger capacity than the main memory (i.e., RAM).
+
+Regular Tree ADTs such as a binary search tree, avl tree, red-black tree, etc can store only one key in one node. 
+
+If you have to store a large number of keys, then the height of such trees becomes very large. Due to this, the access time increases because nodes are individually read from memory, one-by-one.
+
+Height of a tree gives us the maximum number of edges from the root node to a leaf. So, in the worst case scenario, for reaching the leaf node of a tree of height `h`, `h` disk accesses (dereferencing and accessing each node) would be required.
+
+However, B-tree can store many keys in a single node and can have multiple child nodes. 
+
+They also have a high branching factor, meaning the trees are fat with a *relatively small* height, which ensures minimal disk reads to navigate​ to the place where the data is stored, for performing its operations, such as **insertion** and **searching**.
+
+![](images/b-trees-fatness.png)
+
+B-Trees are, therefore, well-suited for storage systems that read and write large blocks of data.
 
 # Sorting Algorithms
 
