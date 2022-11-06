@@ -188,11 +188,8 @@ void breadthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO
             
             if( (adjacencyMatrix[dequeuedVertex][toVertex] != 0) && (visited[toVertex] == false) ) {
                 
-                if(visited[toVertex] == false) {
-                    
-                    queue.enQueue(toVertex); 
-                    visited[toVertex] = true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We enqueue them in the queue, and set their visited value as `true` so that duplicate vertices are not inserted into the queue.    
-                }
+                queue.enQueue(toVertex); 
+                visited[toVertex] = true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We enqueue them in the queue, and set their visited value as `true` so that duplicate vertices are not inserted into the queue.    
             
             }       
         
@@ -224,13 +221,14 @@ void depthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO_O
         printf("%d, ", poppedVertex);
 
         // Taking the case of the first element, it is popped from the stack, and all its adjacent elements are found using for-loop and pushed onto the stack, one-by-one. In the next iteration, the last element pushed onto the stack is popped and its children are found and pushed onto the stack. In the next to next iteration, one of the children's adjacent elements are found. This way Depth Traversal is happening, since the elements instead of getting queued are getting pushed onto stack and popped, resulting in the last child of the first adjacent node getting popped, instead of the other adjacent element of the source vertex getting popped.
-        for(int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++) {
-
+        
+        // for(int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++) {
+        for(int toVertex = NO_OF_VERTICES - 1; toVertex >= 0; toVertex--) { // Inverted the for-loop order since stack is LIFO. We want the least element to be popped first.
+            
             if( (adjacencyMatrix[poppedVertex][toVertex] != 0) && (visited[toVertex] == false) ){
-                if(visited[toVertex] == false) {
-                    stack.stackPush(toVertex);
-                    visited[toVertex] == true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We push them into the stack, and set their visited value as `true` so that duplicate vertices are not pushed onto the stack, resulting in a vertex getting visited twice in DFS. 
-                }
+                
+                stack.stackPush(toVertex);
+                visited[toVertex] = true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We push them into the stack, and set their visited value as `true` so that duplicate vertices are not pushed onto the stack, resulting in a vertex getting visited twice in DFS. 
                 
             }
         }
