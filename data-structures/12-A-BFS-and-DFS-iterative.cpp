@@ -1,4 +1,6 @@
 #include <iostream>
+// #define NO_OF_VERTICES 4
+
 using namespace::std;
 
 class Stack {
@@ -213,19 +215,19 @@ void depthFirstSearch(int sourceVertex, int noOfVertices, int** adjacencyMatrix)
 
 
     stack.stackPush(sourceVertex);
-    visited[sourceVertex] = true;
 
     while(!stack.isEmpty()) {
         
         poppedElement = stack.stackPop();
         printf("%d, ", poppedElement);
 
+        if(visited[poppedElement])
+
         // Taking the case of the first element, it is popped from the stack, and all its adjacent elements are found using for-loop and pushed onto the stack, one-by-one. In the next iteration, the last element pushed onto the stack is popped and its children are found and pushed onto the stack. In the next to next iteration, one of the children's adjacent elements are found. This way Depth Traversal is happening, since the elements instead of getting queued are getting pushed onto stack and popped.
         for(int toVertex = 0; toVertex < noOfVertices; toVertex++) {
 
             if( (adjacencyMatrix[poppedElement][toVertex] != 0) && (visited[toVertex] == false) ){
                 stack.stackPush(toVertex);
-                visited[toVertex] = true;
             }
         }
     }
