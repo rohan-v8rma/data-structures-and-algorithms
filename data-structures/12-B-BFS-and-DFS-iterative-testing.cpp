@@ -1,4 +1,5 @@
 #include <iostream>
+#define NO_OF_VERTICES 4
 
 using namespace::std;
 
@@ -46,7 +47,7 @@ public:
     // Function for inserting an element in the stack
     void stackPush (int element) {
         if ( isFull() ) {
-            std::cout << "Stack overflow. Element not inserted.\n";
+            std::cout << "Stack overflow. Vertex not inserted.\n";
         }
         else {
             ( top )++;
@@ -115,7 +116,7 @@ public:
 
     void enQueue(int element) {
         if( isFull() ) { // Here, we have already checked whether the queue is full or not.
-            printf("Queue is full. Element not inserted\n");
+            printf("Queue is full. Vertex not inserted\n");
         }
         else {
             if( (rear + 1) == size) { // This is the condition where, due to dequeueing, the front of the queue is empty but the queue is full at the end, so we have to shift the elements to the front in order to make space for enqueueing.
@@ -154,7 +155,7 @@ public:
             int elementCt = 1;
             printf("From the front:\n");
             for(int index = ( front + 1 ); index <= (rear) ; index++) {
-                printf("Element %d is %d\n", elementCt, queueArray[index] );
+                printf("Vertex %d is %d\n", elementCt, queueArray[index] );
                 elementCt++;
             };
         };
@@ -165,33 +166,36 @@ public:
 
 //**************BFS(breadth-first search) code**************//
 
-void breadthFirstSearch(int sourceVertex, int noOfVertices, int** adjacencyMatrix) {
-// void breadthFirstSearch(int sourceVertex, int noOfVertices, int adjacencyMatrix[4][4]) {
-    Queue queue(noOfVertices - 1);
-    int dequeuedElement;
+void breadthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO_OF_VERTICES]) {
+    Queue queue(NO_OF_VERTICES);
+    int dequeuedVertex;
     
-    bool visited[noOfVertices - 1];
-    for(int index = 0; index < noOfVertices; index++) {
+    bool visited[NO_OF_VERTICES];
+    for(int index = 0; index < NO_OF_VERTICES; index++) {
         visited[index] = false;
     }    
 
     queue.enQueue(sourceVertex);
     visited[sourceVertex] = true;
 
-
     while( !queue.isEmpty() ) {
         
+        dequeuedVertex = queue.deQueue(); 
+        printf("%d, ", dequeuedVertex);
         
-        dequeuedElement = queue.deQueue(); 
-        printf("%d, ", dequeuedElement);
-        
-        // All edges from dequeuedElement to all other vertices first checked, and visited by enqueuing them. After that, in the next iteration of the while loop, we move to the next dequeued element, which is the adjacent element of the last dequeued element. So, this is effectively BFS.
-        for(int toVertex = 0; toVertex < noOfVertices; toVertex++) {
-            if( (adjacencyMatrix[dequeuedElement][toVertex] != 0) && (visited[toVertex] == false) ) {
-                queue.enQueue(toVertex);
-                visited[toVertex] = true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We enqueue them in the queue, and set their visited value as `true` so that duplicate vertices are not inserted into the queue.    
-
+        // All edges from dequeuedVertex to all other vertices first checked, and visited by enqueuing them. After that, in the next iteration of the while loop, we move to the next dequeued element, which is the adjacent element of the last dequeued element. So, this is effectively BFS.
+        for(int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++) {
+            
+            if( (adjacencyMatrix[dequeuedVertex][toVertex] != 0) && (visited[toVertex] == false) ) {
+                
+                if(visited[toVertex] == false) {
+                    
+                    queue.enQueue(toVertex); 
+                    visited[toVertex] = true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We enqueue them in the queue, and set their visited value as `true` so that duplicate vertices are not inserted into the queue.    
+                }
+            
             }       
+        
         }   
     }
 }
@@ -202,31 +206,30 @@ void breadthFirstSearch(int sourceVertex, int noOfVertices, int** adjacencyMatri
 
 //***************DFS(depth-first search) code******************//
 
-void depthFirstSearch(int sourceVertex, int noOfVertices, int** adjacencyMatrix) {
-    Stack stack(noOfVertices - 1);
-    int poppedElement;
+void depthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO_OF_VERTICES]) {
+    Stack stack(NO_OF_VERTICES);
+    int poppedVertex;
 
-    bool visited[noOfVertices - 1];    
-    for(int index = 0; index < noOfVertices; index++) {
+    bool visited[NO_OF_VERTICES];    
+    for(int index = 0; index < NO_OF_VERTICES; index++) {
         visited[index] = false;
     }    
 
-
     stack.stackPush(sourceVertex);
+    visited[sourceVertex] = true;
 
-    while(!stack.isEmpty()) {
+    while( !stack.isEmpty() ) {
         
-        poppedElement = stack.stackPop();
-        printf("%d, ", poppedElement);
+        poppedVertex = stack.stackPop();
+        printf("%d, ", poppedVertex);
 
         // Taking the case of the first element, it is popped from the stack, and all its adjacent elements are found using for-loop and pushed onto the stack, one-by-one. In the next iteration, the last element pushed onto the stack is popped and its children are found and pushed onto the stack. In the next to next iteration, one of the children's adjacent elements are found. This way Depth Traversal is happening, since the elements instead of getting queued are getting pushed onto stack and popped, resulting in the last child of the first adjacent node getting popped, instead of the other adjacent element of the source vertex getting popped.
-        for(int toVertex = 0; toVertex < noOfVertices; toVertex++) {
+        for(int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++) {
 
-            if( (adjacencyMatrix[poppedElement][toVertex] != 0) && (visited[toVertex] == false) ){
-                
+            if( (adjacencyMatrix[poppedVertex][toVertex] != 0) && (visited[toVertex] == false) ){
                 if(visited[toVertex] == false) {
                     stack.stackPush(toVertex);
-                    visited[toVertex] = true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We push them into the stack, and set their visited value as `true` so that duplicate vertices are not pushed onto the stack, resulting in a vertex getting visited twice in DFS.
+                    visited[toVertex] == true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We push them into the stack, and set their visited value as `true` so that duplicate vertices are not pushed onto the stack, resulting in a vertex getting visited twice in DFS. 
                 }
                 
             }
@@ -238,32 +241,13 @@ void depthFirstSearch(int sourceVertex, int noOfVertices, int** adjacencyMatrix)
 
 
 int main() {
+    int adjacencyMatrix[4][4] = {{0,1,1,0},{0,0,1,0},{1,0,0,1},{0,0,0,1}};
 
-    int noOfVertices;
-    cout << "Enter the number of vertices : ";
-    cin >> noOfVertices;
-
-    // int noOfVertices = 4;
-
-    int** adjacencyMatrix = new int*[noOfVertices - 1];
-
-    // int adjacencyMatrix[4][4] = {{0,1,1,0},{0,0,1,0},{1,0,0,1},{0,0,0,1}};
-
-    for(int index = 0; index < noOfVertices; index++) {
-        adjacencyMatrix[index] = new int[noOfVertices - 1];
-    }
-    
-    for(int fromVertex = 0; fromVertex < noOfVertices; fromVertex++) {
-        for(int toVertex = 0; toVertex < noOfVertices; toVertex++) {
-            printf("Enter 1 if there is an edge from  VERTEX `%d` to VERTEX `%d`. Else enter 0 : ", fromVertex, toVertex);
-            scanf("%d", &adjacencyMatrix[fromVertex][toVertex]);
-        }
-    }
 
     printf("THE ADJACENCY MATRIX IS\n");
 
-    for(int fromVertex = 0; fromVertex < noOfVertices; fromVertex++) {
-        for(int toVertex = 0; toVertex < noOfVertices; toVertex++) {
+    for(int fromVertex = 0; fromVertex < NO_OF_VERTICES; fromVertex++) {
+        for(int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++) {
             printf("%d, ", adjacencyMatrix[fromVertex][toVertex]);
         }
         printf("\n");
@@ -285,10 +269,10 @@ int main() {
 
         switch(choice) {
             case 1 : 
-                breadthFirstSearch(sourceVertex, noOfVertices, adjacencyMatrix);
+                breadthFirstSearch(sourceVertex, adjacencyMatrix);
                 break;
             case 2:
-                depthFirstSearch(sourceVertex, noOfVertices, adjacencyMatrix);
+                depthFirstSearch(sourceVertex, adjacencyMatrix);
                 break;
         }
         
