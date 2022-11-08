@@ -46,7 +46,8 @@ public:
     void traverse_dfs_on_a_vertex(int fromVertex){
         visited[fromVertex] = 1;
         traversal_array[traversal_array_index++] = fromVertex;
-        start_time[fromVertex] = time++;
+        start_time[fromVertex] = end_time[fromVertex] = time++;
+        // The end_time of the fromVertex is initialized over here because we are comparing the end_time in the if-else conditions in the below for-loop.
 
         for (int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++){
             if(!visited[toVertex] && adjacencyMatrix[fromVertex][toVertex]){
@@ -65,6 +66,7 @@ public:
                 }
             }
 
+            // The end_time of the fromVertex is dynamic, and is changing with each iteration of the for-loop. At the last iteration of the for loop, the end_time will be finalized.
             end_time[fromVertex] = time++;
         }
         
@@ -79,7 +81,7 @@ public:
         for (int vertex = 0; vertex < NO_OF_VERTICES; vertex++){
             // In this we start from the vertex `0`, so we are essentially choosing it as our source vertex for our DFS
             // But we have to run traverse_dfs_on_a_vertex on other vertices as well to take care of two conditions
-            //* 1. All edges are directed toward `0` so, no nodes were visited.
+            //* 1. All edges are directed toward `0` so, no other vertices were visited.
             //* 2. The DFS traversal happened, but a certain vertex wasn't visited because no edges were directed towards it from other nodes, so we traverse it manually and classify all its edges
             //* This is the concept of restarting the DFS so that all vertices are visited.
             if(!visited[vertex]){
