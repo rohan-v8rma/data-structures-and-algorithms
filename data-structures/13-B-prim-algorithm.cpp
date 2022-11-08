@@ -67,7 +67,7 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
     int edgeWeight[NO_OF_VERTICES];
     int connectedTo[NO_OF_VERTICES];
 
-    int verticesIncluded = 0;
+    int noOfVerticesIncluded = 0;
     int totalCostOfMst = 0;
 
     initializeAlgoArrays(includedInMst, edgeWeight, connectedTo);
@@ -75,11 +75,13 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
     //including 0th vertex
     int includeVertex = 0;
 
-    while(verticesIncluded != NO_OF_VERTICES) {
-        verticesIncluded++;
+    while(noOfVerticesIncluded != NO_OF_VERTICES) {
+        noOfVerticesIncluded++; // Incrementing the number of vertices included
         includedInMst[includeVertex] = true;
-        totalCostOfMst += edgeWeight[includeVertex]; 
-        edgeWeight[includeVertex] = INT_MAX; // Make edge weight of included index as maximum
+        
+        totalCostOfMst += edgeWeight[includeVertex]; // Adding the edge weight to cost of the MST
+        
+        edgeWeight[includeVertex] = INT_MAX; // Since we don't have to include an already included vertex again, we don't care about its edge weight. We make it INFINITY, so that other vertices can be CHOSEN as the vertex to be included. It is useful for every case because includeVertex has the lowest edge weight in each subsequent step, so this removes that edgeWeight, and allows selection of the next lowest edge weight.
 
 
         // Checking the edge weights of all the neighbours the included vertex
@@ -89,18 +91,21 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
             }
 
             // For this to work properly, the adjacency list has to be symmetrical (because spanning trees has non-directed edges)
-            if(includedInMst[toVertex] == false) {
-                if(adjacencyList[includeVertex][toVertex] < edgeWeight[toVertex]) {
+            if(includedInMst[toVertex] == false) { // We change the edge weights for vertices not included in MST, letting vertices that have been included keep edge weights of INFINITY.
+
+                if(adjacencyList[includeVertex][toVertex] < edgeWeight[toVertex]) { // If the new edge weight from the adjacency list is less than the pre-existing edge weight, then only do we store it.
                     edgeWeight[toVertex] = adjacencyList[includeVertex][toVertex];
-                    connectedTo[toVertex] = includeVertex;
+                    
+                    connectedTo[toVertex] = includeVertex; // Changing the connectedTo value from -1 to the `includeVertex`
                 }
             }
             
         }
 
+        // Making the edge weight of the already included vertex as INFINITY above is useful over here, when edgeWeight of other NOT included vertices are compared with the includeVertex iteratively.
         for(int index = 0; index < NO_OF_VERTICES; index++) {
             if(includedInMst[index] == false) {
-                if(edgeWeight[index] <= edgeWeight[includeVertex]) {
+                if(edgeWeight[index] < edgeWeight[includeVertex]) {
                     includeVertex = index;
                 }
             }
@@ -109,9 +114,6 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
 
 
     cout << "Total cost of MST : " << totalCostOfMst << "\n";
-    // for(int index = 0; index < NO_OF_VERTICES; index++) {
-        
-    // }
 }
 
 void initializeAdjacencyList(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
