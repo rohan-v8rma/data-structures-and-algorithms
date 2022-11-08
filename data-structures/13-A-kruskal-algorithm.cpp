@@ -3,6 +3,15 @@
 
 using namespace::std;
 
+/*
+In the case of Kruskal's algorithm, we use 2 arrays to implement the concept of disjoint sets.
+
+The first array is the `parentOf` array, which is used to find the "PARENT OF" a specific vertex
+
+The second array is the `rank` array, which helps decide which tree should be merged into which tree, so as to keep depth of the tree at a minimum. This allows the `findParent` operation to take less time.
+
+*/
+
 int findParent(int vertex, int parentOf[NO_OF_VERTICES]) {
     if(parentOf[vertex] == vertex) {
         return vertex;
@@ -18,8 +27,6 @@ void Union(int vertex1, int vertex2, int rankOf[NO_OF_VERTICES], int parentOf[NO
     
     vertex1 = findParent(vertex1, parentOf);
     vertex2 = findParent(vertex2, parentOf);
-
-    
 
     if(rankOf[vertex1] == rankOf[vertex2]) {
         parentOf[vertex2] = parentOf[vertex1];
