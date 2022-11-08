@@ -109,7 +109,8 @@ void sortEdgeArray(Edge** edgesArray) {
     
 }
 
-void krushkalAlgorithm(Edge** originalEdgesArray, int numOfVertices) {
+void kruskalAlgorithm(Edge** originalEdgesArray, int numOfVertices) {
+    cout << "\nUsing Kruskal's algorithm to creating a Minimum Spanning Tree....\n\n";
 
     int parentOf[NO_OF_VERTICES];
     int rankOf[NO_OF_VERTICES];
@@ -129,7 +130,7 @@ void krushkalAlgorithm(Edge** originalEdgesArray, int numOfVertices) {
         currentEdgePointer = originalEdgesArray[edgesArrayIndex];
 
         if(findParent(currentEdgePointer->vertex1, parentOf) == findParent(currentEdgePointer->vertex2, parentOf)) {
-            cout << currentEdgePointer << "NOT included\n";
+            cout << currentEdgePointer << " NOT included because it creates a cycle.\n";
         }        
         else {
             Union(currentEdgePointer->vertex1, currentEdgePointer->vertex2, rankOf, parentOf);
@@ -142,7 +143,7 @@ void krushkalAlgorithm(Edge** originalEdgesArray, int numOfVertices) {
 
     int costOfMst = 0;
 
-    cout << "Edges included : \n";
+    cout << "\nEdges included : \n";
 
     for(int index = 0; index < numOfVertices - 1; index++) {
         cout << minimumSpanningTree[index] << "\n";
@@ -164,6 +165,7 @@ int main() {
     edges[4] = new Edge(3, 4, 9);
     edges[5] = new Edge(1, 2, 3);
     edges[6] = new Edge(2, 4, 7);
+    edges[7] = new Edge(2, 0, 4);
 
     // swap(0, 1, edges);
     // sortEdgeArray(edges);
@@ -180,6 +182,6 @@ int main() {
     //     tempPtr = edges[++index];
     // }
 
-    krushkalAlgorithm(edges, NO_OF_VERTICES);
+    kruskalAlgorithm(edges, NO_OF_VERTICES);
     return 0;
 }
