@@ -80,9 +80,6 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
         includedInMst[includeVertex] = true;
         
         totalCostOfMst += edgeWeight[includeVertex]; // Adding the edge weight to cost of the MST
-        
-        edgeWeight[includeVertex] = INT_MAX; // Since we don't have to include an already included vertex again, we don't care about its edge weight. We make it INFINITY, so that other vertices can be CHOSEN as the vertex to be included. It is useful for every case because includeVertex has the lowest edge weight in each subsequent step, so this removes that edgeWeight, and allows selection of the next lowest edge weight.
-
 
         // Checking the edge weights of all the neighbours the included vertex
         for(int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++) {
@@ -91,7 +88,7 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
             }
 
             // For this to work properly, the adjacency list has to be symmetrical (because spanning trees has non-directed edges)
-            if(includedInMst[toVertex] == false) { // We change the edge weights for vertices not included in MST, letting vertices that have been included keep edge weights of INFINITY.
+            if(includedInMst[toVertex] == false) { // We change the edge weights for vertices not included in MST, letting vertices that have been included keep their edge weights.
 
                 if(adjacencyList[includeVertex][toVertex] < edgeWeight[toVertex]) { // If the new edge weight from the adjacency list is less than the pre-existing edge weight, then only do we store it.
                     edgeWeight[toVertex] = adjacencyList[includeVertex][toVertex];
@@ -102,10 +99,17 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
             
         }
 
+        // We take a new variable for comparing edge weights, BECAUSE if we compare with the edgeWeight of the last included vertex, that value will always be lesser.
+        int nextMinimalEdgeWeight = INT_MAX;
+
         // Making the edge weight of the already included vertex as INFINITY above is useful over here, when edgeWeight of other NOT included vertices are compared with the includeVertex iteratively.
         for(int index = 0; index < NO_OF_VERTICES; index++) {
+            if(index == includeVertex) { // If the index is same as the already included vertex, we continue
+                continue;
+            }
             if(includedInMst[index] == false) {
-                if(edgeWeight[index] < edgeWeight[includeVertex]) {
+                if(edgeWeight[index] < nextMinimalEdgeWeight) {
+                    nextMinimalEdgeWeight = edgeWeight[index];
                     includeVertex = index;
                 }
             }
