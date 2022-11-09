@@ -166,14 +166,9 @@ public:
 
 //**************BFS(breadth-first search) code**************//
 
-void breadthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO_OF_VERTICES]) {
+void breadthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO_OF_VERTICES], bool visited[NO_OF_VERTICES]) {
     Queue queue(NO_OF_VERTICES);
-    int dequeuedVertex;
-    
-    bool visited[NO_OF_VERTICES];
-    for(int index = 0; index < NO_OF_VERTICES; index++) {
-        visited[index] = false;
-    }    
+    int dequeuedVertex;    
 
     queue.enQueue(sourceVertex);
     visited[sourceVertex] = true;
@@ -192,7 +187,6 @@ void breadthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO
                 visited[toVertex] = true; // As we check which adjacent vertices (represented in each iteration of the for-loop by toVertex) have NOT been visited. We enqueue them in the queue, and set their visited value as `true` so that duplicate vertices are not inserted into the queue.    
             
             }       
-        
         }   
     }
 }
@@ -203,15 +197,10 @@ void breadthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO
 
 //***************DFS(depth-first search) code******************//
 
-void depthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO_OF_VERTICES]) {
+void depthFirstSearch(int sourceVertex, int adjacencyMatrix[NO_OF_VERTICES][NO_OF_VERTICES], bool visited[NO_OF_VERTICES]) {
     Stack stack(NO_OF_VERTICES);
     int poppedVertex;
-
-    bool visited[NO_OF_VERTICES];    
-    for(int index = 0; index < NO_OF_VERTICES; index++) {
-        visited[index] = false;
-    }    
-
+    
     stack.stackPush(sourceVertex);
     visited[sourceVertex] = true;
 
@@ -265,12 +254,34 @@ int main() {
         cout << "Enter the source vertex : ";
         cin >> sourceVertex;
 
+        // We have to keep the visited array outside of the function calls so that restarting the BFS or DFS from another node doesn't result in multiple printing of nodes.
+        bool visited[NO_OF_VERTICES];    
+        for(int index = 0; index < NO_OF_VERTICES; index++) {
+            visited[index] = false;
+        }
+
         switch(choice) {
-            case 1 : 
-                breadthFirstSearch(sourceVertex, adjacencyMatrix);
+            case 1: 
+                breadthFirstSearch(sourceVertex, adjacencyMatrix, visited);
+                
+                // RESTARTING the bfs on other vertices, so that all vertices are visited. 
+                // See concept of restarting here: https://www.youtube.com/watch?v=uT1p5Eiw9CE
+                for(int vertex = 0; vertex < NO_OF_VERTICES; vertex++) {
+                    if(visited[vertex] == false) { // We do this to check if restarting of BFS from this node is valid or NOT, because restarting BFS from an already visited node is NOT valid.
+                        breadthFirstSearch(vertex, adjacencyMatrix, visited);
+                    }
+                }
                 break;
-            case 2:
-                depthFirstSearch(sourceVertex, adjacencyMatrix);
+            
+            case 2:               
+                depthFirstSearch(sourceVertex, adjacencyMatrix, visited);
+                
+                // Restarting the dfs on other vertices, so that all vertices are visited.
+                for(int vertex = 0; vertex < NO_OF_VERTICES; vertex++) {
+                    if(visited[sourceVertex] == false) { // We do this to check if restarting of DFS from this node is valid or NOT, because restarting DFS from an already visited node is NOT valid.
+                        depthFirstSearch(vertex, adjacencyMatrix, visited);
+                    }
+                }
                 break;
         }
         
