@@ -167,6 +167,7 @@ void deleteRoot(MaxHeap* heapObj) {
     }
     //* We only need to call heapify on the first index, because that is the index where are changing. If a swap occurs in this heapify call, there will be more recursive calls to heapify the sub-trees that need heapifying.  
     heapify(heapObj->heap, (heapObj->lastIndex) + 1, index);        
+    //? We added 1 because size is always `the last index + 1`.
 }
 
 //? Time complexity of this function is O(N.log(N)) because it calls heapify N times (for each element in the array). Assuming worst case time complexity of heapify, which is log(N).
