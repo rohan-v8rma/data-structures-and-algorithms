@@ -121,7 +121,7 @@ public:
     stack(int size) {            
         this -> size = size;
         top = -1;
-        stackArray = (T*)( malloc( size * sizeof(T) ) );
+        stackArray = new T[size];
     }; 
     
 
@@ -190,9 +190,8 @@ Node* createExpressionTree(string infix) {
             while((operatorStack.stackArray)[operatorStack.top] != '(') {
                 n1 = nodeStack.stackPop();
                 n2 = nodeStack.stackPop(); // This was inserted in the stack earlier than n1 so technically this should be the left child of op.
-                op = operatorStack.stackPop();
 
-                nodeStack.stackPush(new Node(op, n2, n1));
+                nodeStack.stackPush(new Node(operatorStack.stackPop(), n2, n1));
             }
             
             operatorStack.stackPop(); // Popping '('
@@ -201,7 +200,7 @@ Node* createExpressionTree(string infix) {
             if( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) < precedOpCheck(current) ) {
                 operatorStack.stackPush(current);
             }
-            else if( ( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) == 4 ) && ( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) == precedOpCheck(current) ) ) {
+            else if( ( precedOpCheck( operatorStack.stackArray[operatorStack.top] ) == 4 ) && ( precedOpCheck(current) == 4 ) ) {
                 // When we have the current operator as '^' and the one on the top of the stack also as '^'. In this condition, the precedence of the current operator is higher due to its right associativity. So it will be pushed into the operator stack.
                 operatorStack.stackPush(current);
             }
