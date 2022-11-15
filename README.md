@@ -296,6 +296,8 @@ If any problem can be divided into sub-problems, which in turn are divided into 
 
 In this way, efficiency of the CPU can be enhanced. This method of solving a solution is referred to as dynamic programming.
 
+See examples of question solved using dynamic programming under the `dynamic-programming` directory.
+
 # Arrays
 
 An array is a homogenous data structure: all elements are of the same type. Also, the elements of an array are stored in adjacent memory locations. 
