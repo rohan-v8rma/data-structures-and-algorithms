@@ -10,7 +10,7 @@ In the case of Prim's algorithm, we use 3 arrays
 
 The first array is the `includedInMst` array, which has boolean values indicating whether a particular VERTEX has been included yet in the MST or not. All values are initialized to false.
 
-The second array is the `key` array, which has indices/VERTICES as keys and its values represents the edge weight to the VERTEX. This array is initalized with the first value as 0, meaning that it is the first VERTEX that we would be including the MST. The other values are initialized with INT_MAX, and once the first VERTEX is visited, these values are changed to the edge weight between the 0th vertex and the new vertex.
+The second array is the `edgeWeight` array, which has indices/VERTICES as keys and its values represents the edge weight to the VERTEX. This array is initalized with the first value as 0, meaning that it is the first VERTEX that we would be including the MST. The other values are initialized with INT_MAX, and once the first VERTEX is visited, these values are changed to the edge weight between the 0th vertex and the new vertex.
 
 The third array is the `connectedTo` array which again has indices/VERTICES as keys and its values help us determine the vertex at the other end of the edge connected to the key VERTEX. All values of this array are initialized with -1. These values are updated when the edge weights are updated in the second array.
 
@@ -79,15 +79,18 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
         noOfVerticesIncluded++; // Incrementing the number of vertices included
         includedInMst[includeVertex] = true;
         
-        totalCostOfMst += edgeWeight[includeVertex]; // Adding the edge weight to cost of the MST
+        if(edgeWeight[includeVertex] != 0) {
+            totalCostOfMst += edgeWeight[includeVertex]; // Adding the edge weight to cost of the MST
+            cout << "Edge from (" << connectedTo[includeVertex] << ") to (" << includeVertex << ") of weight (" << edgeWeight[includeVertex] << ")\n";
+        }       
 
-        // Checking the edge weights of all the neighbours the included vertex
+        // Checking the edge weights of all the neighbors the included vertex
         for(int toVertex = 0; toVertex < NO_OF_VERTICES; toVertex++) {
             if(includeVertex == toVertex) {
                 continue;
             }
 
-            // For this to work properly, the adjacency list has to be symmetrical (because spanning trees has non-directed edges)
+            // For this to work properly, the adjacency list has to be symmetrical (because spanning trees have undirected edges)
             if(includedInMst[toVertex] == false) { // We change the edge weights for vertices not included in MST, letting vertices that have been included keep their edge weights.
 
                 if(adjacencyList[includeVertex][toVertex] < edgeWeight[toVertex]) { // If the new edge weight from the adjacency list is less than the pre-existing edge weight, then only do we store it.
@@ -117,7 +120,7 @@ void primAlgorithm(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
     }
 
 
-    cout << "Total cost of MST : " << totalCostOfMst << "\n";
+    cout << "\nTotal cost of MST : " << totalCostOfMst << "\n";
 }
 
 void initializeAdjacencyList(int adjacencyList[NO_OF_VERTICES][NO_OF_VERTICES]) {
