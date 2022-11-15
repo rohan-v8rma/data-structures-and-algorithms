@@ -175,9 +175,10 @@ MaxHeap* buildMaxHeap(int *arr, int size) {
     
     int minIndex;
 
+    // We need to call heapify on every index of this array, instead of just once on root. Because calling heapify just once is the case when the rest of the tree is already a heap, just the root has been altered.
+    // Here we have a random array, so we need to call heapify individually on all the indices, so that both the left and right sub-trees are heapified.
     for(int index = size - 1; index >= 0; index--) {
         heapify(arr, size, index);
-        // Here, we are calling heapify on every element of the array.
     }
 
     MaxHeap* returnHeap = new MaxHeap();
