@@ -42,6 +42,7 @@
       - [**Output Restricted DE-Queue**](#output-restricted-de-queue)
     - [Drawbacks of Queue implemented using Arrays](#drawbacks-of-queue-implemented-using-arrays)
     - [Circular Queue](#circular-queue)
+      - [Need of `numOfElements` member in Circular Queues](#need-of-numofelements-member-in-circular-queues)
 - [Non-Linear Abstract Data Types](#non-linear-abstract-data-types)
   - [Graphs](#graphs)
     - [Graph Traversals](#graph-traversals)
@@ -292,7 +293,7 @@ As the recursive functions are calling itself again and again, addresses are add
 
 Dynamic Programming is a technique in computer programming that helps to efficiently solve a class of problems that have overlapping subproblems and optimal substructure property.
 
-If any problem can be divided into sub-problems, which in turn are divided into smaller sub-problems, and if there are overlapping among these subproblems, then the solutions to these subproblems can be saved for future reference. 
+If any problem can be divided into sub-problems, which in turn are divided into smaller sub-problems, and if there are overlapping among these sub-problems, then the solutions to these sub-problems can be saved for future reference. 
 
 In this way, efficiency of the CPU can be enhanced. This method of solving a solution is referred to as dynamic programming.
 
@@ -386,7 +387,7 @@ Stack is an ADT that manages data elements linearly but provides access to only 
 
 It is a Last-in-First-Out data structure.
 
-It consists of a an array whose size is set by the user and can't be changed along with a top pointer to point to the 'top of the stack' or the last filled element. 
+It consists of an array whose size is set by the user and can't be changed along with a top pointer to point to the 'top of the stack' or the last filled element. 
 
 ### Stack Operations
 
@@ -394,8 +395,8 @@ It consists of a an array whose size is set by the user and can't be changed alo
 - `push()` - for adding an element onto the top of the stack.
 - `pop()` - for deleting an element from the top of stack and returning the element. -1 is returned when `pop()` fails.
 - `peek()` - access the element at the top of the stack.
-- `isempty()` - for checking whether the stack is empty before trying to pop. 
-- `isfull()` - for checking whether the stack is full before trying to add an element.
+- `isEmpty()` - for checking whether the stack is empty before trying to pop. 
+- `isFull()` - for checking whether the stack is full before trying to add an element.
 
 ### Applications of Stacks
 
@@ -430,7 +431,7 @@ We can start entering elements from the end or the beginning of the array.
 
 We usually implement the `top` pointer in a simple manner where `top` is just an integer with a value of the index of topmost element. The value of `top` is kept as -1 if the stack is empty. 
 
-Stack implementation using Linked List
+TODO: Stack implementation using Linked List
 
 ---
 
@@ -465,9 +466,14 @@ When one element is queued, front is -1 and rear is 0.
 Whenever `front` = `rear`, queue is empty.
 
 
-- Using arrays: Here, enqueueing and dequeueing is an O(1) operation but when the queue isn't full and an element has to be enqueued then shifting has to take place which is an O(n) operation.
-- Using linked list: Here, both enqueueing and dequeueing is an O(1)
-- Using other ADTs
+1. Using arrays: Here, enqueueing and dequeueing is an *O(1)* operation. 
+
+   But, there can be a case where the queue isn't full, but due to dequeueing, there is extra space at the start of the array.
+   
+   In this situation, enqueueing an element requires shifting of elements towards the beginning of the array, making enqueueing an *O(N)* operation.
+
+2. Using linked list: Here, both enqueueing and dequeueing is an *O(1)*.
+3. Using other ADTs
 
 ### Double-Ended Queue
 
@@ -493,17 +499,30 @@ In restricted OUTPUT DE-Queue, dequeueing from end is NOT permitted, however enq
 A circular queue is the extended version of a regular queue where the last element is connected to the first element. Thus forming a circle-like structure. The circular queue solves the major limitations of the normal queue, listed [above](#drawbacks-of-queue-implemented-using-arrays).
 
 
-Coming to the indexing of the circular queue: 
+Coming to the indexing of the circular queue (the below indexing is based on an array that has space for 5 elements): 
 
 Unlike normal queues where initially, `front` = -1 and `rear` = -1, and when one element is queued, `front` is still -1 and `rear` is 0; in the case of circular queues, both `front` and `rear` are equal to the last index in the array.
-
-In a case where the circular queue has space for 5 elements, the last index would be 4.
 
 So initially, `front` = 4 and `rear` = 4.
 
 When one element is queued `front` is still 4 and `rear` is 0.
 
-Whenever `front` = `rear`, queue is empty.
+#### Need of `numOfElements` member in Circular Queues
+
+In a regular queue, when the queue is full, the `front` pointer is -1 and `rear` pointer is 4. So subtracting `rear` from `front` give us `size` which is 5, indicating that the queue is full.
+
+But, in the case of circular queues there are two possible situations when `front` = `rear`:
+
+- Either there are no elements in the circular queue.
+- Or, the circular queue is full. 
+  
+  If suppose after the circular queue is created (`front` = `rear` = 4), 5 elements are enqueued one-by-one, without any dequeueing taking place. At the end of this, the `front` pointer would be 4 and the `rear` pointer would also be 4. 
+
+  So, this leads to confusion whether the circular queue is empty or full.
+
+To solve this confusion, we need an additional member that tells us the number of elements in the circular queue. 
+
+This variable is incremented/decremented as elements are enqueued/dequeued.
 
 # Non-Linear Abstract Data Types
 
