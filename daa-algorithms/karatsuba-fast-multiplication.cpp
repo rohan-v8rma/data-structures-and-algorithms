@@ -46,7 +46,7 @@ int maxEven(int length1, int length2) {
 
 // Suppose we provide 2 n-bit numbers as arguments.
 // Base case when both num1 and num2 have digitCt = 1.
-int karatsubaFastMultiplication(int num1, int num2) {
+long int karatsubaFastMultiplication(int num1, int num2) {
     int highestDigitCt = maxEven(digitCt(num1), digitCt(num2)); // We need an even digit count.
     
     // Highest Digit Count can only be multiples of 2, starting from 2
@@ -62,35 +62,35 @@ int karatsubaFastMultiplication(int num1, int num2) {
         int numSplit =  pow(10, (highestDigitCt / 2));        
         
 
-        int a1 = (num1 / numSplit);
-        int a2 = (num1 % numSplit);
-        int b1 = (num2 / numSplit);
-        int b2 = (num2 % numSplit);
+        long int a1 = (num1 / numSplit);
+        long int a2 = (num1 % numSplit);
+        long int b1 = (num2 / numSplit);
+        long int b2 = (num2 % numSplit);
         cout << "Numbers are: ";
         cout << a1 << a2 << "," << b1 << b2 << endl;
         
-        int A = a1 * b1;
-        int B = a2 * b2;
-        int C = (a1 + a2) * (b1 + b2);
-        int D = C - A - B;
+        long int A = a1 * b1;
+        long int B = a2 * b2;
+        long int C = (a1 + a2) * (b1 + b2);
+        long int D = C - A - B;
         
         return ( (pow(10, highestDigitCt) * A) + ((numSplit) * D) + B );
     }    
 
     else {
-        int numSplit =  pow(10, (highestDigitCt / 2));        
+        long int numSplit =  pow(10, (highestDigitCt / 2));        
 
-        int a1 = (num1 / numSplit);
-        int a2 = (num1 % numSplit);
-        int b1 = (num2 / numSplit);
-        int b2 = (num2 % numSplit);
+        long int a1 = (num1 / numSplit);
+        long int a2 = (num1 % numSplit);
+        long int b1 = (num2 / numSplit);
+        long int b2 = (num2 % numSplit);
         
 
         // 3 Recursive Calls
-        int A = karatsubaFastMultiplication(a1, b1); // Recursive Call 1
-        int B = karatsubaFastMultiplication(a2, b2); // Recursive Call 2
-        int C = karatsubaFastMultiplication((a1 + a2), (b1 + b2)); // Recurive Call 3
-        int D = C - A - B;
+        long int A = karatsubaFastMultiplication(a1, b1); // Recursive Call 1
+        long int B = karatsubaFastMultiplication(a2, b2); // Recursive Call 2
+        long int C = karatsubaFastMultiplication((a1 + a2), (b1 + b2)); // Recurive Call 3
+        long int D = C - A - B;
 
         return ( (pow(10, highestDigitCt) * A) + ((numSplit) * D) + B );
     }
@@ -104,7 +104,9 @@ int main() {
     printf("Result is : %d\n\n", karatsubaFastMultiplication(4, 12));
     printf("Result is : %d\n\n", karatsubaFastMultiplication(0, 0));
 
-    printf("Result is : %d\n\n", karatsubaFastMultiplication(3454, 123));
+
+    // Multiplication of two 7 digit numbers.
+    printf("Result is : %ld\n\n", karatsubaFastMultiplication(1234567, 1234567));
 
     return 0;
 }
