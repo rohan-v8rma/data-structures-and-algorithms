@@ -7,6 +7,9 @@ long long int fibonacciNumber(int nthTerm) {
     long long int* fibonacciArr = new long long int[nthTerm + 1];
 
     for(int index = 0; index <= nthTerm; index++) {
+        
+        cout << "Computing fibonacci term number (" << index << ")";
+
         if(index == 0) {
             fibonacciArr[index] = 0;
         }

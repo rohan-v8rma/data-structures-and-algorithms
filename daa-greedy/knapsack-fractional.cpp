@@ -35,7 +35,7 @@ int main() {
     float* itemProfit;
     float* includeFraction;
 
-    cout << "How many items in knapsack? : ";
+    cout << "\nHow many items in knapsack? : ";
     cin >> numOfItems;
 
     cout << "Knapsack weight capacity? : ";
@@ -80,7 +80,7 @@ int main() {
     // Variable for calculating total knapsack value
     float knapsackValue = 0;
 
-    printf("\nContents of knapsack : \n\n");
+    printf("\n(Rohan Verma - 21BCE0498)\nContents of knapsack : \n\n");
 
     for(int index = 0; index < numOfItems; index++) {
         if(includeFraction[index] == 0) {
