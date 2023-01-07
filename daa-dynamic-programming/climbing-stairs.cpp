@@ -21,11 +21,15 @@ int climbStairsUsingRecursion(int numberOfSteps) {
 
 
 int climbStairsUsingDynamicProgramming(int numberOfSteps) {
-    int* climbStairsWayArray = new int[numberOfSteps + 1];
+    int* climbStairsWayArray = new int[numberOfSteps + 1]; 
+    // The value at the `n`th index position represents the number of ways there are to climb `n` number of steps.
 
     for(int index = 0; index <= numberOfSteps; index++) {
         if(index == 0) {
-            climbStairsWayArray[index] = 1;
+            climbStairsWayArray[index] = 1; 
+            // This is the base case that we manually specify. We say that there is 1 way to climb 0 steps, which doesn't make sense logically. But this is to satisfy the case that climbing 2 steps has 1+1 possible ways.
+            
+            // Another approach would be to remove the 0 base case and mention that there is 1 way to climb 1 step, and 2 ways to calculate 2 steps.
         }
         else if(index == 1) { 
         // Separate condition for index = 1 because index - 2 for index = 1 will lead to negative index
