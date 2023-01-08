@@ -4,6 +4,7 @@ using namespace::std;
 // N represents the number of Vertices.
 const int N = 5;
 
+//? This is a simplified case of M-coloring problem without any backtracking; since number of colors is equal to number of vertices, so each leaf node is a guaranteed solution.
 // Let the color numbers start from 0. Uncolored vertices have color as -1.
 // In this way, the color numbers range from 0 to `N - 1` (4, in this case).
 

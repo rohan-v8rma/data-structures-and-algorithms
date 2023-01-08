@@ -30,6 +30,7 @@ bool colorVertex(int vertexNum, bool graph[N][N], int m, int n, int* colorArray)
     
     for(int color = 0; color < m; color++) {
         if(coloringPossible(vertexNum, color, graph, n, colorArray)) {
+            //! Imagine this as a tree structure where; before following a particular branch of the tree in our attempt to find a solution, we first check whether the branch we are about to select has a dead end. Dead end means the color we are trying to use would violate the constraints of the graph coloring problem.
 
             colorArray[vertexNum] = color; // Since coloring is possible, we use that color.
 
