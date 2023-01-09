@@ -7,14 +7,15 @@
   - [What is Auxiliary Space?](#what-is-auxiliary-space)
   - [Using Auxiliary Space as a criteria instead of Space Complexity.](#using-auxiliary-space-as-a-criteria-instead-of-space-complexity)
 - [Recursion](#recursion)
-  - [How to understand & approach problems](#how-to-understand--approach-problems)
+  - [How to understand \& approach problems](#how-to-understand--approach-problems)
+  - [Stack overflow error in Recursion](#stack-overflow-error-in-recursion)
   - [Recursion Tree](#recursion-tree)
-  - [Types of Recurrence Relation](#types-of-recurrence-relation)
-    - [Linear Recurrence Relation](#linear-recurrence-relation)
-    - [Divide & Conquer Recurrence Relation](#divide--conquer-recurrence-relation)
   - [Tail-end recursive functions](#tail-end-recursive-functions)
     - [Factorial calculator using regular vs. tail recursion](#factorial-calculator-using-regular-vs-tail-recursion)
   - [How function calls work in languages](#how-function-calls-work-in-languages)
+  - [Types of Recurrence Relations](#types-of-recurrence-relations)
+    - [Linear Recurrence Relation](#linear-recurrence-relation)
+    - [Divide \& Conquer Recurrence Relation](#divide--conquer-recurrence-relation)
   - [Complexity Analysis in Recursive Algorithms](#complexity-analysis-in-recursive-algorithms)
     - [Space Complexity (Auxiliary Space in ACTUALITY)](#space-complexity-auxiliary-space-in-actuality)
   - [Tower of Hanoi problem](#tower-of-hanoi-problem)
@@ -57,7 +58,6 @@
     - [Binary Trees](#binary-trees)
     - [Binary Search Trees](#binary-search-trees)
     - [AVL Trees (Self-balancing BSTs)](#avl-trees-self-balancing-bsts)
-    - [Tree Searching Algorithms (TODO)](#tree-searching-algorithms-todo)
     - [Heaps](#heaps)
       - [Heap Sort](#heap-sort)
       - [Priority Queues using Heaps](#priority-queues-using-heaps)
@@ -70,22 +70,22 @@
   - [Bubble Sort (Sinking Sort OR Exchange Sort)](#bubble-sort-sinking-sort-or-exchange-sort)
     - [Time Complexity](#time-complexity-1)
       - [Best case - O(N)](#best-case---on)
-      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup)
+      - [Worst case - O(N2)](#worst-case---on2)
   - [Selection Sort](#selection-sort)
     - [Why use Selection Sort?](#why-use-selection-sort)
     - [Time Complexity](#time-complexity-2)
-      - [Best case - O(N<sup>2</sup>) & Worst case - O(N<sup>2</sup>)](#best-case---onsup2sup--worst-case---onsup2sup)
+      - [Best case - O(N2) \& Worst case - O(N2)](#best-case---on2--worst-case---on2)
   - [Insertion Sort](#insertion-sort)
     - [Why use Insertion Sort?](#why-use-insertion-sort)
     - [Time Complexity](#time-complexity-3)
       - [Best case - O(N)](#best-case---on-1)
-      - [Worst case - O(N<sup>2</sup>)](#worst-case---onsup2sup-1)
+      - [Worst case - O(N2)](#worst-case---on2-1)
   - [Merge Sort](#merge-sort)
     - [Steps followed in Merge Sort](#steps-followed-in-merge-sort)
     - [Time Complexity of Merge Sort](#time-complexity-of-merge-sort)
       - [Solving using Recursion Tree Method](#solving-using-recursion-tree-method)
       - [Solving Recurrence Relation using Akra-Bazzi Theorem](#solving-recurrence-relation-using-akra-bazzi-theorem)
-      - [Best case - O(N.logN) & Worst case - O(N.logN)](#best-case---onlogn--worst-case---onlogn)
+      - [Best case - O(N.logN) \& Worst case - O(N.logN)](#best-case---onlogn--worst-case---onlogn)
     - [Space Complexity of Merge Sort](#space-complexity-of-merge-sort)
       - [In-place Merge Sort](#in-place-merge-sort)
       - [Not in-place Merge Sort](#not-in-place-merge-sort)
@@ -95,7 +95,7 @@
     - [Time Complexity](#time-complexity-4)
       - [Recurrence Relation](#recurrence-relation)
       - [Best case - O(N.logN)](#best-case---onlogn)
-      - [Worst case - O( N<sup>2</sup> )](#worst-case---o-nsup2sup-)
+      - [Worst case - O( N2 )](#worst-case---o-n2-)
     - [Why use Quick Sort?](#why-use-quick-sort)
   - [Hybrid Sorting Algorithms](#hybrid-sorting-algorithms)
 - [Searching Algorithms](#searching-algorithms)
@@ -103,15 +103,17 @@
   - [Time Complexity](#time-complexity-5)
     - [Recurrence Relation](#recurrence-relation-1)
     - [Best case - O(1)](#best-case---o1)
-    - [Worst case - O(log<sub>2</sub>N)](#worst-case---ologsub2subn)
+    - [Worst case - O(log2N)](#worst-case---olog2n)
 - [Rotated Binary Search](#rotated-binary-search)
 - [Hashing (using Hash Functions :P)](#hashing-using-hash-functions-p)
+  - [Steps in Hash Functions](#steps-in-hash-functions)
   - [Use of Hashing](#use-of-hashing)
-  - [Hash Table](#hash-table)
+    - [Hash Tables](#hash-tables)
+    - [Data Encryption (Pre-image Resistance)](#data-encryption-pre-image-resistance)
   - [Collisions in Hashing](#collisions-in-hashing)
     - [1. Collision resolution by chaining](#1-collision-resolution-by-chaining)
     - [2. Open Addressing: Linear/Quadratic Probing and Double Hashing](#2-open-addressing-linearquadratic-probing-and-double-hashing)
-- [Tips & Tricks for DSA](#tips--tricks-for-dsa)
+- [Tips \& Tricks for DSA](#tips--tricks-for-dsa)
   - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
   - [Calculating the approximate number of times a loop runs](#calculating-the-approximate-number-of-times-a-loop-runs)
   - [Calculating `N`th Fibonacci number (regular recursion vs. recurrence relation formula)](#calculating-nth-fibonacci-number-regular-recursion-vs-recurrence-relation-formula)
@@ -173,43 +175,42 @@ Space complexity of all these sorting algorithms is O(n) though.
 - See how and what type of values are returned at each step. 
 - See at which step, the function call actually finally returns a value.
 
+## Stack overflow error in Recursion
+
+Why does an error (*stack overflow*) occur in the case of infinite recursion, when there is no *base condition*?
+
+Consider the following code snippet:
+
+```cpp
+1  void func() {
+2    printf("hello\n");
+3    func();
+4
+5    return;
+6  }
+7  
+8  int main() {
+9    func();  
+10 }
+```
+
+In this program, the first function call to `func` would get stored in the call stack along with the line number of `int main` at which the control has to be returned after the call to `func` is over.
+
+Similarly, the internal calls to `func` will also be stored in the stack frame with the *line number 3*, which is where the program flow has to continue from once the internal calls to `func` are over.
+
+This stack memory is not unlimited and after a finite amount of recursive calls, the stack memory would get full; and a ***stack overflow*** error would occur.
+
 ## Recursion Tree
 
+The recursion tree looks somewhat similar to backtracking because once the base condition is reached, one-by-one the control is returned back up the recursion tree; and finally to the original caller.
+
+> ***Note***: Backtracking is performed when: 
+> - A viable solution is obtained.
+> 
+>   OR
+> - The constraints of the problem we are solving are violated.
+
 <!-- TODO -->
-
-## Types of Recurrence Relation
-
-### Linear Recurrence Relation
-
-Fibonacci Recurrence Relation
-```
-Fibo(N) = Fibo(N - 1) + Fibo(N - 2)
-``` 
-
-Here, the argument is getting reduced LINEARLY, which is why it is referred to as Linear Recurrence Relation.
-
-This is quite inefficient because the argument is getting reduced very slowly and at a constant rate. In comparison, in Divide & Conquer Recurrence Relations, division/multiplication by a factor results in exponential change which is much faster and efficient.
-
-### Divide & Conquer Recurrence Relation
-
-Divide-and-conquer algorithms consist of:
-1. Dividing the problem into smaller sub-problems. 
-2. Solving those sub-problems
-3. Combining the solutions for those smaller sub-problems to solve the original problem
-   
-NOTE that the sub-problems should be of the same type as the main problem. 
-   
-For example, if the main problem is of SORTING an array, the sub-problem can ONLY be SORTING a part of the array.
-
-Recurrence Relation for Binary Search
-```
-Search(N) = O(1) + Search(N/2)
-```
-Here, when we try to search for an element using Binary Search, a comparison takes place (in constant time) between the element to be found and the element in the middle of the array, which explains the **O(1)** term.
-
-After it is determined whether the element to be found is greater or lesser than the middle point, a `Search` operation is again initiated at either the first or second half of the array, which explains the **Search(N/2)** term.
-
-Since the search space is DIVIDED by a factor, it is referred to as a Divide & Conquer Recurrence Relation.
 
 ## Tail-end recursive functions
  
@@ -276,6 +277,40 @@ Here, as we can see, only the parameters of the function that is getting returne
 While the function is not finished executing, it will remain in stack.
 
 When a function finishes executing, it is removed from the stack and the flow of the program is returned to the point where the function was called.
+
+## Types of Recurrence Relations
+
+### Linear Recurrence Relation
+
+Fibonacci Recurrence Relation
+```
+Fibo(N) = Fibo(N - 1) + Fibo(N - 2)
+``` 
+
+Here, the argument is getting reduced LINEARLY, which is why it is referred to as Linear Recurrence Relation.
+
+This is quite inefficient because the argument is getting reduced very slowly and at a constant rate. In comparison, in Divide & Conquer Recurrence Relations, division/multiplication by a factor results in exponential change which is much faster and efficient.
+
+### Divide & Conquer Recurrence Relation
+
+Divide-and-conquer algorithms consist of:
+1. Dividing the problem into smaller sub-problems. 
+2. Solving those sub-problems
+3. Combining the solutions for those smaller sub-problems to solve the original problem
+   
+NOTE that the sub-problems should be of the same type as the main problem. 
+   
+For example, if the main problem is of SORTING an array, the sub-problem can ONLY be SORTING a part of the array.
+
+Recurrence Relation for Binary Search
+```
+Search(N) = O(1) + Search(N/2)
+```
+Here, when we try to search for an element using Binary Search, a comparison takes place (in constant time) between the element to be found and the element in the middle of the array, which explains the **O(1)** term.
+
+After it is determined whether the element to be found is greater or lesser than the middle point, a `Search` operation is again initiated at either the first or second half of the array, which explains the **Search(N/2)** term.
+
+Since the search space is DIVIDED by a factor, it is referred to as a Divide & Conquer Recurrence Relation.
 
 ## Complexity Analysis in Recursive Algorithms
 
@@ -643,11 +678,6 @@ In the example above, a level-order traversal starting at the root would visit t
 ![](images/AVL-trees-4.jpg)
 ![](images/AVL-trees-5.jpg)
 
-### Tree Searching Algorithms (TODO)
-
-- Depth-First Search
-- Breadth-First Search
-
 ---
 
 ### Heaps
@@ -991,15 +1021,19 @@ A good hash function uses a **one-way** hashing algorithm (the hash cannot be co
 > 
 > This is because unlike Linear Search and Binary Search, which perform lookups/search with time complexity *O(N)* and *O(log(N))* respectively, Hashing allows lookups in constant time i.e. *O(1)*, since the index-position of the value of a particular key can be figured out using a simple calculation ***(passing the key into the hashing function, to get the hash value)***.
 
+## Steps in Hash Functions
+
+There are two components of any hash function:
+
+1. **Hash Code**: Converts the key (`string`,`char`, object, etc) into an integer.
+2. **Compression Map**: This part of the function is responsible for getting the hash code (integral value) into the range of the hash table indices. Some examples of these are: `mod10`, `mod11`, etcetera.
+
 ## Use of Hashing
 
-- To make Hash Tables as shown [below](#hash-table).
+### Hash Tables
 
-- In data encryption. Passwords can be stored in the form of their hash so that even if a database is breached, plaintext passwords are NOT accessible.
+Hash Tables utilize hashing to form a data structure.
 
-  This is because as mentioned before, good hashing functions don't allow conversion of hash-values back to the original keys.
-
-## Hash Table
 
 In a hash table, **hashes** obtained by passing keys through hashing functions, are taken as indices.
 
@@ -1012,6 +1046,16 @@ Let `k` be a key and `h(x)` be a hash function.
 Here, `h(k)` will give us a new index to store the element `v`, which is linked with `k`.
 
 ![](images/hash-table.png)
+
+This system of organizing data results in a very fast way to find data efficiently. This is because since each key is mapped to a unique value – once we know a key then we can find the associated value instantly.
+
+### Data Encryption (Pre-image Resistance)
+
+In data encryption. Passwords can be stored in the form of their hash so that even if a database is breached, plaintext passwords are NOT accessible.
+
+This is because as mentioned before, good hashing functions don't allow conversion of hash-values back to the original keys, known as *pre-image resistance*.
+
+> ***Note:*** **Pre-image resistance** is the property of a hash function that it is hard to invert, i.e., given an element in the range of a hash function, it should be computationally infeasible to find an input that maps to that element.
 
 ## Collisions in Hashing
 
