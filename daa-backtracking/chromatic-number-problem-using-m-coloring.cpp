@@ -1,12 +1,6 @@
 #include <iostream>
 using namespace std;
 
-/* 
-The following approach to graph coloring is different from the previous two. 
-
-This is because we had no limitations on the number of available colors in the last 2 approaches, but here we are limited to M colors. We need to determine whether M colors are sufficient for coloring the graph.
-*/
-
 #define N 14
 
 bool coloringPossible(int vertexNum, int colorTBU, bool graph[N][N], int n, int* colorArray) {
