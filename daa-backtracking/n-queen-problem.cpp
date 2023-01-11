@@ -36,31 +36,21 @@ void visualizeSolution(int* queenColumnArr, int boardSize, int solutionNumber) {
     printf("\n");
 }
 
+void compactVisualization(int* queenColumnArr, int boardSize, int solutionNumber) {
+    if(solutionNumber == 1) { // For spacing after the input line.
+        printf("\n");
+    }
+    printf("|");
+    for(int queenRow = 0; queenRow < boardSize; queenRow++) {
+        // Since limit of our function is theoretically 100 (0-99)       
+        printf(" %2d |", queenColumnArr[queenRow]);
+    }
+
+    printf("\n");
+}
+
 bool possibleToPlace(int queenRowNum, int potentialColumn, int boardSize, int* queenColumnArr) {
 
-    /*
-    //* 1st version of the for-loop (where are checking all the queens, even unplaced ones; which is unnecessary)
-    for(int attackingQueenRow = 0; attackingQueenRow < boardSize; attackingQueenRow++) {
-
-        //? No need to check for this since we haven't even placed this queen yet
-        // if(attackingQueenRow == queenRowNum) { 
-        //    continue; // A queen cannot attack itself!
-        // }
-
-        if(queenColumnArr[attackingQueenRow] != -1) { // Meaning the queen is placed
-            // No need to check for row attack since each queen is being placed in different row.
-
-            // Checking for column attack
-
-            // Checking for principal diagonal attack
-
-            // Checking for secondary diagonal attack
-        }
-
-    }
-    */
-    
-    //* 2nd version of the for-loop
     // We know that only the queens of the previous rows have been placed till now, so we should check for attacks only from those queens.
     for(int attackingQueenRow = 0; attackingQueenRow < queenRowNum; attackingQueenRow++) { 
         
@@ -113,6 +103,7 @@ void placeQueen(int queenRowNum, int boardSize, int* queenColumnArr, int* soluti
         ++*solutionCt;
         
         visualizeSolution(queenColumnArr, boardSize, *solutionCt);
+        // compactVisualization(queenColumnArr, boardSize, *solutionCt);
 
         return; // Backtracking after finding a solution
     }
@@ -157,6 +148,7 @@ void nQueenProblem() {
     }
 
     placeQueen(0, n, queenColumnArray, solutionCt);
+
     if(*solutionCt == 0) {
         printf("There are NO possible solutions.\n");    
     }
