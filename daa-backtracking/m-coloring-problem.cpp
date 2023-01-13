@@ -7,7 +7,7 @@ The following approach to graph coloring is different from the previous two.
 This is because we had no limitations on the number of available colors in the last 2 approaches, but here we are limited to M colors. We need to determine whether M colors are sufficient for coloring the graph.
 */
 
-const int N = 11;
+#define N 11
 
 bool coloringPossible(int vertexNum, int colorTBU, bool graph[N][N], int n, int* colorArray) {
     for(int toVertex = 0; toVertex < n; toVertex++) {
