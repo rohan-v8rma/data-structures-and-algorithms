@@ -10,10 +10,10 @@ int max(int n1, int n2) {
 void visualizeTabulation(int* profitArr, int* weightArr, int** table, int numOfObjects, int capacity) {
     for(int n = 0; n <= numOfObjects; n++) {
         if( n == 0 ) {
-            cout << " pi | wi | ";
+            cout << "\n pi | wi || ";
         }
         else {
-            printf(" %2d | %2d | ", profitArr[n], weightArr[n]);        
+            printf(" %2d | %2d || ", profitArr[n], weightArr[n]);        
         }
 
         for(int w = 0; w <= capacity; w++) {
@@ -55,36 +55,36 @@ void knapsack01() {
     int numOfObjects;
     
     //* Code for taking input of the details of the objects
-    // cout << "Number of objects : ";
-    // cin >> numOfObjects;
+    cout << "Number of objects : ";
+    cin >> numOfObjects;
 
-    // cout << "Enter objects in the following form (profit weight):\n2 3\n\n";
+    cout << "Enter objects in the following form (profit weight):\n2 3\n\n";
 
-    // int* profitArr = new int[numOfObjects + 1];
-    // int* weightArr = new int[numOfObjects + 1];
+    int* profitArr = new int[numOfObjects + 1];
+    int* weightArr = new int[numOfObjects + 1];
 
-    // for(int index = 1; index <= numOfObjects; index++) {
-    //     cout << Object << (index + 1) :;
-    //     cin >> profitArr[index] >> weightArr[index];
-    // }
+    for(int index = 1; index <= numOfObjects; index++) {
+        cout << "Object" << (index) << ": ";
+        cin >> profitArr[index] >> weightArr[index];
+    }
 
 
     int capacity;
     //* Code for taking input of the capacity of knapsack
-    // cout << "Enter the capacity of the knapsack: ";
-    // cin >> capacity;
+    cout << "Enter the capacity of the knapsack: ";
+    cin >> capacity;
 
 
     //* Values for testing the algorithm w/o input
-    numOfObjects = 5;
-    capacity = 8;
-    int profitArr[6] = {0, 1, 2, 5, 6, 2};
-    int weightArr[6] = {0, 2, 3, 4, 5, 2};
+    // numOfObjects = 5;
+    // capacity = 8;
+    // int profitArr[6] = {0, 1, 2, 5, 6, 2};
+    // int weightArr[6] = {0, 2, 3, 4, 5, 2};
 
 
-    int** profitValues = new int*[numOfObjects + 1];
+    int** profitTable = new int*[numOfObjects + 1];
     for(int index = 0; index <= numOfObjects; index++) {
-        profitValues[index] = new int[capacity + 1];
+        profitTable[index] = new int[capacity + 1];
     }
 
 
@@ -94,19 +94,19 @@ void knapsack01() {
         for(int w = 0; w <= capacity; w++) {
 
             if( n == 0 || w == 0 ) { // No objects are considered, so profit cannot be non-zero
-                profitValues[n][w] = 0;
+                profitTable[n][w] = 0;
             }
             else if( w - weightArr[n] >= 0 ) { // If the current assumed knapsack capacity allows including the current object
-                profitValues[n][w] = max(profitValues[n - 1][w], profitValues[n - 1][w - weightArr[n]] + profitArr[n]);
+                profitTable[n][w] = max(profitTable[n - 1][w], profitTable[n - 1][w - weightArr[n]] + profitArr[n]);
             }
             else { // As a last resort, we just take the profit value of the previous set of objects, of the same knapsack capacity
-                profitValues[n][w] = profitValues[n - 1][w];
+                profitTable[n][w] = profitTable[n - 1][w];
             }
             
         }
     }
 
-    visualizeTabulation(profitArr, weightArr, profitValues, numOfObjects, capacity);
+    visualizeTabulation(profitArr, weightArr, profitTable, numOfObjects, capacity);
 
 
     int solutionArr[numOfObjects + 1];
@@ -124,7 +124,7 @@ void knapsack01() {
             printf("Ob%2d, ", objectNum);
         }
     }
-    printSolutions(numOfObjects, capacity, solutionArr, profitValues, numOfObjects, profitArr, weightArr);
+    printSolutions(numOfObjects, capacity, solutionArr, profitTable, numOfObjects, profitArr, weightArr);
 }
 
 int main() {
