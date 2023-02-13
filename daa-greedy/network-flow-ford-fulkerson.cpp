@@ -6,22 +6,30 @@ using namespace::std;
 
 //? Path matrix is a binary matrix used to tell us the route of the augmented path
 
-int sols = 0;
+
+int* allocateSpaceForArray(int numOfElements) {
+    return new int[numOfElements];
+}
 
 // Function for dynamically allocating space for matrices
 int** allocateSpaceForMatrix(int numOfVertices) {
     int** matrix = new int*[numOfVertices];
     for(int index = 0; index < numOfVertices; index++) {
-        matrix[index] = new int[numOfVertices];
+        matrix[index] = allocateSpaceForArray(numOfVertices);
     }
 
     return matrix;
 }
 
-void allPositionsZero(int** matrix, int numOfVertices) {
+void allArrayPositionsZero(int* array, int numOfElements) {
+    for(int index = 0; index < numOfElements; index++) {
+        array[index] = 0;
+    } 
+}
+
+void allMatrixPositionsZero(int** matrix, int numOfVertices) {
     for(int i = 0; i < numOfVertices; i++) {
         for(int j = 0; j < numOfVertices; j++) {
-            // cout << "hello";
             matrix[i][j] = 0;
         }
     }
@@ -30,50 +38,63 @@ void allPositionsZero(int** matrix, int numOfVertices) {
 void printMatrix(int **matrix, int numOfVertices) {
     for(int i = 0; i < 10; i++) {
         for(int j = 0; j < 10; j++) {
-            cout << matrix[i][j] << " ";
+            printf("%2d ", matrix[i][j]);
         }
         cout << endl;
     }
     cout << endl;
 }
 
-int findAugmentedPath(int fromVertex, int** pathMatrix, int** capacities, int numOfVertices) {
-    
+int findAugmentedPath(int fromVertex, int** pathMatrix, int** capacities, int* visited, int numOfVertices) {
+    // Marking the fromVertex as visited upon entering the recursive call to avoid an infinite cycle of visiting the same vertices without reaching the sink vertex.
+    visited[fromVertex] = 1;
+
     // Base case (Sink vertex reached)
     if(fromVertex == numOfVertices - 1) {
-        // printMatrix(pathMatrix, numOfVertices);
         return 1; // Augmented path found
     }
+    
 
     for(int from = fromVertex; from < numOfVertices; from++) {
-    
+
         // Checking backwards for faster finding of path
         for(int to = numOfVertices - 1; to >= 0; to--) {
         // for(int to = 0; to < numOfVertices; to++) {
 
-            if(sols == 2) {
-                cout << from << " " << to << endl;
-            } 
-
             // If capacity is left, b/w from and to vertex
-            if(capacities[from][to] != 0) {
+            if( (capacities[from][to] != 0) && (visited[to] == 0) ) {
 
                 // Building up the augmented path
                 pathMatrix[from][to] = 1;
 
                 // Augmented path found in lower recursive calls
-                if(findAugmentedPath(to, pathMatrix, capacities, numOfVertices)) {
+                if(findAugmentedPath(to, pathMatrix, capacities, visited, numOfVertices)) {
                     return 1;
                 }
 
                 // Backtracking since augmented path is not possible from the `to` vertex
                 pathMatrix[from][to] = 0;
             }
-        }
+        } 
     }
 
+    // Marking the fromVertex as unmarked since we weren't able to find augmented path by visiting it.
+    visited[fromVertex] = 0;
     // If control reaches here, no augmented path was found, so we return 0
     return 0;
+}
+
+void printAugmentedPath(int** pathMatrix, int numOfVertices) {
+    for(int from = 0; from < numOfVertices; from++) {
+        for(int to = 0; to < numOfVertices; to++) {
+            if(pathMatrix[from][to] == 1) {
+                cout << char(from + 65) << "->";
+                break;
+            }
+        }   
+    }
+
+    cout << char(numOfVertices - 1 + 65) << endl;
 }
 
 int findAugmentedCap(int** pathMatrix, int** capacities, int numOfVertices) {
@@ -86,7 +107,7 @@ int findAugmentedCap(int** pathMatrix, int** capacities, int numOfVertices) {
         }
     }
     
-    cout << augmentedCap << endl;
+    cout << "Augmented capacity: " << augmentedCap << endl;
     return augmentedCap;
 }
 
@@ -101,9 +122,6 @@ void updateCapacities(int augmentedCap, int** pathMatrix, int** capacities, int 
             }
         }
     }
-    printMatrix(pathMatrix, numOfVertices);
-    printMatrix(capacities, numOfVertices);
-    sols++;
 }
 
 
@@ -112,7 +130,7 @@ void fordFulkerson(int numOfVertices, int numOfFlows) {
     int** capacities = allocateSpaceForMatrix(numOfVertices);
 
     // Initializing all to be 0 before adding the capacities
-    allPositionsZero(capacities, numOfVertices);
+    allMatrixPositionsZero(capacities, numOfVertices);
 
     //* Taking input of the non-zero capacities
     // int from;
@@ -148,74 +166,52 @@ void fordFulkerson(int numOfVertices, int numOfFlows) {
 
     capacities[8][9] = 12;
 
+    int capOfSource = 0;
+    // Total flow is equal to total outflow out of source
+    for(int toVertex = 0; toVertex < numOfVertices; toVertex++) {
+        capOfSource += capacities[0][toVertex];
+    }    
 
     int** pathMatrix = allocateSpaceForMatrix(numOfVertices);
-    allPositionsZero(pathMatrix, numOfVertices);
+    allMatrixPositionsZero(pathMatrix, numOfVertices);
 
     // This will be the minimum of all the capacities along the augmented path
     int augmentedCap = 0;
 
+    int* visited = allocateSpaceForArray(numOfVertices);
+    allArrayPositionsZero(visited, numOfVertices);
+
     // Finding augmented path from the source vertex
-    while(findAugmentedPath(0, pathMatrix, capacities, numOfVertices)) {
+    while(findAugmentedPath(0, pathMatrix, capacities, visited, numOfVertices)) {
+        
         // After the call to `findAugmentedPath`, `pathMatrix` has been updated with the augmented path values
+        
+        // So, printing the augmented path and calculating the augmented capacity:
+        printAugmentedPath(pathMatrix, numOfVertices);        
         augmentedCap = findAugmentedCap(pathMatrix, capacities, numOfVertices);
+        
         // Updating the capacities according to the augmented capacity
         updateCapacities(augmentedCap, pathMatrix, capacities, numOfVertices);
 
-        // Resetting the path matrix after an iteration
-        allPositionsZero(pathMatrix, numOfVertices);
+        // Resetting the path matrix after an iteration, since we will be finding a new augmented path for the next iteration
+        allMatrixPositionsZero(pathMatrix, numOfVertices);
+
+        // Resetting the visited array as well
+        allArrayPositionsZero(visited, numOfVertices);        
     }
 
-    int totalFlow = 0;
+    int reducedCapOfSource = 0;
     // Total flow is equal to total outflow out of source
     for(int toVertex = 0; toVertex < numOfVertices; toVertex++) {
-        totalFlow += capacities[0][toVertex];
+        reducedCapOfSource += capacities[0][toVertex];
     }
     
-    cout << "Maximum total flow b/w source and sink is " << totalFlow;
+    cout << "\nMaximum total flow b/w source and sink is " << (capOfSource - reducedCapOfSource) << endl;
     
 
 }
 
 int main() {
-    // int** capacities = allocateSpaceForMatrix(10);
-    // allPositionsZero(capacities, 10);
-
-    // int** pathMatrix = allocateSpaceForMatrix(10);
-    // allPositionsZero(pathMatrix, 10);
-    
-
-    // capacities[0][1] = 12;
-    // capacities[0][2] = 3; 
-    // capacities[0][3] = 20;
-
-    // capacities[1][4] = 6; 
-    // capacities[1][6] = 5;
-
-    // capacities[2][4] = 4; 
-    // capacities[2][5] = 4;
-
-    // capacities[3][5] = 5; 
-    // capacities[3][8] = 10;
-
-    // capacities[4][6] = 3;
-    // capacities[4][7] = 3;
-
-    // capacities[5][7] = 5;
-    // capacities[5][8] = 3;
-
-    // capacities[6][9] = 13;
-
-    // capacities[7][9] = 10;
-
-    // capacities[8][9] = 12;
-
-    // printMatrix(capacities, 10);
-
-    // findAugmentedPath(0, pathMatrix, capacities, 10);
-
-    // printMatrix(pathMatrix, 10);
-
     fordFulkerson(10, 16);
     
     return 0;
