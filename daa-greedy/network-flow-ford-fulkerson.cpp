@@ -6,7 +6,7 @@ using namespace::std;
 
 //? Path matrix is a binary matrix used to tell us the route of the augmented path
 
-
+// Function for dynamically allocating space for arrays
 int* allocateSpaceForArray(int numOfElements) {
     return new int[numOfElements];
 }
@@ -45,9 +45,11 @@ void printMatrix(int **matrix, int numOfVertices) {
     cout << endl;
 }
 
-// This function uses a backtracking approach to find the augmented path
+//* This function uses a backtracking approach to find the augmented path. 
+//? It returns a binary value based on whether an augmented path was found or not.
 int findAugmentedPath(int fromVertex, int** pathMatrix, int** capacities, int* visited, int numOfVertices) {
-    // Marking the fromVertex as visited upon entering the recursive call to avoid an infinite cycle of visiting the same vertices without reaching the sink vertex.
+
+    //? Marking the fromVertex as visited upon entering the recursive call to avoid an infinite cycle of visiting the same vertices without reaching the sink vertex.
     visited[fromVertex] = 1;
 
     // Base case (Sink vertex reached)
@@ -127,7 +129,6 @@ void updateCapacities(int augmentedCap, int** pathMatrix, int** capacities, int 
 }
 
 
-
 void fordFulkerson(int numOfVertices, int numOfFlows) {
     // This matrix stores the initial and later on residual capacities of paths b/w vertices
     int** capacities = allocateSpaceForMatrix(numOfVertices);
@@ -171,7 +172,7 @@ void fordFulkerson(int numOfVertices, int numOfFlows) {
     capacities[8][9] = 12;
 
     int capOfSource = 0;
-    // Total flow is equal to total outflow out of source
+    //? Calculating the initial capacity of the source
     for(int toVertex = 0; toVertex < numOfVertices; toVertex++) {
         capOfSource += capacities[0][toVertex];
     }    
@@ -198,15 +199,15 @@ void fordFulkerson(int numOfVertices, int numOfFlows) {
         // Updating the capacities according to the augmented capacity
         updateCapacities(augmentedCap, pathMatrix, capacities, numOfVertices);
 
-        // Resetting the path matrix after an iteration, since we will be finding a new augmented path for the next iteration
+        //? Resetting the path matrix after an iteration, since we will be finding a new augmented path for the next iteration
         allMatrixPositionsZero(pathMatrix, numOfVertices);
 
-        // Resetting the visited array as well
+        //? Resetting the visited array as well
         allArrayPositionsZero(visited, numOfVertices);        
     }
 
     int reducedCapOfSource = 0;
-    // Total flow is equal to total outflow out of source
+    //? Calculating the residual capacity of the source, after all iterations
     for(int toVertex = 0; toVertex < numOfVertices; toVertex++) {
         reducedCapOfSource += capacities[0][toVertex];
     }
