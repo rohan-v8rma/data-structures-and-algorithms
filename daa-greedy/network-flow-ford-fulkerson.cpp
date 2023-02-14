@@ -45,6 +45,7 @@ void printMatrix(int **matrix, int numOfVertices) {
     cout << endl;
 }
 
+// This function uses a backtracking approach to find the augmented path
 int findAugmentedPath(int fromVertex, int** pathMatrix, int** capacities, int* visited, int numOfVertices) {
     // Marking the fromVertex as visited upon entering the recursive call to avoid an infinite cycle of visiting the same vertices without reaching the sink vertex.
     visited[fromVertex] = 1;
@@ -54,29 +55,29 @@ int findAugmentedPath(int fromVertex, int** pathMatrix, int** capacities, int* v
         return 1; // Augmented path found
     }
     
+    //? Resolved problem of multiple augmented paths (multiple 1s in a single vertex' array) in a single iteration by removing the extra for-loop deciding the `fromVertex`, when it was already decided by the recursive call.
+    
+    //* Checking only `to` vertices since fromVertex is part of the recursive call
+    // Checking backwards for faster finding of path
+    for(int to = numOfVertices - 1; to >= 0; to--) {
+    // for(int to = 0; to < numOfVertices; to++) {
 
-    for(int from = fromVertex; from < numOfVertices; from++) {
+        // If capacity is left, b/w `from` and `to` vertex. Also the `to` vertex is not visited.
+        if( (capacities[fromVertex][to] != 0) && (visited[to] == 0) ) {
 
-        // Checking backwards for faster finding of path
-        for(int to = numOfVertices - 1; to >= 0; to--) {
-        // for(int to = 0; to < numOfVertices; to++) {
+            // Building up the augmented path
+            pathMatrix[fromVertex][to] = 1;
 
-            // If capacity is left, b/w from and to vertex
-            if( (capacities[from][to] != 0) && (visited[to] == 0) ) {
-
-                // Building up the augmented path
-                pathMatrix[from][to] = 1;
-
-                // Augmented path found in lower recursive calls
-                if(findAugmentedPath(to, pathMatrix, capacities, visited, numOfVertices)) {
-                    return 1;
-                }
-
-                // Backtracking since augmented path is not possible from the `to` vertex
-                pathMatrix[from][to] = 0;
+            // Augmented path found in lower recursive calls
+            if(findAugmentedPath(to, pathMatrix, capacities, visited, numOfVertices)) {
+                return 1;
             }
-        } 
-    }
+
+            // Backtracking since augmented path is not possible from the `to` vertex
+            pathMatrix[fromVertex][to] = 0;
+        }
+    } 
+    
 
     // Marking the fromVertex as unmarked since we weren't able to find augmented path by visiting it.
     visited[fromVertex] = 0;
@@ -85,6 +86,7 @@ int findAugmentedPath(int fromVertex, int** pathMatrix, int** capacities, int* v
 }
 
 void printAugmentedPath(int** pathMatrix, int numOfVertices) {
+    cout << "Augmented path: ";
     for(int from = 0; from < numOfVertices; from++) {
         for(int to = 0; to < numOfVertices; to++) {
             if(pathMatrix[from][to] == 1) {
@@ -107,7 +109,7 @@ int findAugmentedCap(int** pathMatrix, int** capacities, int numOfVertices) {
         }
     }
     
-    cout << "Augmented capacity: " << augmentedCap << endl;
+    cout << "Augmented capacity: " << augmentedCap << "\n\n";
     return augmentedCap;
 }
 
@@ -127,6 +129,7 @@ void updateCapacities(int augmentedCap, int** pathMatrix, int** capacities, int 
 
 
 void fordFulkerson(int numOfVertices, int numOfFlows) {
+    // This matrix stores the initial and later on residual capacities of paths b/w vertices
     int** capacities = allocateSpaceForMatrix(numOfVertices);
 
     // Initializing all to be 0 before adding the capacities
@@ -141,6 +144,7 @@ void fordFulkerson(int numOfVertices, int numOfFlows) {
     //     capacities[from][to] = capacity;
     // }
 
+    //* Test input
     capacities[0][1] = 12;
     capacities[0][2] = 3; 
     capacities[0][3] = 20;
@@ -187,6 +191,7 @@ void fordFulkerson(int numOfVertices, int numOfFlows) {
         // After the call to `findAugmentedPath`, `pathMatrix` has been updated with the augmented path values
         
         // So, printing the augmented path and calculating the augmented capacity:
+        // printMatrix(pathMatrix, numOfVertices);
         printAugmentedPath(pathMatrix, numOfVertices);        
         augmentedCap = findAugmentedCap(pathMatrix, capacities, numOfVertices);
         
@@ -206,12 +211,14 @@ void fordFulkerson(int numOfVertices, int numOfFlows) {
         reducedCapOfSource += capacities[0][toVertex];
     }
     
-    cout << "\nMaximum total flow b/w source and sink is " << (capOfSource - reducedCapOfSource) << endl;
-    
+    cout << "Maximum total flow b/w source and sink is " << (capOfSource - reducedCapOfSource) << endl;
 
 }
 
+
+
 int main() {
+    // 10 vertices, and 16 edges
     fordFulkerson(10, 16);
     
     return 0;
