@@ -2,12 +2,47 @@
 using namespace ::std;
 
 /* 
-In this algorithm, we start from 0th object selection, which is the root node and doesn't represent any particular object. 
-
 The objects are numbered from 1 to `numOfObjects`, getting us a total of numOfObjects.
 
 The base case of the `branchAndBound()` function is when (currentObject == numOfObjects+1)
 */
+
+//! This supports weights and profits upto 3 digits. Above that, print formatting should be modified.
+void printObjectDetails(int* profitArr, int* weightArr, int numOfObjects) {
+    cout << "\n";
+
+    for(int object = 0; object <= numOfObjects; object++) {
+        if(object == 0) {
+            cout << "Object No. | ";
+        }
+        else {
+            printf("%3d | ", object);
+        }
+    }
+    cout << "\n\n";
+    
+    for(int object = 0; object <= numOfObjects; object++) {
+        if(object == 0) {
+            cout << "Profit Val | ";
+        }
+        else {
+            printf("%3d | ", profitArr[object]);
+        }
+    }
+    cout << "\n";
+    
+    for(int object = 0; object <= numOfObjects; object++) {
+        if(object == 0) {
+            cout << "Weight Val | ";
+        }
+        else {
+            printf("%3d | ", weightArr[object]);
+        }
+    }
+    cout << "\n";
+    cout << endl;
+
+}
 
 
 //* Applying BUBBLE SORT to sort the arrays
@@ -45,10 +80,31 @@ void sortArrays(
 
 int* MappedToUnmapped(
     int* mappedSolutionArr, 
+    int* profitArr,
+    int* weightArr,
     int* mappingArray, 
-    int numOfObjects) {
+    int capacityLeft,
+    int numOfObjects
+    ) {
+
         int* unmappedSolutionArr = new int[numOfObjects + 1];
 
+        /* 
+        It is possible that by exploring nodes using the HEURISTIC Approach, we reach an impossible solution (total weight exceeding the capacity of the knapsack). This is just a characteristic of BnB approach. 
+        
+        So, when converting the Mapped to Unmapped array, we need to make the acquired solution viable.
+        */
+        for(int object = 1; object <= numOfObjects; object++) {
+
+            // The object is actually included in the mapped solution AND it is possible to add it WHOLE in the knapsack
+            if(mappedSolutionArr[object] && weightArr[object] <= capacityLeft) {
+                capacityLeft -= weightArr[object];
+            }
+            else {
+                mappedSolutionArr[object] = 0;
+            }
+        }
+        
         for(int index = 1; index <= numOfObjects; index++) {
             unmappedSolutionArr[mappingArray[index]] = mappedSolutionArr[index];
         }
@@ -71,33 +127,23 @@ int calculateUpperBound(
 
     int upperBound = 0;
 
-    // These are the objects whose INCLUSION or EXCLUSION is decided in upper nodes of the current sub-tree.
-    for(int decidedObjects = 1; decidedObjects <= currentObject; decidedObjects++) {       
-            
-        //? We check for INCLUSION or EXCLUSION of the object before changing the values of the bound, along with checking if there is space to accomodate the object in the knapsack. No fractions of objects are added.
-        if(weightArr[decidedObjects] > capacityLeft) {
-            break; //! Breaking the loop if no space is left in the knapsack
-        }
-        else if(partialSolutionArr[decidedObjects]) {
-            upperBound -= profitArr[decidedObjects];
-            capacityLeft -= weightArr[decidedObjects];
-        }
-        else {
-            continue;
-        }
+    for(int object = 1; object <= numOfObjects; object++) {
 
-    }
-
-    // These are the objects whose INCLUSION or EXCLUSION is yet to be decided, so we keep adding WHOLE objects to the bound until there is no space left. No fractions of objects are added
-    for(int undecidedObjects = currentObject + 1; undecidedObjects <= numOfObjects; undecidedObjects++) {
-
-        //? We ONLY check if there is space to accomodate the object in the knapsack
-        if(weightArr[undecidedObjects] > capacityLeft) {
-            break; //! Breaking the loop if no space is left in the knapsack
-        }
-        else {
-            upperBound -= profitArr[undecidedObjects];
-            capacityLeft -= weightArr[undecidedObjects];
+        if( 
+            // These are the objects whose INCLUSION or EXCLUSION is decided in upper nodes of the current sub-tree.
+            ( (object <= currentObject) && partialSolutionArr[object] ) 
+            || 
+            // These are the objects whose INCLUSION or EXCLUSION is yet to be decided, so we keep adding WHOLE objects to the bound value until there is no space left.
+            (object > currentObject) 
+        ) {
+            //? We check if there is space to accomodate the WHOLE object in the knapsack. No fractions of objects are added in UPPER BOUND.
+            if(weightArr[object] > capacityLeft) {
+                break; //! Breaking the loop if no space is left in the knapsack
+            }
+            else {
+                upperBound -= profitArr[object];
+                capacityLeft -= weightArr[object];
+            }            
         }
     }
     
@@ -122,38 +168,25 @@ double calculateLowerBound(
 
     double lowerBound = 0;
 
-    // These are the objects whose INCLUSION or EXCLUSION is decided in upper nodes of the current sub-tree.
-    for(int decidedObjects = 1; decidedObjects <= currentObject; decidedObjects++) {       
-            
-        //? We check for INCLUSION or EXCLUSION of the object before changing the values of the bound, along with checking if there is space to accomodate the object in the knapsack
-        if(weightArr[decidedObjects] > capacityLeft) {
-            lowerBound -= (capacityLeft / (double)(weightArr[decidedObjects])) * profitArr[decidedObjects];
-            capacityLeft = 0;
+    for(int object = 1; object <= numOfObjects; object++) {
 
-            break; //! Breaking the loop if no space is left in the knapsack
-        }
-        else if(partialSolutionArr[decidedObjects]) {
-            lowerBound -= profitArr[decidedObjects];
-            capacityLeft -= weightArr[decidedObjects];
-        }
-        else {
-            continue;
-        }
-
-    }
-
-    // These are the objects whose INCLUSION or EXCLUSION is yet to be decided, so we keep adding these objects to the bound until there is no space left.
-    for(int undecidedObjects = currentObject + 1; undecidedObjects <= numOfObjects; undecidedObjects++) {
-
-        //? We ONLY check if there is space to accomodate the object in the knapsack
-        if(weightArr[undecidedObjects] > capacityLeft) {
-            lowerBound -= (capacityLeft / (double)(weightArr[undecidedObjects])) * profitArr[undecidedObjects];
-            capacityLeft = 0;
-            break; //! Breaking the loop if no space is left in the knapsack
-        }
-        else {
-            lowerBound -= profitArr[undecidedObjects];
-            capacityLeft -= weightArr[undecidedObjects];
+        if( 
+            // These are the objects whose INCLUSION or EXCLUSION is decided in upper nodes of the current sub-tree.
+            ( (object <= currentObject) && partialSolutionArr[object] ) 
+            || 
+            // These are the objects whose INCLUSION or EXCLUSION is yet to be decided, so we keep adding WHOLE objects to the bound value until there is no space left.
+            (object > currentObject) 
+        ) {
+            //? We check if there is space to accomodate the WHOLE object in the knapsack. Fractions of objects are allowed to be added in LOWER BOUND.
+            if(weightArr[object] > capacityLeft) {
+                lowerBound -= (capacityLeft / (double)(weightArr[object])) * profitArr[object];
+                capacityLeft = 0;
+                break; //! Breaking the loop since no space is left in the knapsack
+            }
+            else {
+                lowerBound -= profitArr[object];
+                capacityLeft -= weightArr[object];  
+            }
         }
     }
 
@@ -162,7 +195,6 @@ double calculateLowerBound(
     
     return lowerBound;
 }
-
 
 
 int* branchAndBound(
@@ -187,9 +219,15 @@ int* branchAndBound(
     double lBound0 = calculateLowerBound(currentObject, 0, profitArr, weightArr, solutionArr, capacity, numOfObjects);
     int uBound0 = calculateUpperBound(currentObject, 0, profitArr, weightArr, solutionArr, capacity, numOfObjects);
 
-    cout << "Object " << currentObject << endl;
-    cout << uBound1 << " | " << lBound1 << endl;
-    cout << uBound0 << " | " << lBound0 << endl;
+    
+    cout << "Object " << currentObject;
+    cout << "\nINCLUDED:\n";
+    cout << "Upper Bound: " << uBound1;
+    cout << ", Lower Bound: " << lBound1;
+    cout << "\nNOT INCLUDED:\n";
+    cout << "Upper Bound: " << uBound0;
+    cout << ", Lower Bound: " << lBound0;
+    cout << "\n\n";
 
     // Lower bound when object is included, is lesser, so we expand this node.
     if(lBound1 < lBound0) {
@@ -210,35 +248,12 @@ int* branchAndBound(
         solutionArr[currentObject] = 0;
     }
 
-    /*
-    // Upper bound when object is included, is lesser, so we expand this node.
-    if(uBound1 < uBound0) {
-        solutionArr[currentObject] = 1;
-    }
-    // Upper bound of both INCLUSION and EXCLUSION is equal.
-    else if(uBound1 == uBound0) {
-        // When lower bound of both INCLUSION and EXCLUSION is equal, we compare the upper bounds.
-        if(lBound1 < lBound0) {
-            solutionArr[currentObject] = 1;
-        }
-        else {
-            solutionArr[currentObject] = 0;
-        }
-    }
-    // Lower bound when object is NOT included, is lesser, so we expand this node.
-    else { 
-        solutionArr[currentObject] = 0;
-    }
-    */
-
-
     return branchAndBound(currentObject + 1, profitArr, weightArr, solutionArr, capacity, numOfObjects);
 }
 
 void knapsack01() {
     int numOfObjects;
     int capacity;
-    
     
     /*
     //* Code for taking inputs
@@ -261,22 +276,18 @@ void knapsack01() {
     //* Values for testing the algorithm w/o input
 
     //? Working test case
-    // numOfObjects = 4;
-    // capacity = 15;
-    // int profitArr[5] = {0, 10, 10, 12, 18};
-    // int weightArr[5] = {0, 2, 4, 6, 9};
-    
-    //? Working test case
-    // numOfObjects = 4;
-    // capacity = 12;
-    // int profitArr[5] = {0, 30, 28, 20, 24};
-    // int weightArr[5] = {0, 5, 7, 4, 2};
+    numOfObjects = 4;
+    capacity = 15;
+    int profitArr[5] = {0, 10, 10, 12, 18};
+    int weightArr[5] = {0, 2, 4, 6, 9};
 
-    //! Non-functioning test case
-    numOfObjects = 5;
-    capacity = 8;
-    int profitArr[6] = {0, 1, 2, 5, 6, 2};
-    int weightArr[6] = {0, 2, 3, 4, 5, 2};
+    //! Non-functioning test case (DUE TO HEURISTIC APPROACH)
+    // numOfObjects = 5;
+    // capacity = 8;
+    // int profitArr[6] = {0, 1, 2, 5, 6, 2};
+    // int weightArr[6] = {0, 2, 3, 4, 5, 2};
+
+    printObjectDetails(profitArr, weightArr, numOfObjects);
 
     int* mappingArr = new int[numOfObjects + 1];
     for(int index = 1; index <= numOfObjects; index++) {
@@ -284,34 +295,14 @@ void knapsack01() {
     }
 
     sortArrays(mappingArr, profitArr, weightArr, numOfObjects);
-    
-    for(int index = 1; index <= numOfObjects; index++) {
-        cout << profitArr[index] << " ";
-    }
-    cout << endl;
-    for(int index = 1; index <= numOfObjects; index++) {
-        cout << weightArr[index] << " ";
-    }
-    cout << endl;
-    for(int index = 1; index <= numOfObjects; index++) {
-        cout << mappingArr[index] << " ";
-    }
-    cout << endl;
-    
 
-    int* newArr = MappedToUnmapped(mappingArr, mappingArr, numOfObjects);
-    for(int index = 1; index <= numOfObjects; index++) {
-        cout << newArr[index];
-    }
-    cout << endl;
-    
     int* untouchedSolutionArr = new int[numOfObjects + 1];
 
     int* mappedSolutionArr = branchAndBound(1,  profitArr, weightArr, untouchedSolutionArr, capacity, numOfObjects);
 
     cout << "\nSolutions in form of binary, where 0 means the object was not included and 1 means the object was included:\n(";
 
-    int* unmappedSolutionArr = MappedToUnmapped(mappedSolutionArr, mappingArr, numOfObjects);
+    int* unmappedSolutionArr = MappedToUnmapped(mappedSolutionArr, profitArr, weightArr, mappingArr, capacity, numOfObjects);
 
     for(int objectNum = 1; objectNum <= numOfObjects; objectNum++) {
         if(objectNum == numOfObjects) {
