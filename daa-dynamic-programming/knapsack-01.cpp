@@ -7,7 +7,12 @@ int max(int n1, int n2) {
     return ( (n1 > n2) ? n1 : n2);
 }
 
-void visualizeTabulation(int* profitArr, int* weightArr, int** table, int numOfObjects, int capacity) {
+void visualizeTabulation(
+    int* profitArr, 
+    int* weightArr, 
+    int** table, 
+    int capacity,
+    int numOfObjects) {
     for(int n = 0; n <= numOfObjects; n++) {
         if( n == 0 ) {
             cout << "\n pi | wi || ";
@@ -23,7 +28,15 @@ void visualizeTabulation(int* profitArr, int* weightArr, int** table, int numOfO
     }
 }
 
-void printSolutions(int objToSelect, int capLeft, int* solutionArr, int** table, int numOfObjects, int* profitArr, int* weightArr) {
+void printSolutions(
+    int objToSelect, 
+    int* profitArr, 
+    int* weightArr,
+    int* solutionArr, 
+    int** table, 
+    int capacityLeft,
+    int numOfObjects
+    ) {
 
     // The base case will be reached in any scenario because the 0th row is initialized with 0 values.
     if( objToSelect == 0) {
@@ -35,16 +48,16 @@ void printSolutions(int objToSelect, int capLeft, int* solutionArr, int** table,
     }
 
     // The current object is not selected.
-    if(table[objToSelect][capLeft] == table[objToSelect - 1][capLeft]) {
+    if(table[objToSelect][capacityLeft] == table[objToSelect - 1][capacityLeft]) {
         solutionArr[objToSelect] = 0;
-        printSolutions(objToSelect - 1, capLeft, solutionArr, table, numOfObjects, profitArr, weightArr);
+        printSolutions(objToSelect - 1, profitArr, weightArr, solutionArr, table, capacityLeft, numOfObjects);
     }
-    else if(capLeft - weightArr[objToSelect] >= 0) {
+    else if(capacityLeft - weightArr[objToSelect] >= 0) {
 
         // The current object is selected.
-        if( table[objToSelect][capLeft] == (table[objToSelect - 1][capLeft - weightArr[objToSelect]] + profitArr[objToSelect]) ) {
+        if( table[objToSelect][capacityLeft] == (table[objToSelect - 1][capacityLeft - weightArr[objToSelect]] + profitArr[objToSelect]) ) {
             solutionArr[objToSelect] = 1;
-            printSolutions(objToSelect - 1, capLeft - weightArr[objToSelect], solutionArr, table, numOfObjects, profitArr, weightArr);
+            printSolutions(objToSelect - 1, profitArr, weightArr, solutionArr, table, capacityLeft - weightArr[objToSelect], numOfObjects);
         }
     }
 
@@ -53,27 +66,25 @@ void printSolutions(int objToSelect, int capLeft, int* solutionArr, int** table,
 
 void knapsack01() {
     int numOfObjects;
+    int capacity;
     
-    //* Code for taking input of the details of the objects
+
+    //* Code for taking inputs
     cout << "Number of objects : ";
     cin >> numOfObjects;
-
-    cout << "Enter objects in the following form (profit weight):\n2 3\n\n";
-
+    
     int* profitArr = new int[numOfObjects + 1];
     int* weightArr = new int[numOfObjects + 1];
 
+    cout << "Enter objects in the following form (profit weight):\n2 3\n\n";
     for(int index = 1; index <= numOfObjects; index++) {
         cout << "Object" << (index) << ": ";
         cin >> profitArr[index] >> weightArr[index];
     }
-
-
-    int capacity;
-    //* Code for taking input of the capacity of knapsack
+    
     cout << "Enter the capacity of the knapsack: ";
     cin >> capacity;
-
+    
 
     //* Values for testing the algorithm w/o input
     // numOfObjects = 5;
@@ -106,7 +117,7 @@ void knapsack01() {
         }
     }
 
-    visualizeTabulation(profitArr, weightArr, profitTable, numOfObjects, capacity);
+    visualizeTabulation(profitArr, weightArr, profitTable, capacity, numOfObjects);
 
 
     int solutionArr[numOfObjects + 1];
@@ -124,7 +135,7 @@ void knapsack01() {
             printf("Ob%2d, ", objectNum);
         }
     }
-    printSolutions(numOfObjects, capacity, solutionArr, profitTable, numOfObjects, profitArr, weightArr);
+    printSolutions(numOfObjects, profitArr, weightArr, solutionArr, profitTable, capacity, numOfObjects);
 }
 
 int main() {
