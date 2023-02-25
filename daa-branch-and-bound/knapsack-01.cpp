@@ -78,6 +78,7 @@ void sortArrays(
     }       
 }
 
+// This function also prints total knapsack profit and weight, along with mapping the solution back to the original order.
 int* MappedToUnmapped(
     int* mappedSolutionArr, 
     int* profitArr,
@@ -86,9 +87,17 @@ int* MappedToUnmapped(
     int capacityLeft,
     int numOfObjects
     ) {
-
+        int originalCapacity = capacityLeft;
         int* unmappedSolutionArr = new int[numOfObjects + 1];
 
+        int totalProfit = 0;
+        for(int index = 1; index <= numOfObjects; index++) {
+            if(mappedSolutionArr[index]) {
+                totalProfit += profitArr[index];
+            }
+        }
+
+        cout << "\nTotal Knapsack Profit: " << totalProfit;
         /* 
         It is possible that by exploring nodes using the HEURISTIC Approach, we reach an impossible solution (total weight exceeding the capacity of the knapsack). This is just a characteristic of BnB approach. 
         
@@ -104,6 +113,8 @@ int* MappedToUnmapped(
                 mappedSolutionArr[object] = 0;
             }
         }
+
+        cout << "\nTotal Knapsack Weight: " << originalCapacity - capacityLeft << endl;
         
         for(int index = 1; index <= numOfObjects; index++) {
             unmappedSolutionArr[mappingArray[index]] = mappedSolutionArr[index];
@@ -219,7 +230,7 @@ int* branchAndBound(
     double lBound0 = calculateLowerBound(currentObject, 0, profitArr, weightArr, solutionArr, capacity, numOfObjects);
     int uBound0 = calculateUpperBound(currentObject, 0, profitArr, weightArr, solutionArr, capacity, numOfObjects);
 
-    
+    //! This only works if the original array provided is already sorted in decreasing order of density. To make this consistent otherwise, the code needs to be modified.
     cout << "Object " << currentObject;
     cout << "\nINCLUDED:\n";
     cout << "Upper Bound: " << uBound1;
@@ -286,7 +297,7 @@ void knapsack01() {
     // capacity = 8;
     // int profitArr[6] = {0, 1, 2, 5, 6, 2};
     // int weightArr[6] = {0, 2, 3, 4, 5, 2};
-
+    cout << "\nKnapsack Capacity: " << capacity << "\n";
     printObjectDetails(profitArr, weightArr, numOfObjects);
 
     int* mappingArr = new int[numOfObjects + 1];
@@ -300,9 +311,9 @@ void knapsack01() {
 
     int* mappedSolutionArr = branchAndBound(1,  profitArr, weightArr, untouchedSolutionArr, capacity, numOfObjects);
 
-    cout << "\nSolutions in form of binary, where 0 means the object was not included and 1 means the object was included:\n(";
-
     int* unmappedSolutionArr = MappedToUnmapped(mappedSolutionArr, profitArr, weightArr, mappingArr, capacity, numOfObjects);
+
+    cout << "\nSolutions in form of binary, where 0 means the object was not included and 1 means the object was included:\n(";
 
     for(int objectNum = 1; objectNum <= numOfObjects; objectNum++) {
         if(objectNum == numOfObjects) {
