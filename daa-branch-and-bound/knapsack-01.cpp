@@ -47,7 +47,6 @@ void printObjectDetails(int* profitArr, int* weightArr, int numOfObjects) {
 
 //* Applying BUBBLE SORT to sort the arrays
 void sortArrays(
-    int* mappingArr, 
     int* profitArr, 
     int* weightArr, 
     int numOfObjects
@@ -63,7 +62,6 @@ void sortArrays(
         for(int comparison = 1 ; comparison <= ( (numOfObjects - 1) - pass ) ; comparison++) {
             if(densityArr[comparison] < densityArr[comparison + 1]) {
                 
-                swap(mappingArr[comparison], mappingArr[comparison + 1]);
                 swap(densityArr[comparison], densityArr[comparison + 1]);
                 swap(profitArr[comparison], profitArr[comparison + 1]);
                 swap(weightArr[comparison], weightArr[comparison + 1]);
@@ -78,49 +76,38 @@ void sortArrays(
     }       
 }
 
-// This function also prints total knapsack profit and weight, along with mapping the solution back to the original order.
-int* MappedToUnmapped(
-    int* mappedSolutionArr, 
+// This function also prints total knapsack profit and weight, along with making the acquired solution into a viable one
+void displayTotalProfitAndWeight(
+    int* solutionArr, 
     int* profitArr,
     int* weightArr,
-    int* mappingArray, 
-    int capacityLeft,
+    int originalCapacity,
     int numOfObjects
     ) {
-        int originalCapacity = capacityLeft;
-        int* unmappedSolutionArr = new int[numOfObjects + 1];
+  
+    int capacityLeft = originalCapacity;
 
-        int totalProfit = 0;
-        for(int index = 1; index <= numOfObjects; index++) {
-            if(mappedSolutionArr[index]) {
-                totalProfit += profitArr[index];
-            }
-        }
-
-        cout << "\nTotal Knapsack Profit: " << totalProfit;
-        /* 
-        It is possible that by exploring nodes using the HEURISTIC Approach, we reach an impossible solution (total weight exceeding the capacity of the knapsack). This is just a characteristic of BnB approach. 
+    /* 
+    It is possible that by exploring nodes using the HEURISTIC Approach, we reach an impossible solution (total weight exceeding the capacity of the knapsack). This is just a characteristic of BnB approach. 
+    
+    So, we need to make the acquired solution viable, thereby modifying the solution array.
+    */
+    int totalProfit = 0;
         
-        So, when converting the Mapped to Unmapped array, we need to make the acquired solution viable.
-        */
-        for(int object = 1; object <= numOfObjects; object++) {
-
-            // The object is actually included in the mapped solution AND it is possible to add it WHOLE in the knapsack
-            if(mappedSolutionArr[object] && weightArr[object] <= capacityLeft) {
-                capacityLeft -= weightArr[object];
-            }
-            else {
-                mappedSolutionArr[object] = 0;
-            }
+    
+    for(int object = 1; object <= numOfObjects; object++) {
+        // The object is actually included in the mapped solution AND it is possible to add it WHOLE in the knapsack
+        if(solutionArr[object] && weightArr[object] <= capacityLeft) {
+            totalProfit += profitArr[object];
+            capacityLeft -= weightArr[object];
         }
-
-        cout << "\nTotal Knapsack Weight: " << originalCapacity - capacityLeft << endl;
-        
-        for(int index = 1; index <= numOfObjects; index++) {
-            unmappedSolutionArr[mappingArray[index]] = mappedSolutionArr[index];
+        else {
+            solutionArr[object] = 0;
         }
+    }
 
-        return unmappedSolutionArr;
+    cout << "\nTotal Knapsack Profit: " << totalProfit;
+    cout << "\nTotal Knapsack Weight: " << originalCapacity - capacityLeft << endl;
 }
 
 // In this function, we calculate the upper bound of the object `currentObject`
@@ -287,31 +274,36 @@ void knapsack01() {
     //* Values for testing the algorithm w/o input
 
     //? Working test case
-    numOfObjects = 4;
-    capacity = 15;
-    int profitArr[5] = {0, 10, 10, 12, 18};
-    int weightArr[5] = {0, 2, 4, 6, 9};
+    // numOfObjects = 4;
+    // capacity = 15;
+    // int profitArr[5] = {0, 10, 10, 12, 18};
+    // int weightArr[5] = {0, 2, 4, 6, 9};
 
     //! Non-functioning test case (DUE TO HEURISTIC APPROACH)
     // numOfObjects = 5;
     // capacity = 8;
     // int profitArr[6] = {0, 1, 2, 5, 6, 2};
     // int weightArr[6] = {0, 2, 3, 4, 5, 2};
+
+    //! Non-functioning test case (DUE TO HEURISTIC APPROACH)
+    numOfObjects = 7;
+    capacity = 15;
+    int profitArr[8] = {0, 10, 5, 15, 7, 6, 18, 3};
+    int weightArr[8] = {0, 2, 3, 5, 7, 1, 4, 1};
+
     cout << "\nKnapsack Capacity: " << capacity << "\n";
+
+    //* Applying bubbble sort
+    sortArrays(profitArr, weightArr, numOfObjects);
+
+    cout << "\nBUBBLE SORT ALGORITHM Applied: ";
     printObjectDetails(profitArr, weightArr, numOfObjects);
-
-    int* mappingArr = new int[numOfObjects + 1];
-    for(int index = 1; index <= numOfObjects; index++) {
-        mappingArr[index] = index;
-    }
-
-    sortArrays(mappingArr, profitArr, weightArr, numOfObjects);
 
     int* untouchedSolutionArr = new int[numOfObjects + 1];
 
-    int* mappedSolutionArr = branchAndBound(1,  profitArr, weightArr, untouchedSolutionArr, capacity, numOfObjects);
+    int* solutionArr = branchAndBound(1,  profitArr, weightArr, untouchedSolutionArr, capacity, numOfObjects);
 
-    int* unmappedSolutionArr = MappedToUnmapped(mappedSolutionArr, profitArr, weightArr, mappingArr, capacity, numOfObjects);
+    displayTotalProfitAndWeight(solutionArr, profitArr, weightArr, capacity, numOfObjects);
 
     cout << "\nSolutions in form of binary, where 0 means the object was not included and 1 means the object was included:\n(";
 
@@ -326,10 +318,10 @@ void knapsack01() {
 
     for(int objectNum = 1; objectNum <= numOfObjects; objectNum++) {
         if(objectNum == numOfObjects) {
-            printf("%4d\n", unmappedSolutionArr[objectNum]);
+            printf("%4d\n", solutionArr[objectNum]);
         }
         else {
-            printf("%4d, ", unmappedSolutionArr[objectNum]);
+            printf("%4d, ", solutionArr[objectNum]);
         }
     }
 }
