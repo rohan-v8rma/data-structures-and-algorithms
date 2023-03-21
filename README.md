@@ -50,6 +50,7 @@
     - [Graph Traversals](#graph-traversals)
       - [**Depth First Search**](#depth-first-search)
       - [**Breadth First Search**](#breadth-first-search)
+    - [Bipartite Graphs](#bipartite-graphs)
   - [Trees](#trees)
     - [Tree Traversal Algorithms (Applicable for all types of Trees, including B-trees)](#tree-traversal-algorithms-applicable-for-all-types-of-trees-including-b-trees)
       - [**Pre-order Traversal**](#pre-order-traversal)
@@ -595,12 +596,19 @@ Once a possible path is found, continue the search until the end of the path.
 
 Start several paths at a time, and advance in each one step at a time
 
+### Bipartite Graphs
+
+![](./images/graphs-bipartite-bfs-and-dfs.png)
+
+---
+
 ## Trees
 
 ![](images/trees-1.jpg)
 ![](images/trees-2.jpg)
 ![](images/trees-3.jpg)
 
+---
 
 ### Tree Traversal Algorithms (Applicable for all types of Trees, including B-trees)
 
@@ -689,6 +697,8 @@ In the example above, a level-order traversal starting at the root would visit t
 ![](images/binary-search-trees-2.jpg)
 ![](images/binary-search-trees-3.jpg)
 
+---
+
 ### AVL Trees (Self-balancing BSTs)
 
 ![](images/AVL-trees-1.jpg)
@@ -705,14 +715,20 @@ In the example above, a level-order traversal starting at the root would visit t
 ![](images/heaps-2.jpg)
 ![](images/heaps-3.jpg)
 
+---
+
 #### Heap Sort
 
 ![](images/heap-sort-1.jpg)
 ![](images/heap-sort-2.jpg)
 
+---
+
 #### Priority Queues using Heaps
 
 ![](images/priority-queue.jpg)
+
+---
 
 #### Heapify 
 
