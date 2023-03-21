@@ -46,6 +46,7 @@
       - [Need of `numOfElements` member in Circular Queues](#need-of-numofelements-member-in-circular-queues)
 - [Non-Linear Abstract Data Types](#non-linear-abstract-data-types)
   - [Graphs](#graphs)
+    - [Difference in the meaning of adjacency in Directed and Undirected graphs](#difference-in-the-meaning-of-adjacency-in-directed-and-undirected-graphs)
     - [Graph Traversals](#graph-traversals)
       - [**Depth First Search**](#depth-first-search)
       - [**Breadth First Search**](#breadth-first-search)
@@ -62,6 +63,7 @@
       - [Heap Sort](#heap-sort)
       - [Priority Queues using Heaps](#priority-queues-using-heaps)
       - [Heapify](#heapify)
+    - [Spanning Trees](#spanning-trees)
     - [B-Trees](#b-trees)
       - [Application of B-Trees](#application-of-b-trees)
 - [Sorting Algorithms](#sorting-algorithms)
@@ -113,6 +115,7 @@
   - [Collisions in Hashing](#collisions-in-hashing)
     - [1. Collision resolution by chaining](#1-collision-resolution-by-chaining)
     - [2. Open Addressing: Linear/Quadratic Probing and Double Hashing](#2-open-addressing-linearquadratic-probing-and-double-hashing)
+  - [Hashing Full Reference (TODO: Sort these)](#hashing-full-reference-todo-sort-these)
 - [Tips \& Tricks for DSA](#tips--tricks-for-dsa)
   - [Calculating the no. of digits in a number](#calculating-the-no-of-digits-in-a-number)
   - [Calculating the approximate number of times a loop runs](#calculating-the-approximate-number-of-times-a-loop-runs)
@@ -565,6 +568,22 @@ This variable is incremented/decremented as elements are enqueued/dequeued.
 
 ![](images/graphs-1.jpg)
 ![](images/graphs-2.jpg)
+![](images/graphs-3.jpg)
+![](images/graphs-4.jpg)
+![](images/graphs-5.jpg)
+
+
+### Difference in the meaning of adjacency in Directed and Undirected graphs
+
+- Suppose we have a **directed** graph with vertices A, B, and C, and **directed** edges `(A,B)` and `(B,C)`. 
+
+  In this case, we would say that A is adjacent to B, B is adjacent to C, but C is not adjacent to B (since there is no directed edge from C to B). Instead, we would say that B is a "successor" of C, or that C is a "predecessor" of B.
+
+- In an **undirected** graph, the same set of vertices and edges would be represented as a single undirected edge `(A,B)` and another undirected edge `(B,C)`. 
+  
+  In this case, we would say that A is adjacent to B, B is adjacent to both A and C, and C is adjacent to B.
+
+This example clarifies the difference between adjacent vertices in directed and undirected graphs.
 
 ### Graph Traversals
 
@@ -698,6 +717,17 @@ In the example above, a level-order traversal starting at the root would visit t
 #### Heapify 
 
 ![](images/heapify.jpg)
+
+---
+
+### Spanning Trees
+
+![](images/spanning-tree-1.jpg)
+![](images/spanning-tree-2.jpg)
+![](images/spanning-tree-3.jpg)
+![](images/spanning-tree-4.jpg)
+![](images/spanning-tree-5.jpg)
+![](images/spanning-tree-6.jpg)
 
 ---
 
@@ -1078,6 +1108,26 @@ If no element is present, `j` contains `NIL`.
 ### 2. Open Addressing: Linear/Quadratic Probing and Double Hashing
 
 Read more about on programiz [here](https://www.programiz.com/dsa/hash-table).
+
+
+## Hashing Full Reference (TODO: Sort these)
+
+![](images/hashing-1.jpg)
+![](images/hashing-2.jpg)
+![](images/hashing-3.jpg)
+![](images/hashing-4.jpg)
+![](images/hashing-5.jpg)
+![](images/hashing-6.jpg)
+![](images/hashing-7.jpg)
+![](images/hashing-8.jpg)
+![](images/hashing-9.jpg)
+![](images/hashing-10.jpg)
+![](images/hashing-11.jpg)
+![](images/hashing-12.jpg)
+![](images/hashing-13.jpg)
+![](images/hashing-14.jpg)
+![](images/hashing-15.jpg)
+![](images/hashing-16.jpg)
 
 # Tips & Tricks for DSA
 
