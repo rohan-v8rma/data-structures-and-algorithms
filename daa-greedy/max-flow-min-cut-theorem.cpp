@@ -66,7 +66,13 @@ void cutSelection(int vertexToBePlaced, int* cuttingArray, int** capacityMatrix,
 
         int currentCutCapacity = cutCapacityCalculation(S_set_numbered, T_set_numbered, capacityMatrix);
         if(currentCutCapacity < cutDetails[0]) {
-            printf("The current cut capacity of (%d) is less than the minimum reached till now which is (%d)\n", currentCutCapacity, cutDetails[0]);
+            if(cutDetails[0] == INT_MAX) {
+                printf("This is the first cut tested with a cut capacity of (%d)\n", currentCutCapacity);
+            }
+            else {
+                printf("The current cut capacity of (%d) is less than the minimum reached till now which is (%d)\n", currentCutCapacity, cutDetails[0]);
+            }
+            
             printf("Updating the minimum cut capacity...\n");
             cutDetails[0] = currentCutCapacity;
         }
