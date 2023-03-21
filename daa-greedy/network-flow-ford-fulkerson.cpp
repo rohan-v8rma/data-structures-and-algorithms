@@ -36,8 +36,8 @@ void allMatrixPositionsZero(int** matrix, int numOfVertices) {
 }
 
 void printMatrix(int **matrix, int numOfVertices) {
-    for(int i = 0; i < 10; i++) {
-        for(int j = 0; j < 10; j++) {
+    for(int i = 0; i < numOfVertices; i++) {
+        for(int j = 0; j < numOfVertices; j++) {
             printf("%2d ", matrix[i][j]);
         }
         cout << endl;
@@ -45,9 +45,15 @@ void printMatrix(int **matrix, int numOfVertices) {
     cout << endl;
 }
 
-//* This function uses a backtracking approach to find the augmented path. 
+//* This function uses a backtracking DFS approach to find the augmented path. 
 //? It returns a binary value based on whether an augmented path was found or not.
-int findAugmentedPath(int fromVertex, int** pathMatrix, int** capacities, int* visited, int numOfVertices) {
+int findAugmentedPath(
+    int fromVertex, 
+    int** pathMatrix, 
+    int** capacities, 
+    int* visited, 
+    int numOfVertices
+) {
 
     //? Marking the fromVertex as visited upon entering the recursive call to avoid an infinite cycle of visiting the same vertices without reaching the sink vertex.
     visited[fromVertex] = 1;
@@ -101,7 +107,13 @@ void printAugmentedPath(int** pathMatrix, int numOfVertices) {
     cout << char(numOfVertices - 1 + 65) << endl;
 }
 
-int findAugmentedCap(int** pathMatrix, int** capacities, int numOfVertices) {
+//* The path matrix is the matrix that we developed while trying to find an augmented path from source to sink.
+//? It only has 1 in the edges from where augmented path exists.
+int findAugmentedCap(
+    int** pathMatrix, 
+    int** capacities, 
+    int numOfVertices
+) {
     int augmentedCap = INT_MAX;
     for(int from = 0; from < numOfVertices; from++) {
         for(int to = 0; to < numOfVertices; to++) {
@@ -115,7 +127,12 @@ int findAugmentedCap(int** pathMatrix, int** capacities, int numOfVertices) {
     return augmentedCap;
 }
 
-void updateCapacities(int augmentedCap, int** pathMatrix, int** capacities, int numOfVertices) {
+void updateCapacities(
+    int augmentedCap, 
+    int** pathMatrix, 
+    int** capacities, 
+    int numOfVertices
+) {
     for(int from = 0; from < numOfVertices; from++) {
         for(int to = 0; to < numOfVertices; to++) {
             if(pathMatrix[from][to] == 1) {

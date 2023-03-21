@@ -21,7 +21,11 @@ void printSet(vector<char> set) {
 }
 
 
-int cutCapacityCalculation(vector<int> S_set_numbered, vector<int> T_set_numbered, int** capacityMatrix) {\
+int cutCapacityCalculation(
+    vector<int> S_set_numbered, 
+    vector<int> T_set_numbered, 
+    int** capacityMatrix
+) {
     int cutCapacity = 0;
 
     for(auto& from: S_set_numbered) {
@@ -34,7 +38,13 @@ int cutCapacityCalculation(vector<int> S_set_numbered, vector<int> T_set_numbere
     return cutCapacity;
 }
 
-void cutSelection(int vertexToBePlaced, int* cuttingArray, int** capacityMatrix, int numOfVertices, int cutDetails[3]) {
+void cutSelection(
+    int vertexToBePlaced, 
+    int* cuttingArray, 
+    int** capacityMatrix, 
+    int numOfVertices, 
+    int cutDetails[3]
+) {
     
     if(cutDetails[1] == cutDetails[2]) { // Max amount of cuts tested
         return;
@@ -108,7 +118,10 @@ int** allocateSpaceForMatrix(int numOfVertices) {
 }
 
 
-void allMatrixPositionsZero(int** matrix, int numOfVertices) {
+void allMatrixPositionsZero(
+    int** matrix, 
+    int numOfVertices
+) {
     for(int i = 0; i < numOfVertices; i++) {
         for(int j = 0; j < numOfVertices; j++) {
             matrix[i][j] = 0;
@@ -118,7 +131,11 @@ void allMatrixPositionsZero(int** matrix, int numOfVertices) {
 
 // Provide numOfCutsToBeTested as 0 to test all possible cuts.
 
-void maxFlowMinCutProblem(int numOfVertices, int numOfFlows, int numOfCutsToBeTested=0) {
+void maxFlowMinCutProblem(
+    int numOfVertices, 
+    int numOfFlows, 
+    int numOfCutsToBeTested=0
+) {
 
     if (numOfCutsToBeTested == 0) {
         // We are keeping first and last vertex in separate sets, that is why we subtracted 2
