@@ -32,13 +32,16 @@ void naiveStringMatching(string text, string pattern) {
 
 int main() {
 
-    string pattern = "0001";
-    // cout << "Enter the pattern: ";
-    // cin >> pattern;
+    string pattern;
+    cout << "Enter the pattern: ";
+    cin >> pattern;
 
-    string text = "000010001010001";
-    // cout << "Enter the text in which the pattern has to be found: ";
-    // cin >> text;
+    string text;
+    cout << "Enter the text in which the pattern has to be found: ";
+    cin >> text;
+
+    // pattern = "0001";
+    // text = "000010001010001";
 
     naiveStringMatching(text, pattern);
 
