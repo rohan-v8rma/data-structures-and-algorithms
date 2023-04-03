@@ -39,20 +39,22 @@ void KMPStringMatching(string text, string pattern) {
 
     int textIndex = 0;
 
-    while(textIndex < textLength) {
+    int maxShift = textLength - patternLength;
+
+    // Optimized the condition of KMP, reducing the number of while-loop iterations.
+    while(textIndex - (currentPatternIndex + 1) <= maxShift) {
         cout << text[textIndex] << " vs. " << pattern[currentPatternIndex + 1] << endl;
         if( text[textIndex] == pattern[currentPatternIndex + 1] ) {
             currentPatternIndex++;
             textIndex++;
         }
         else if(currentPatternIndex != -1) {// We can still move back the pattern index and check
-            // cout << currentPatternIndex << " and " << piArray[currentPatternIndex] << endl;
             currentPatternIndex = piArray[currentPatternIndex];
             printf("Check failed. Pattern index reset to (%d).\n\n", currentPatternIndex);
         }
         else { // No change of moving back so we increment the textIndex
             textIndex++;
-            printf("Check failed and further reset not. Pattern index reset to (%d).\n\n", currentPatternIndex);
+            printf("Check failed and further reset not possible. Incrementing textIndex...\n\n");
         }
         
         if(currentPatternIndex == patternLength - 1) {

@@ -39,11 +39,22 @@ void printSolutions(
     ) {
 
     // The base case will be reached in any scenario because the 0th row is initialized with 0 values.
-    if( objToSelect == 0) {
-        for(int index = 1; index <= numOfObjects; index++) {
-            printf("%d, ", solutionArr[index]);
+    if( objToSelect == 0 ) {
+        int totalProfit = 0;
+        int totalWeight = 0;
+
+        for(int object = 1; object <= numOfObjects; object++) {
+            if(solutionArr[object]) {
+                totalProfit += profitArr[object];
+                totalWeight += weightArr[object];
+            }            
+
+            printf("%d, ", solutionArr[object]);
         }
-        printf("\n");
+        printf("\n\n");
+        cout << "Total profit of Knapsack: " << totalProfit << endl;
+        cout << "Total weight of Knapsack: " << totalWeight << endl;
+
         return;
     }
 
@@ -64,26 +75,26 @@ void printSolutions(
     solutionArr[objToSelect] = 0;
 }
 
-void knapsack01() {
+void knapsackBnB() {
     int numOfObjects;
     int capacity;
     
 
     //* Code for taking inputs
-    cout << "Number of objects : ";
-    cin >> numOfObjects;
+    // cout << "Number of objects : ";
+    // cin >> numOfObjects;
     
-    int* profitArr = new int[numOfObjects + 1];
-    int* weightArr = new int[numOfObjects + 1];
+    // int* profitArr = new int[numOfObjects + 1];
+    // int* weightArr = new int[numOfObjects + 1];
 
-    cout << "Enter objects in the following form (profit weight):\n2 3\n\n";
-    for(int index = 1; index <= numOfObjects; index++) {
-        cout << "Object" << (index) << ": ";
-        cin >> profitArr[index] >> weightArr[index];
-    }
+    // cout << "Enter objects in the following form (profit weight):\n2 3\n\n";
+    // for(int index = 1; index <= numOfObjects; index++) {
+    //     cout << "Object" << (index) << ": ";
+    //     cin >> profitArr[index] >> weightArr[index];
+    // }
     
-    cout << "Enter the capacity of the knapsack: ";
-    cin >> capacity;
+    // cout << "Enter the capacity of the knapsack: ";
+    // cin >> capacity;
     
 
     //* Values for testing the algorithm w/o input
@@ -91,6 +102,11 @@ void knapsack01() {
     // capacity = 8;
     // int profitArr[6] = {0, 1, 2, 5, 6, 2};
     // int weightArr[6] = {0, 2, 3, 4, 5, 2};
+
+    numOfObjects = 7;
+    capacity = 15;
+    int profitArr[8] = {0, 10, 5, 15, 7, 6, 18, 3};
+    int weightArr[8] = {0, 2, 3, 5, 7, 1, 4, 1};
 
 
     int** profitTable = new int*[numOfObjects + 1];
@@ -139,7 +155,7 @@ void knapsack01() {
 }
 
 int main() {
-    knapsack01();
+    knapsackBnB();
 
     return 0;
 }
