@@ -18,7 +18,7 @@ void printArr(int *arr, int size) {
     std::cout << "}\n";
 }
 
-void mergeInPlace(int* arr, int start, int middle, int end) {
+void mergeInPlace(int* arr, int start, int middle, int end) { // end is EXCLUSIVE, meaning the sub-array is beginning from 'start' and upto but NOT including 'end'.
     
     int subArrLen = end - start;
 
@@ -46,7 +46,7 @@ void mergeInPlace(int* arr, int start, int middle, int end) {
     }
 
     mergedPtr = 0;
-
+    
     // Loop for changing the values in the unsorted sub-array, using the values of the MERGED array.
     for(int index = start; index < end; index++) {
         arr[index] = mergedArr[mergedPtr++];

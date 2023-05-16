@@ -1,7 +1,8 @@
-#include <stdio.h>
- 
+#include <iostream>
+using namespace std;
+
 // Number of vertices in the graph
-#define V 4
+#define V 6
  
 /* Define Infinite as a large enough
   value. This value will be used
@@ -28,8 +29,10 @@ void floydWarshall(int dist[][V])
       ----> After the end of an iteration,
       vertex no. k is added to the set of
       intermediate vertices and the set
-      becomes {0, 1, 2, .. k} */
+      becomes {0, 1, 2, .. k} */    
+
     for (k = 0; k < V; k++) {
+        cout << "\n\nk :" << k+1 << "\n\n";
         // Pick all vertices as source one by one
         for (i = 0; i < V; i++) {
             // Pick all vertices as destination for the
@@ -38,12 +41,18 @@ void floydWarshall(int dist[][V])
                 // If vertex k is on the shortest path from
                 // i to j, then update the value of
                 // dist[i][j]
-                if (dist[i][k] + dist[k][j] < dist[i][j])
-                    dist[i][j] = dist[i][k] + dist[k][j];
+                int originalPathLength = dist[i][j];
+                int proposedPathLength = dist[i][k] + dist[k][j];
+
+                int minimum = originalPathLength <= proposedPathLength ? originalPathLength : proposedPathLength;
+
+                printf("d %d %d%d = Min(d %d %d%d, d %d %d%d + d %d %d%d) = Min(%2d, %2d+%2d) = %2d\n", k+1, i+1, j+1, k, i+1, j+1, k, i+1, k+1, k, k+1, j+1, originalPathLength, dist[i][k], dist[k][j], minimum);
+
+                dist[i][j] = minimum;
             }
+            
         }
     }
- 
     // Print the shortest distance matrix
     printSolution(dist);
 }
@@ -77,10 +86,12 @@ int main()
        \|/         |
        (1)------->(2)
             3           */
-    int graph[V][V] = { { 0, 5, INF, 10 },
-                        { INF, 0, 3, INF },
-                        { INF, INF, 0, 1 },
-                        { INF, INF, INF, 0 } };
+    int graph[V][V] = { {   0,  20, 30,  INF, INF, INF },
+                        {  20,   0,  23, INF,  17, INF },
+                        {  30,  23,   0,  15, INF, INF },
+                        { INF, INF,  15,   0,  30,  23 },
+                        { INF,  17, INF,  30,   0,  33 },
+                        { INF, INF, INF,  23,  33,   0 }};
  
     // Function call
     floydWarshall(graph);

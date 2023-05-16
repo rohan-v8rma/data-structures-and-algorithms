@@ -125,5 +125,7 @@ int main() {
     // Multiplication of two 7 digit numbers. (Used `ld` format specifier for displaying correct output)
     printf("Result is : %ld\n\n", karatsubaFastMultiplication(1234567, 1234567));
 
+    printf("Result is : %ld\n\n", karatsubaFastMultiplication(146123, 352120));
+
     return 0;
 }

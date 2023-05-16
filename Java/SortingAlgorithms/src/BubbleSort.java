@@ -1,5 +1,7 @@
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BubbleSort {
 
@@ -8,8 +10,17 @@ public class BubbleSort {
     public static void main(String[] args) {
         int[] array = {2, 1, 5, 4, 3};
 //        int[] array = {1, 2, 3, 4, 5};
+        List<Integer> arr = new ArrayList<>();
+        arr.add(43);
+        arr.add(4);
+        arr.add(3);
+        arr.add(143);
+
+        System.out.println(arr);
+
         bubbleSort(array);
         System.out.printf(Arrays.toString(array));
+        System.out.println(array);
     }
 
     static void bubbleSort(int[] arr) { // for arrays, the original object is modified. Unlike strings, where a new object is created

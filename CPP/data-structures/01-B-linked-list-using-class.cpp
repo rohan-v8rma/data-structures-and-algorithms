@@ -37,6 +37,8 @@ public:
         }
     }
 };
+
+
 int main() {
     node* head = new node(5); // When `new` is used to allocate memory for a C++ class object, the object's constructor is called after the memory is allocated.
     

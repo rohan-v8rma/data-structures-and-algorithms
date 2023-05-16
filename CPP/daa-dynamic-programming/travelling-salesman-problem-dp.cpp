@@ -49,11 +49,15 @@ void setupTSP(int** costMatrix, int numOfVertices) {
         for(int verticesVisited = 2; verticesVisited <= numOfVertices; verticesVisited++) {
             for(auto& afterSource: removedStartVertex) {
                 
+                // In the first iteration, we have no previous values to check so we just append the values from the costMatrix into the table.
                 if(verticesVisited == 2) {
                     // Going back to source vertex
-                    table[verticesVisited - 2][afterSource].currentCost = costMatrix[startingVertex][afterSource];
+                    //TODO: Test this with directed asymmetric graphs
+                    // table[verticesVisited - 2][afterSource].currentCost = costMatrix[startingVertex][afterSource];
+                    table[verticesVisited - 2][afterSource].currentCost = costMatrix[afterSource][startingVertex];
                     table[verticesVisited - 2][afterSource].visited[startingVertex] = 1;
                 }
+                // In the last iteration of the dynamic programming approach, we visit the last unvisited vertex from the `afterSource` vertex
                 else if(verticesVisited == numOfVertices) {
                     int visitInThisIteration = -1;
                     for(int index = 0; index < numOfVertices; index++) {

@@ -25,6 +25,14 @@ public:
         }
     }
 
+    int getSize() {
+        return size;
+    }
+
+    int getElement(int index) {
+        return arrayPointer[index];
+    }
+
     void insertElement(int element) {
         ensureCapacity();
 

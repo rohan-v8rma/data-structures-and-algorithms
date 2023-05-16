@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// struct Solution {
+
+// }
+
 // Assuming that 1 is our starting vertex
 int TSP(int vertexVisited, set<int> verticesToVisit, int** costMatrix, int numOfVertices, int originVertex) {
     if(verticesToVisit.empty()) {

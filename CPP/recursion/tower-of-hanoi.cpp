@@ -5,7 +5,7 @@ using namespace::std;
 
 void towerOfHanoi(int diskNumber, char from_rod, char to_rod, char aux_rod) {
     if (diskNumber == 1) {
-        printf("Moving disk number 1 from (rod %c) to (rod %c)\n", from_rod, to_rod);
+        printf("MOVED disk 1 from (rod %c) to (rod %c)\n", from_rod, to_rod);
         return;
     }
 
@@ -22,7 +22,7 @@ int main() {
     char using_rod = 'B';
     char to_rod = 'C';
 
-    towerOfHanoi(10, from_rod, to_rod, using_rod);
+    towerOfHanoi(4, from_rod, to_rod, using_rod);
 
     return 0;
 }
