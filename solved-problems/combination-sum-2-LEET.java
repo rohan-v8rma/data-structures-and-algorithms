@@ -115,6 +115,15 @@ class Solution {
         }
 
         int lastSelectedElement = Integer.MIN_VALUE;
+        /* 
+        The nextSelectIndex starts from (index + 1), for clarity in what is happening in the recursion calls.
+
+        If we were pick the `index` element in this level, we would need to allow for `index + 1` element to be
+        picked regardless of the value in `index`, 
+        because in that scenario, `index + 1` would a be level lower in the recursion tree, not causing duplicacy.
+
+        THIS IS DIFFERENT FROM TRADITIONAL APPROACH
+        */
         for(int nextSelectIndex = index + 1; nextSelectIndex < candidates.length; nextSelectIndex++) {
             
             
