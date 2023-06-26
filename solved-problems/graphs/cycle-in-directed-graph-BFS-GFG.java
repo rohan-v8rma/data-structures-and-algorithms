@@ -1,3 +1,5 @@
+// https://practice.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/0
+
 public class Solution {
     // Function for calculating in-degrees for applying Kahn's algorithm.    
     static void calculateIndegree(int[] inDegrees, ArrayList<ArrayList<Integer>> adj) {

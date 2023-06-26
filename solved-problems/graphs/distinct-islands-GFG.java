@@ -1,4 +1,4 @@
-// User function Template for Java
+// https://practice.geeksforgeeks.org/problems/number-of-distinct-islands/0
 
 class Solution {
     // We will be executing DFS in clockwise direction.
