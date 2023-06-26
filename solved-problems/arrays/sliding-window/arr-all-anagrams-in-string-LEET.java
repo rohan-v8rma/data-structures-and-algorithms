@@ -8,21 +8,19 @@ class Solution {
         }
     }
 
-    
-    public List<Integer> findAnagrams(String s, String p) {
+    // Normal Solution 1 (used HashMap) 
+    // ! NOT SPACE OPTIMIZED
+    public List<Integer> findAnagrams1(String s, String p) {
         List<Integer> anagramStartIndices = new ArrayList<>();
 
         Map<Character, Integer> frequencyTable = new HashMap<>();
+        
         for(char letter: p.toCharArray()) {
             frequencyTable.computeIfPresent(letter, (key, value) -> value + 1);
             frequencyTable.putIfAbsent(letter, 1);
         }
 
         Map<Character, Integer> tallyTable = new HashMap<>(frequencyTable);
-
-        // for(Map.Entry<Character, Integer> entry: frequencyTable.entrySet()) {
-        //     System.out.printf("%c, %d\n", entry.getKey(), entry.getValue());
-        // }
 
         int maxStartIndex = s.length() - p.length();
         int windowStartIndex = 0;
@@ -76,4 +74,178 @@ class Solution {
 
         return anagramStartIndices;   
     }
+
+
+    // Normal Solution 2 (used HashMap) AND used for-loop to iterate over the main string.
+    // ! NOT SPACE OPTIMIZED
+    public List<Integer> findAnagrams2(String s, String p) {
+        List<Integer> anagramStartIndices = new ArrayList<>();
+
+        Map<Character, Integer> frequencyTable = new HashMap<>();
+        
+        for(char letter: p.toCharArray()) {
+            frequencyTable.put(letter, frequencyTable.getOrDefault(letter, 0) + 1);
+            // frequencyTable.computeIfPresent(letter, (key, value) -> value + 1);
+            // frequencyTable.putIfAbsent(letter, 1);
+        }
+
+        int maxStartIndex = s.length() - p.length();
+
+        int currentIndex = 0;
+        Map<Character, Integer> tallyTable = new HashMap<>();
+        for(int windowStartIndex = 0; windowStartIndex <= maxStartIndex; windowStartIndex++) {
+            int windowEndIndex = windowStartIndex + p.length() - 1;
+
+            // The tally table is empty, so we need to start matching from the start of the window itself.
+            if(tallyTable.isEmpty()) {
+                currentIndex = windowStartIndex;
+            }
+            
+            while(currentIndex <= windowEndIndex) {
+                char currentCharacter = s.charAt(currentIndex);
+
+                int currentCount = tallyTable.getOrDefault(currentCharacter, 0) + 1; 
+                // Add 1 because of the currently seen character.
+                
+                int actualCount = frequencyTable.getOrDefault(currentCharacter, 0);
+                
+                // This character is NOT needed, so we change the windowStartIndex.
+                if(actualCount == 0) {
+                    // This will be incremented in the next iteration.
+                    windowStartIndex = currentIndex;
+                    tallyTable = new HashMap<>();
+                    break;
+                }
+                // The currentCharacter, is an extra one 
+                else if(currentCount == actualCount + 1) {
+                    /*
+                    But, it is the same as the window start character
+                    so we retain the same count by shifting the window forward
+                    */
+                    if(s.charAt(windowStartIndex) == currentCharacter) {
+                        // Incrementing the current index to be checked
+                        currentIndex++;
+                    }
+                    else {
+                        // Removing the starting character.
+                        reduceCharacterAndRemove(s.charAt(windowStartIndex), tallyTable);
+                        windowStartIndex++;
+                        continue;
+                    }
+                    
+                    break;
+                }
+
+                tallyTable.put(currentCharacter, currentCount);
+
+                // All characters checked
+                if(currentIndex == windowEndIndex) {
+                    anagramStartIndices.add(windowStartIndex);
+                    // Adding the starting index of window to our solution array
+                    char windowStartingChar = s.charAt(windowStartIndex);
+                    reduceCharacterAndRemove(windowStartingChar, tallyTable);
+                }
+                
+                // We need to check the next character.
+                currentIndex++;
+            }
+        }
+
+        return anagramStartIndices;   
+    }
+
+    
+    static boolean isTallyTableEmpty(int[] tallyTable) {
+        for(int index = 0; index < 26; index++) {
+            if(tallyTable[index] != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    
+    // Optimal (use arrays for map, resulting in lower overhead)
+    //? Space optimized.
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> anagramStartIndices = new ArrayList<>();
+
+        int[] frequencyTable = new int[26];
+        // Map<Character, Integer> frequencyTable = new HashMap<>();
+        
+        for(char letter: p.toCharArray()) {
+            frequencyTable[letter - 'a']++;
+            // frequencyTable.put(letter, frequencyTable.getOrDefault(letter, 0) + 1);
+            // frequencyTable.computeIfPresent(letter, (key, value) -> value + 1);
+            // frequencyTable.putIfAbsent(letter, 1);
+        }
+
+        int maxStartIndex = s.length() - p.length();
+
+        int currentIndex = 0;
+
+        int[] tallyTable = new int[26];
+        // Map<Character, Integer> tallyTable = new HashMap<>();
+        for(int windowStartIndex = 0; windowStartIndex <= maxStartIndex; windowStartIndex++) {
+            int windowEndIndex = windowStartIndex + p.length() - 1;
+
+            // The tally table is empty, so we need to start matching from the start of the window itself.
+            if(isTallyTableEmpty(tallyTable)) {
+                currentIndex = windowStartIndex;
+            }
+            
+            while(currentIndex <= windowEndIndex) {
+                int currentCharacterIndex = s.charAt(currentIndex) - 'a';
+
+                int currentCount = tallyTable[currentCharacterIndex] + 1; 
+                // Add 1 because of the currently seen character.
+                
+                int actualCount = frequencyTable[currentCharacterIndex];
+                
+                // This character is NOT needed, so we change the windowStartIndex.
+                if(actualCount == 0) {
+                    // This will be incremented in the next iteration.
+                    windowStartIndex = currentIndex;
+                    tallyTable = new int[26];
+                    break;
+                }
+                // The currentCharacter, is an extra one 
+                else if(currentCount == actualCount + 1) {
+                    /*
+                    But, it is the same as the window start character
+                    so we retain the same count by shifting the window forward
+                    */
+                    if((s.charAt(windowStartIndex) - 'a') == currentCharacterIndex) {
+                        // Incrementing the current index to be checked
+                        currentIndex++;
+                    }
+                    else {
+                        // Removing the starting character.
+                        tallyTable[s.charAt(windowStartIndex) - 'a']--;
+                        windowStartIndex++;
+                        continue;
+                    }
+                    
+                    break;
+                }
+
+                tallyTable[currentCharacterIndex] = currentCount;
+
+                // All characters checked
+                if(currentIndex == windowEndIndex) {
+                    anagramStartIndices.add(windowStartIndex);
+                    // Adding the starting index of window to our solution array
+                    int windowStartingCharIndex = s.charAt(windowStartIndex) - 'a';
+                    tallyTable[windowStartingCharIndex]--;
+                }
+                
+                // We need to check the next character.
+                currentIndex++;
+            }
+        }
+
+        return anagramStartIndices;   
+    }
+
+    
 }
