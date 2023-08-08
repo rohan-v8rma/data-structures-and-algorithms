@@ -1,3 +1,5 @@
+// https://www.codingninjas.com/studio/problems/subarrays-with-xor-k_6826258
+
 import java.util.HashMap;
 import java.util.Map;
 
