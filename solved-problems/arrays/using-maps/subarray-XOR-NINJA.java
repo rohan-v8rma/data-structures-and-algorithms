@@ -1,11 +1,11 @@
 // https://www.codingninjas.com/studio/problems/subarrays-with-xor-k_6826258
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 
 public class Solution {
     
-    //* Bruteforce solution: O(n^2) 
+    // Bruteforce solution: O(n^2) 
     // public static int subarraysWithSumK(int []a, int b) {
         
     //     int count = 0;
@@ -27,6 +27,36 @@ public class Solution {
     //                 count++;
     //             }
     //         }
+    //     }
+
+    //     return count;
+    // }
+
+    // Better, but causes TLE
+    // public static int subarraysWithSumK(int[]a, int b) {
+    //     int count = 0;
+
+    //     List<Integer> xorsTillCurrentIndex; 
+    //     List<Integer> xorsTillPreviousIndex = new ArrayList<>();
+
+
+    //     for(int element: a) {
+    //         if(element == b) {
+    //             count++;
+    //         }
+
+    //         xorsTillCurrentIndex = new ArrayList<>();
+    //         for(int previousXor: xorsTillPreviousIndex) {
+    //             int xor = previousXor ^ element;
+    //             xorsTillCurrentIndex.add(xor);
+
+    //             if(xor == b) {
+    //                 count++;
+    //             }
+    //         }
+
+    //         xorsTillCurrentIndex.add(element);
+    //         xorsTillPreviousIndex = xorsTillCurrentIndex;
     //     }
 
     //     return count;
