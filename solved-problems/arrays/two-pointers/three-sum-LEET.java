@@ -3,126 +3,167 @@
 import java.util.Arrays;
 
 class Solution {
-    //* Bruteforce would be 3 for-loops
+    /* 
+    Bruteforce would be 3 for-loops
+
+    But according to N = 3000, N^3 would exceed 10^8
+    */
     // public List<List<Integer>> threeSum(int[] nums) {
         
     // }
 
-    //* Better, but uses set which takes time
-    // public List<List<Integer>> threeSum(int[] nums) {
-        
-    //     Set<List<Integer>> solTriplets = new HashSet<>();
-        
-    //     // After fixing one index, we are left with the two sum problem.
-    //     for(int fixedIdx = 0; fixedIdx < nums.length; fixedIdx++) {
-    //         /*
-    //         We get the two sum solution on the array to the right of the 
-    //         fixed index because if the solution included an index preceding
-    //         the fixed index, it would have been included in a solution, 
-    //         previously;  
-            
-    //         When the fixed index was a lesser value (equal to the index 
-    //         preceding the fixed index that is a part of the solution).
-    //         */
-    //         int twoSumTarget = 0 - nums[fixedIdx];
-            
-    //         // This set contains the numbers seen 
-    //         Set<Integer> numSeen = new HashSet<>();
-            
-    //         for(int twoSumIdx = fixedIdx + 1; twoSumIdx < nums.length; twoSumIdx++) {
-    //             int currentNum = nums[twoSumIdx];
+    /* 
+    * Better: O(N^2) * (3.log(3)))
 
-    //             if(numSeen.contains(twoSumTarget - currentNum)) {
-    //                 List<Integer> solTriplet = new ArrayList<>();
-    //                 solTriplet.add(nums[fixedIdx]);
-    //                 solTriplet.add(twoSumTarget - currentNum);
-    //                 solTriplet.add(currentNum);
+    Number of operations ~ 1.2 * 10^7
+
+    O(N^2) for 3 sum, and 3.log(3) for sorting the triplet before adding 
+    it to the set.
+    */
+    public List<List<Integer>> threeSum1(int[] nums) {
+        
+        Set<List<Integer>> solTriplets = new HashSet<>();
+        
+        // After fixing one index, we are left with the two sum problem.
+        for(int fixedIdx = 0; fixedIdx < nums.length; fixedIdx++) {
+            /*
+            We get the two sum solution on the array to the right of the 
+            fixed index because if the solution included an index preceding
+            the fixed index, it would have been included in a solution, 
+            previously;  
+            
+            When the fixed index was a lesser value (equal to the index 
+            preceding the fixed index that is a part of the solution).
+            */
+            int twoSumTarget = 0 - nums[fixedIdx];
+            
+            // This set contains the numbers seen 
+            Set<Integer> numSeen = new HashSet<>();
+            
+            for(int twoSumIdx = fixedIdx + 1; twoSumIdx < nums.length; twoSumIdx++) {
+                int currentNum = nums[twoSumIdx];
+
+                if(numSeen.contains(twoSumTarget - currentNum)) {
+                    List<Integer> solTriplet = new ArrayList<>();
+                    solTriplet.add(nums[fixedIdx]);
+                    solTriplet.add(twoSumTarget - currentNum);
+                    solTriplet.add(currentNum);
                     
-    //                 Collections.sort(solTriplet);
-    //                 solTriplets.add(solTriplet);
-    //             }
+                    Collections.sort(solTriplet);
+                    solTriplets.add(solTriplet);
+                }
                 
-    //             numSeen.add(currentNum);
-    //         }
-    //     }
+                numSeen.add(currentNum);
+            }
+        }
 
-    //     return new ArrayList<>(solTriplets);
-    // }
+        return new ArrayList<>(solTriplets);
+    }
 
-    //* OPTIMAL 1: Uses List instead of set but overhead of numSeen set.
-    // public List<List<Integer>> threeSum(int[] nums) {
+    /*
+    * OPTIMAL APPROACH
+    
+    The entire array is sorted initially: N.log(N)
+    
+    Then, 3rd element is fixed which is O(N) 
+    AND the remaining 2 sum problem is solved, which is again O(N);
+    for a total of: O(N^2)
+
+    Number of operations = N^2 + N.log(N) ~ 9 * 10^6
+    
+    This is less than the better approach, hence is it is optimal.
+
+    CONCLUSION IS THAT IT IS BETTER TO SORT THE ARRAY FIRST, RATHER
+    THAN SORTING EACH TRIPLET INDIVIDUALLY.
+    */
+
+    /* 
+    * OPTIMAL 1
+    
+    We use modification of unsorted two sum approach (which requires
+    the numSeen set) for solving the sorted two sum problem we have below.
+    */
+    public List<List<Integer>> threeSum2(int[] nums) {
         
-    //     // Sorting the array
-    //     Arrays.sort(nums);
+        // Sorting the array
+        Arrays.sort(nums);
 
-    //     List<List<Integer>> solTriplets = new ArrayList<>();
+        List<List<Integer>> solTriplets = new ArrayList<>();
         
-    //     int tripletLeft = Integer.MAX_VALUE;
+        int tripletLeft = Integer.MAX_VALUE;
 
-    //     // After fixing one index, we are left with the two sum problem.
-    //     for(int fixedIdx = 0; fixedIdx < nums.length; fixedIdx++) {
+        // After fixing one index, we are left with the two sum problem.
+        for(int fixedIdx = 0; fixedIdx < nums.length; fixedIdx++) {
             
-    //         if(nums[fixedIdx] == tripletLeft) {
-    //             continue;
-    //         }
+            if(nums[fixedIdx] == tripletLeft) {
+                continue;
+            }
 
-    //         tripletLeft = nums[fixedIdx];
+            tripletLeft = nums[fixedIdx];
 
-    //         /* 
-    //         Since tripletLeft changed, tripletMid will also be reset since if one element 
-    //         changes in the triplet, not possible to have a duplicate triplet.
-    //         */
-    //         int tripletMid = Integer.MAX_VALUE;
+            /* 
+            Since tripletLeft changed, tripletMid will also be reset since if one element 
+            changes in the triplet, not possible to have a duplicate triplet.
+            */
+            int tripletMid = Integer.MAX_VALUE;
 
-    //         /*
-    //         We get the two sum solution on the array to the right of the 
-    //         fixed index because if the solution included an index preceding
-    //         the fixed index, it would have been included in a solution, 
-    //         previously;  
+            /*
+            We get the two sum solution on the array to the right of the 
+            fixed index because if the solution included an index preceding
+            the fixed index, it would have been included in a solution, 
+            previously;  
             
-    //         When the fixed index was a lesser value (equal to the index 
-    //         preceding the fixed index that is a part of the solution).
-    //         */
-    //         int twoSumTarget = 0 - tripletLeft;
+            When the fixed index was a lesser value (equal to the index 
+            preceding the fixed index that is a part of the solution).
+            */
+            int twoSumTarget = 0 - tripletLeft;
             
-    //         // This set contains the numbers seen (This set is refreshed for every new two sum prob)
-    //         Set<Integer> numSeen = new HashSet<>();
-    //         if(fixedIdx < nums.length - 1) {
-    //             numSeen.add(nums[fixedIdx + 1]);
-    //         }
+            // This set contains the numbers seen (This set is refreshed for every new two sum prob)
+            Set<Integer> numSeen = new HashSet<>();
+            if(fixedIdx < nums.length - 1) {
+                numSeen.add(nums[fixedIdx + 1]);
+            }
             
-    //         for(int twoSumIdx = fixedIdx + 2; twoSumIdx < nums.length; twoSumIdx++) {
+            for(int twoSumIdx = fixedIdx + 2; twoSumIdx < nums.length; twoSumIdx++) {
                 
-    //             int currentNum = nums[twoSumIdx];
+                int currentNum = nums[twoSumIdx];
 
-    //             // Repetition of tripletMid will result in duplicate triplets, so continue;
-    //             if(currentNum == tripletMid) {
-    //                 continue;
-    //             }
+                // Repetition of tripletMid will result in duplicate triplets, so continue;
+                if(currentNum == tripletMid) {
+                    continue;
+                }
 
-    //             if(numSeen.contains(twoSumTarget - currentNum)) {
-    //                 tripletMid = nums[twoSumIdx];    
+                if(numSeen.contains(twoSumTarget - currentNum)) {
+                    tripletMid = nums[twoSumIdx];    
                     
-    //                 // No need to sort triplets since we sorted the nums array at the beginning.
-    //                 solTriplets.add(
-    //                     new ArrayList<>(
-    //                         Arrays.asList(
-    //                             tripletLeft, 
-    //                             twoSumTarget - currentNum, 
-    //                             currentNum
-    //                         )
-    //                     )
-    //                 );
-    //             }
+                    // No need to sort triplets since we sorted the nums array at the beginning.
+                    solTriplets.add(
+                        new ArrayList<>(
+                            Arrays.asList(
+                                tripletLeft, 
+                                twoSumTarget - currentNum, 
+                                currentNum
+                            )
+                        )
+                    );
+                }
                 
-    //             numSeen.add(currentNum);
-    //         }
-    //     }
+                numSeen.add(currentNum);
+            }
+        }
 
-    //     return solTriplets;
-    // }
+        return solTriplets;
+    }
 
-    //* OPTIMAL 2: Uses sorted two sum approach, which eliminated overhead of numSeen set.
+    /* 
+    * OPTIMAL 2
+    
+    We use the 2 pointer sorted two sum approach
+    for solving the sorted two sum problem we have below.
+
+    This yields us a better O(N) than the O(N) of the modified two sum
+    approach we used above, resulting in faster runtime.
+    */
     public List<List<Integer>> threeSum(int[] nums) {
         
         // Sorting the array
