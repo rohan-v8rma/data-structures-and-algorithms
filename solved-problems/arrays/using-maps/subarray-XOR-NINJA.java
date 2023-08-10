@@ -6,66 +6,70 @@ import java.util.*;
 public class Solution {
     
     // Bruteforce solution: O(n^2) 
-    // public static int subarraysWithSumK(int []a, int b) {
+    public static int subarraysWithSumK1(int []a, int b) {
         
-    //     int count = 0;
-    //     int xor;
+        int count = 0;
+        int xor;
 
-    //     // The first for-loop determines the start of the set of sub-arrays
-    //     for(int startI = 0; startI < a.length; startI++) {
-    //         xor = 0;
-    //         /* 
-    //         Suppose startI = 0. 
-    //         Then, the inner for-loop tests the xor values of all 
-    //         sub-arrays that start from 0.
+        // The first for-loop determines the start of the set of sub-arrays
+        for(int startI = 0; startI < a.length; startI++) {
+            xor = 0;
+            /*  
+            Suppose startI = 0. 
+            Then, the inner for-loop tests the xor values of all 
+            sub-arrays that start from 0.
 
-    //         It increases length of the subarray one-by-one
-    //         */
-    //         for(int endI = startI; endI < a.length; endI++) {
-    //             xor ^= a[endI];
-    //             if(xor == b) {
-    //                 count++;
-    //             }
-    //         }
-    //     }
+            It increases length of the subarray one-by-one
+            */
+            for(int endI = startI; endI < a.length; endI++) {
+                xor ^= a[endI];
+                if(xor == b) {
+                    count++;
+                }
+            }
+        }
 
-    //     return count;
-    // }
-
-    // Better, but causes TLE
-    // public static int subarraysWithSumK(int[]a, int b) {
-    //     int count = 0;
-
-    //     List<Integer> xorsTillCurrentIndex; 
-    //     List<Integer> xorsTillPreviousIndex = new ArrayList<>();
-
-
-    //     for(int element: a) {
-    //         if(element == b) {
-    //             count++;
-    //         }
-
-    //         xorsTillCurrentIndex = new ArrayList<>();
-    //         for(int previousXor: xorsTillPreviousIndex) {
-    //             int xor = previousXor ^ element;
-    //             xorsTillCurrentIndex.add(xor);
-
-    //             if(xor == b) {
-    //                 count++;
-    //             }
-    //         }
-
-    //         xorsTillCurrentIndex.add(element);
-    //         xorsTillPreviousIndex = xorsTillCurrentIndex;
-    //     }
-
-    //     return count;
-    // }
+        return count;
+    }
 
     /* 
-    * Optimal: O(N) with O(N) space complexity due to HashMap.
+    Self Developed: TC is O(N^2)
 
-    * For complete mathematical logic why this works, see notebook.
+    See TC analysis in notebook after OR subarray question.
+    */
+    public static int subarraysWithSumK2(int[]a, int b) {
+        int count = 0;
+
+        List<Integer> xorsTillCurrentIndex; 
+        List<Integer> xorsTillPreviousIndex = new ArrayList<>();
+
+
+        for(int element: a) {
+            if(element == b) {
+                count++;
+            }
+
+            xorsTillCurrentIndex = new ArrayList<>();
+            for(int previousXor: xorsTillPreviousIndex) {
+                int xor = previousXor ^ element;
+                xorsTillCurrentIndex.add(xor);
+
+                if(xor == b) {
+                    count++;
+                }
+            }
+
+            xorsTillCurrentIndex.add(element);
+            xorsTillPreviousIndex = xorsTillCurrentIndex;
+        }
+
+        return count;
+    }
+
+    /* 
+    Optimal: O(N) with O(N) space complexity due to HashMap.
+
+    For complete mathematical logic why this works, see notebook.
     */
     public static int subarraysWithSumK(int[]a, int b) {
         int count = 0;
