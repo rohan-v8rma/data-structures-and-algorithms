@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/subarray-product-less-than-k
+
 class Solution {
     /* 
     Bruteforce: O(N^2) would be to test all sub-arrays
@@ -9,8 +11,7 @@ class Solution {
     /*
     N and N(logN) are acceptable
 
-    Not that no division can be performed in this question since division by 0
-    error can occur.
+    Not that no division can be performed in this question since division by 0 error can occur.
     */
 
     // Implementation that uses HashMap (see comparison with TreeMap in notebook)
