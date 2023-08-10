@@ -1,4 +1,4 @@
-// https://leetcode.com/problems/find-all-anagrams-in-a-string/submissions/980267827/
+// https://leetcode.com/problems/find-all-anagrams-in-a-string
 
 class Solution {
     public static void reduceCharacterAndRemove(char character, Map<Character, Integer> tallyTable) {
