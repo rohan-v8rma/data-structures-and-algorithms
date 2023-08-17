@@ -16,13 +16,16 @@
  * }
  */
 class Solution {
+    // Iterative implementation that doesn't mutate the tree
     public List<Integer> preorderTraversal(TreeNode root) {
-        Stack<TreeNode> preOrderStack = new Stack<>();
         List<Integer> preOrderArr = new ArrayList<>();
-
-        if(root != null) {
-            preOrderStack.push(root);
+        
+        if(root == null) {
+            return preOrderArr;
         }
+
+        Stack<TreeNode> preOrderStack = new Stack<>();
+        preOrderStack.push(root);
 
         while(!preOrderStack.isEmpty()) {
             TreeNode currentNode = preOrderStack.pop();
