@@ -1,4 +1,4 @@
-// https://practice.geeksforgeeks.org/problems/is-binary-tree-heap
+// https://practice.geeksforgeeks.org/problems/is-binary-tree-heap/1
 
 /*
 Node defined as

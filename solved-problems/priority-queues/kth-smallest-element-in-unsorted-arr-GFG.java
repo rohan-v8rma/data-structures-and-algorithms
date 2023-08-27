@@ -1,4 +1,4 @@
-// https://practice.geeksforgeeks.org/problems/kth-smallest-element5635
+// https://practice.geeksforgeeks.org/problems/kth-smallest-element5635/1
 
 //? Similar to kth-largest-sum-in-binary-tree-LEET.java
 class Solution {

@@ -1,4 +1,4 @@
-// https://practice.geeksforgeeks.org/problems/bst-to-max-heap
+// https://practice.geeksforgeeks.org/problems/bst-to-max-heap/1
 
 /*class Node{
     int data;
