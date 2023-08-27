@@ -1,4 +1,4 @@
-// https://practice.geeksforgeeks.org/problems/maximum-sum-of-non-adjacent-nodes
+// https://practice.geeksforgeeks.org/problems/maximum-sum-of-non-adjacent-nodes/1
 
 /*class Node
 {
