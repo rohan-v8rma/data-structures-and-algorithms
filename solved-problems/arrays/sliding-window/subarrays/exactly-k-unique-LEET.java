@@ -81,104 +81,154 @@ class Solution {
     // }
 
     // Working approach with 2 hashmaps
+    // public int subarraysWithKDistinct(int[] nums, int k) {
+    //     Map<Integer, Integer> atmostK = new HashMap<>();
+    //     Map<Integer, Integer> atmostKless1 = new HashMap<>();
+
+    //     int winStart = 0, winEndK = 0, winEndKless1 = 0;
+
+    //     int goodSubarr = 0;
+
+    //     while(
+    //         winEndK < nums.length 
+    //         || 
+    //         // this is necessary for the cases when k = 1.
+    //         (k - 1 != 0 && winEndKless1 < nums.length) 
+    //     ) {
+    //         while(winEndKless1 < nums.length) {
+    //             int currentNum = nums[winEndKless1++];
+
+    //             if(
+    //                 atmostKless1.size() < k - 1
+    //                 ||
+    //                 (
+    //                     atmostKless1.size() == (k - 1)
+    //                     &&
+    //                     atmostKless1.containsKey(currentNum)
+    //                 )
+    //             ) {
+    //                 atmostKless1.put(
+    //                     currentNum, 
+    //                     1 + atmostKless1.getOrDefault(currentNum, 0)
+    //                 );
+
+    //                 goodSubarr -= winEndKless1 - winStart;
+    //             }
+    //             else {
+    //                 winEndKless1--;
+    //                 break;
+    //             }
+    //         }
+
+    //         while(winEndK < nums.length) {
+    //             int currentNum = nums[winEndK++];
+
+    //             if(
+    //                 atmostK.size() < k
+    //                 ||
+    //                 (
+    //                     atmostK.size() == k
+    //                     &&
+    //                     atmostK.containsKey(currentNum)
+    //                 )
+    //             ) {
+    //                 atmostK.put(
+    //                     currentNum, 
+    //                     1 + atmostK.getOrDefault(currentNum, 0)
+    //                 );
+
+    //                 goodSubarr += winEndK - winStart;
+    //             }
+    //             else {
+    //                 winEndK--;
+    //                 break;
+    //             }
+    //         }
+
+    //         /* 
+    //         We need one of the map sizes to reduce, to expand one of the 
+    //         windows
+    //         */
+    //         while(atmostKless1.size() == k - 1 && atmostK.size() == k) {
+
+    //             // removing the starting index of both the windows
+    //             int elementToBeReleased = nums[winStart++];
+
+
+    //             int ct = atmostK.get(elementToBeReleased);
+    //             if(ct == 1) {
+    //                 atmostK.remove(elementToBeReleased);
+    //             }
+    //             else {
+    //                 atmostK.put(elementToBeReleased, ct - 1);
+    //             }
+
+    //             if(atmostKless1.size() != 0) {
+    //                 ct = atmostKless1.get(elementToBeReleased);
+    //                 // ct = atmostKless1.getOrDefault(elementToBeReleased, -1);
+    //                 if(ct == 1) {
+    //                     atmostKless1.remove(elementToBeReleased);
+    //                 }
+    //                 else {
+    //                     atmostKless1.put(elementToBeReleased, ct - 1);
+    //                 }
+    //             }
+                
+    //         }
+            
+
+    //     }
+
+    //     return goodSubarr;
+    // }
+
+    
     public int subarraysWithKDistinct(int[] nums, int k) {
-        Map<Integer, Integer> atmostK = new HashMap<>();
-        Map<Integer, Integer> atmostKless1 = new HashMap<>();
+        return
+            subarraysWithAtmostKDistinct(nums, k) 
+            - 
+            subarraysWithAtmostKDistinct(nums, k - 1)
+        ;
+    }
 
-        int winStart = 0, winEndK = 0, winEndKless1 = 0;
+    public int subarraysWithAtmostKDistinct(int[] nums, int k) {
+        HashMap<Integer, Integer> intCounts = new HashMap<>();
 
-        int goodSubarr = 0;
+        int subarrCt = 0;
 
-        while(
-            winEndK < nums.length 
-            || 
-            // this is necessary for the cases when k = 1.
-            (k - 1 != 0 && winEndKless1 < nums.length) 
-        ) {
-            while(winEndKless1 < nums.length) {
-                int currentNum = nums[winEndKless1++];
+        int startIdx = 0;
 
-                if(
-                    atmostKless1.size() < k - 1
-                    ||
-                    (
-                        atmostKless1.size() == (k - 1)
-                        &&
-                        atmostKless1.containsKey(currentNum)
-                    )
-                ) {
-                    atmostKless1.put(
-                        currentNum, 
-                        1 + atmostKless1.getOrDefault(currentNum, 0)
-                    );
+        for(int endIdx = 0; endIdx < nums.length; endIdx++) {
+            // Adding numbers one-by-one to the window.
+            int currentInt = nums[endIdx];
 
-                    goodSubarr -= winEndKless1 - winStart;
+            intCounts.put(currentInt, 1 + intCounts.getOrDefault(currentInt, 0));
+
+            while(intCounts.size() > k) {
+                int intToRemove = nums[startIdx++];
+                int intCount = intCounts.get(intToRemove);
+                if(intCount == 1) {
+                    intCounts.remove(intToRemove);
                 }
                 else {
-                    winEndKless1--;
-                    break;
-                }
-            }
-
-            while(winEndK < nums.length) {
-                int currentNum = nums[winEndK++];
-
-                if(
-                    atmostK.size() < k
-                    ||
-                    (
-                        atmostK.size() == k
-                        &&
-                        atmostK.containsKey(currentNum)
-                    )
-                ) {
-                    atmostK.put(
-                        currentNum, 
-                        1 + atmostK.getOrDefault(currentNum, 0)
-                    );
-
-                    goodSubarr += winEndK - winStart;
-                }
-                else {
-                    winEndK--;
-                    break;
+                    intCounts.put(intToRemove, intCount - 1);
                 }
             }
 
             /* 
-            We need one of the map sizes to reduce, to expand one of the 
-            windows
+            This way of adding to the count helps add all sub-arrays within 
+            the current window.
+
+            We do this because, if the current window has k or less distinct characters,
+            obviously sub-arrays ending at current end index but greater start index
+            will also have k or less distinct characters.
+
+            This formula helps us account for those sub-arrays which we would otherwise
+            miss.
             */
-            while(atmostKless1.size() == k - 1 && atmostK.size() == k) {
-
-                // removing the starting index of both the windows
-                int elementToBeReleased = nums[winStart++];
-
-
-                int ct = atmostK.get(elementToBeReleased);
-                if(ct == 1) {
-                    atmostK.remove(elementToBeReleased);
-                }
-                else {
-                    atmostK.put(elementToBeReleased, ct - 1);
-                }
-
-                if(atmostKless1.size() != 0) {
-                    ct = atmostKless1.get(elementToBeReleased);
-                    // ct = atmostKless1.getOrDefault(elementToBeReleased, -1);
-                    if(ct == 1) {
-                        atmostKless1.remove(elementToBeReleased);
-                    }
-                    else {
-                        atmostKless1.put(elementToBeReleased, ct - 1);
-                    }
-                }
-                
-            }
-            
-
+            subarrCt += endIdx - startIdx + 1;
         }
 
-        return goodSubarr;
+        return subarrCt;
     }
 }
