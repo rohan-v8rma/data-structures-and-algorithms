@@ -1,5 +1,7 @@
 // https://leetcode.com/problems/find-players-with-zero-or-one-losses
 
+// https://leetcode.com/problems/find-players-with-zero-or-one-losses
+
 class Solution {
     /* 
     Highly inefficient solution using a sorted map. 
@@ -95,6 +97,8 @@ class Solution {
     OPTIMAL
     Least TC out of all: O(N + M)
 
+    SIMPLIFIED FORM OF MAP USED.
+
     N is the number of matches
     M is the max person (so we iterate from 1 to M to get people with 0 or 1 losses)
     */
@@ -103,10 +107,11 @@ class Solution {
         List<List<Integer>> answer = Arrays.asList(new ArrayList<>(), new ArrayList<>());
         
         /* 
-        This is because a person is represent using any number from 1 to 10^5. + 1 because 1-indexing.
+        This is because a person is represent using any number from 1 to 10^5. 
+        + 1 because 1-indexing.
 
-        We can do this because constraints allow it. If max was 10^8, it wouldn't have been possible 
-        and resulted in TLE.
+        We can do this because constraints allow it. 
+        If max was 10^8, it wouldn't have been possible and resulted in TLE.
         */
         int[] lossCt = new int[100000 + 1];
         
