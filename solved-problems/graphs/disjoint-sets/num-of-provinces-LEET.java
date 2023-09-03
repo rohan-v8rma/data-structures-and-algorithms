@@ -129,13 +129,13 @@ class Solution {
             */
             numOfProvinces--;
 
-            if(size[U] >= size[V]) {
+            if(size[parentU] >= size[parentV]) {
                 parent[parentV] = parentU;
-                size[U] += size[V];
+                size[parentU] += size[parentV];
             }
             else {
                 parent[parentU] = parentV;
-                size[V] += size[U];
+                size[parentV] += size[parentU];
             }
         }
 

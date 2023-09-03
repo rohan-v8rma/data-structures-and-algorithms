@@ -8,7 +8,7 @@ class Solution {
 
     //     for(int computer = 0; computer < n; computer++) {
     //         adjList.add(new ArrayList<>());
-    //      }
+    //     }
 
     //     for(int[] connection: connections) {
     //         adjList.get(connection[0]).add(connection[1]);
@@ -199,15 +199,14 @@ class Solution {
     //     */
     //     numOfComponents--;
 
-    //     if(size[U] >= size[V]) {
-    //         size[U] += size[V];
-    //         parent[parentV] = parentU;
+    //     if(size[parentU] >= size[parentV]) {
+    //             parent[parentV] = parentU;
+    //         size[parentU] += size[parentV];
     //     }
     //     else {
-    //         size[V] += size[U];
     //         parent[parentU] = parentV;
+    //         size[parentV] += size[parentU];
     //     }
-    // }
 
     //* Approach using Disjoint Sets (OPTIMIZED)
     public int makeConnected(int n, int[][] connections) {
@@ -267,13 +266,13 @@ class Solution {
         */
         numOfComponents--;
 
-        if(size[U] >= size[V]) {
-            size[U] += size[V];
+        if(size[parentU] >= size[parentV]) {
             parent[parentV] = parentU;
+            size[parentU] += size[parentV];
         }
         else {
-            size[V] += size[U];
             parent[parentU] = parentV;
+            size[parentV] += size[parentU];
         }
     }
 }
