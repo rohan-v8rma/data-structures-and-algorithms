@@ -124,6 +124,9 @@
     - [Regular Recursion](#regular-recursion)
     - [Recurrence Relation Formula](#recurrence-relation-formula)
   - [Concept of Circular Incrementation](#concept-of-circular-incrementation)
+- [Method for Artifically Changing Base Fast (to a base below 10)](#method-for-artifically-changing-base-fast-to-a-base-below-10)
+  - [Java](#java)
+  - [Problems this can be used in](#problems-this-can-be-used-in)
 - [TODO](#todo)
 
 # Time Complexity 
@@ -1274,6 +1277,65 @@ while(index < size) {
 }
 ```
 
- 
+# Method for Artifically Changing Base Fast (to a base below 10)
+
+I mention artifical changing of base because although we seem to have changed the base of the number, we haven't in reality.
+
+The number still has a decimal base.
+
+The only difference it is only using digits of another base, instead of
+all the decimal digits.
+
+So, if we convert it to base 8, the number will only use the digits 0-7.
+
+## Java
+
+1. `Integer.toString(int num, int radix)`
+
+    How this method works is, it assumes that `num` has base-10. 
+
+    If we give `radix = 2`, it will give us a binary representation of `num` in string form, making the conversion on the assumption that `num` has base-10.
+
+2. `Integer.parseInt(int num, int radix)`
+
+    The return value of this function is a integer of base-10.
+
+
+
+```java
+// Java program to convert one base to other
+public class MainClass {
+  
+	public static int baseConversion(int number, int toBase)
+	{
+    /* 
+    Integer.parseInt using second argument as 10, 
+    converts the number in `toBase` to normal integer in decimal form.
+    
+    The actual value of the integer changes in this process.
+    */
+		return Integer.parseInt(
+		    // Integer.toString converts the decimal number to a string representation in `toBase`
+		    Integer.toString(number, toBase), 10
+		);
+	}
+
+	public static void main(String[] args)
+	{
+		int number = 955; // Number
+		int toBase = 8; // Destination Base Octal
+		
+		System.out.println(baseConversion(number, toBase));
+	}
+}
+
+```
+
+## Problems this can be used in
+
+1. [Number of Powerful Integers - Leetcode Bi-weekly 121](https://leetcode.com/problems/count-the-number-of-powerful-integers/description/)
+
+    It can be used to adhere to the limit of the integer.
+2. 
 
 # TODO 
