@@ -7,20 +7,25 @@ public class FastInput {
     int strIdx;
 
     public FastInput() {
+        /*
+        InputStreamReader deals with input data in characters.
+        BufferedReader makes use of buffers to speed up I/O operations.
+        */
         bufferObject = new BufferedReader(new InputStreamReader(System.in));
         readFromBuffer();
-    }
+    }   
 
     private void readFromBuffer() {
         try {
-            strArray = bufferObject.readLine().split("[\\W]+");
-            strIdx = 0;
+            // Splitting the line at whitespace characters.
+            strArray = bufferObject.readLine().split("[ \r\n\t\f]+");
+            strIdx = 0; // Resetting the strIdx to the start.
         }
         catch(IOException e) {}
     }
 
     String next() {
-        if(strIdx >= strArray.length) readFromBuffer();
+        if(strIdx >= strArray.length) readFromBuffer(); // Getting new line.
 
         return strArray[strIdx++];
     }
