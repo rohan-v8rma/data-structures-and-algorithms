@@ -18,8 +18,7 @@ public class FastOutput {
             since it performs error handling in a less explicit way.
             */
         }
-        catch(IOException e) {
-
-        }
+        catch(IOException e) {}
+        // Catch for BufferedOutputStream
     }
 }

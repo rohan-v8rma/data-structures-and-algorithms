@@ -5,12 +5,13 @@ public class FasterInput {
     BufferedReader readerInstance;
     StringTokenizer st;
 
-    public FastInput() {
+    public FasterInput() {
         readerInstance = new BufferedReader(new InputStreamReader(System.in));
     }
     
     private void readFromBuffer() {
         try {
+            // Splitting the line at whitespace characters.
             st = new StringTokenizer(readerInstance.readLine());
         }
         catch(IOException e) {};
