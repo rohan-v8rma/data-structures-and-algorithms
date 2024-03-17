@@ -1,4 +1,5 @@
 // https://www.codingninjas.com/studio/problems/maze-obstacles_977241
+// TODO: Make notes
 
 import java.util.ArrayList;
 

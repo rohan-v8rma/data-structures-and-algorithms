@@ -1,4 +1,5 @@
 // https://www.codingninjas.com/studio/problems/minimum-path-sum_985349
+// TODO: Make notes
 
 import java.util.* ;
 import java.io.*; 

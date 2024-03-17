@@ -1,4 +1,5 @@
 // https://www.geeksforgeeks.org/problems/the-celebrity-problem/1
+// TODO: make notes
 
 class Solution
 { 

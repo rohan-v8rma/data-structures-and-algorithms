@@ -1,4 +1,5 @@
 // Problem link: https://www.codingninjas.com/studio/problems/ninja-s-training_3621003
+// TODO: Make notes
 
 public class Solution {
     // This solution causes TLE due to repeated recursive calls.

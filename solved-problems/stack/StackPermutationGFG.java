@@ -1,4 +1,5 @@
 // https://www.geeksforgeeks.org/problems/stack-permutations/1
+// TODO: make notes
 
 class Solution {
     public static int isStackPermutation(int n, int[] ip, int[] op) {

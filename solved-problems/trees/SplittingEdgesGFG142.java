@@ -1,4 +1,6 @@
 // https://practice.geeksforgeeks.org/contest/gfg-weekly-coding-contest-142/problems
+// TODO: make notes
+
 import java.util.*;
 
 class Solution {
