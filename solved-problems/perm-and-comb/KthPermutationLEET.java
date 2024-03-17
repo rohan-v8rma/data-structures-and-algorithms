@@ -15,6 +15,8 @@ class Solution {
     N times, to get N labels. 
 
     So, effective TC of this is O(N^2).
+
+    TODO: Try implementing an O(1) removal data structure.
     */
     static char getNthLabel(int N, boolean[] takenLabels) {
         int labelNum = 0;
