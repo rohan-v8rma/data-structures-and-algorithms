@@ -1,5 +1,4 @@
 // https://leetcode.com/problems/find-the-maximum-sum-of-node-values/
-// TODO: make notes
 
 class Solution {
     // O(N.log(N))
