@@ -135,93 +135,56 @@ class Solution {
 
     //     int endIdx = 0;
 
-    //     int windowStart = Integer.MAX_VALUE;
-    //     int windowEnd = Integer.MIN_VALUE;
+    //     int windowStart = 0;
+    //     int windowEnd = Integer.MAX_VALUE;
 
-    //     // Finding initial window in which all the required character counts present.
-    //     while(uniqueCharCt != 0 && endIdx < s.length()) {
-    //         int cNum = charToInt(s.charAt(endIdx));
 
-    //         if(present[cNum]) {
-    //             ct[cNum]--;
-    //             sIndices.offerLast(endIdx);
-
-    //             // Count of 1 unique character met, so decrement the counter variable.
-    //             if(ct[cNum] == 0) uniqueCharCt--;
-    //         }
-            
-    //         endIdx++;
-    //     }
-
-    //     /* 
-    //     Removing any extra characters from beginning
-    //     E.g.: s = 'bba', t = 'ab'
-
-    //     So first 'b' of s has to be removed.
-    //     */
-    //     while(!sIndices.isEmpty()) {
-    //         int cNum = charToInt(s.charAt(sIndices.peekFirst()));
-        
-    //         // This character is needed in the window.
-    //         if(ct[cNum] == 0) break;
-
-    //         // The character was extra in the window.
-    //         sIndices.pollFirst();
-    //         ct[cNum]++;
-    //     }
-
-    //     // If this window contains all the required characters, update window.
-    //     if(uniqueCharCt == 0) {
-    //         windowStart = sIndices.peekFirst();
-    //         windowEnd = sIndices.peekLast();
-    //     }
-        
-    //     while(endIdx < s.length() && !sIndices.isEmpty()) {
-    //         // Removing the first character in the current window.
-    //         int charRemoved = charToInt(s.charAt(sIndices.pollFirst()));
-    //         ct[charRemoved]++;
-
-    //         // Trying to get back another instance ahead of the removed character.
-    //         while(ct[charRemoved] != 0 && endIdx < s.length()) {
+    //     while(endIdx < s.length()) {
+    //         // Finding initial window in which all the required character counts present.
+    //         while(uniqueCharCt != 0 && endIdx < s.length()) {
     //             int cNum = charToInt(s.charAt(endIdx));
 
     //             if(present[cNum]) {
     //                 ct[cNum]--;
     //                 sIndices.offerLast(endIdx);
+
+    //                 // Count of 1 unique character met, so decrement the counter variable.
+    //                 if(ct[cNum] == 0) uniqueCharCt--;
     //             }
-            
+                
     //             endIdx++;
     //         }
-
     //         /* 
-    //         Removing any extra characters, which we might have accumulated 
-    //         while searching for the removed character instance
-    //         */
-    //         while(!sIndices.isEmpty()) {
-    //             int charToBeRemoved = charToInt(s.charAt(sIndices.peekFirst()));
+    //         Removing any extra characters from beginning
+    //         E.g.: s = 'bba', t = 'ab'
 
-    //             // This character is needed in the window.            
-    //             if(ct[charToBeRemoved] >= 0) break;
+    //         So first 'b' of s has to be removed.
+    //         */
+    //         while(uniqueCharCt == 0 && !sIndices.isEmpty()) {
+    //             // If this window contains all the required characters, update window.
+    //             if(uniqueCharCt == 0) {
+    //                 int newWindowStart = sIndices.peekFirst();
+    //                 int newWindowEnd = sIndices.peekLast();
+
+    //                 // Update window, if new window is smaller.
+    //                 if(newWindowEnd - newWindowStart < windowEnd - windowStart) {
+    //                     windowEnd = newWindowEnd;
+    //                     windowStart = newWindowStart;
+    //                 }
+    //             }
+
+    //             int cNum = charToInt(s.charAt(sIndices.peekFirst()));
+            
+    //             // This character is needed in the window.
+    //             if(ct[cNum] == 0) uniqueCharCt++;
 
     //             // The character was extra in the window.
     //             sIndices.pollFirst();
-    //             ct[charToBeRemoved]++;
-    //         }
-
-    //         // If the removed character was actually successfully recouped.
-    //         if(ct[charRemoved] == 0) {
-    //             int newWindowStart = sIndices.peekFirst();
-    //             int newWindowEnd = sIndices.peekLast();
-
-    //             // Update window, if new window is smaller.
-    //             if(newWindowEnd - newWindowStart < windowEnd - windowStart) {
-    //                 windowEnd = newWindowEnd;
-    //                 windowStart = newWindowStart;
-    //             }
+    //             ct[cNum]++;
     //         }
     //     }
         
-    //     return (windowStart > windowEnd ? "" : s.substring(windowStart, windowEnd + 1));
+    //     return (windowEnd == Integer.MAX_VALUE ? "" : s.substring(windowStart, windowEnd + 1));
     // }
 
     /*
