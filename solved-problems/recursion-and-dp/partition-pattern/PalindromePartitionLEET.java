@@ -1,6 +1,10 @@
 // https://leetcode.com/problems/palindrome-partitioning/
 
 class Solution {
+    /*
+    ____SELF DEVELOPED____
+    */
+
     /* 
     This paritioning problem can be reduced to 2 fundamental choices:
 
@@ -119,4 +123,59 @@ class Solution {
 
         return (List)solutionArr;
     }
+
+    /*
+    ____ITERATIVE TABULATION____
+    */
+
+    // ArrayList<ArrayList<ArrayList<String>>> partitionsFromI;
+
+    // boolean isPalindrome(String s, int startIdx, int endIdx) {
+    //     while(startIdx < endIdx) {
+    //         if(s.charAt(startIdx++) != s.charAt(endIdx--)) return false;
+    //     }
+
+    //     return true;
+    // }
+
+    // void addValidPartitions(int startIdx, int endIdx, String sub) {
+    //     int nextPartitionsStartIdx = endIdx + 1;
+
+    //     ArrayList<String> partitionStartingAtI = new ArrayList<>();
+    //     partitionStartingAtI.add(sub);
+
+    //     for(ArrayList<String> partitionsAfterEnd: partitionsFromI.get(endIdx + 1))  {
+    //         ArrayList<String> copyOfArray = new ArrayList<>(partitionStartingAtI);
+    //         copyOfArray.addAll(partitionsAfterEnd);
+    //         partitionsFromI.get(startIdx).add(copyOfArray);
+    //     }
+    // }
+
+    // public List<List<String>> partition(String s) {
+    //     partitionsFromI = new ArrayList<>();
+
+    //     for(int i = 0; i < s.length(); i++) {
+    //         partitionsFromI.add(new ArrayList<>());
+    //     }
+
+    //     for(int startIdx = s.length() - 1; startIdx >= 0; startIdx--) {
+    //         for(int endIdx = startIdx; endIdx < s.length(); endIdx++) {
+    //             if(isPalindrome(s, startIdx, endIdx)) {
+    //                 if(endIdx + 1 == s.length()) {
+    //                     ArrayList<String> partitionStartingAtI = new ArrayList<>();
+    //                     partitionStartingAtI.add(s.substring(startIdx, s.length()));
+    //                     partitionsFromI.get(startIdx).add(partitionStartingAtI);
+    //                 }
+    //                 else if(
+    //                     partitionsFromI.get(endIdx + 1).size() > 0
+    //                 ) {
+    //                     addValidPartitions(startIdx, endIdx, s.substring(startIdx, endIdx + 1));
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return (List)partitionsFromI.get(0);
+
+    // }
 }
