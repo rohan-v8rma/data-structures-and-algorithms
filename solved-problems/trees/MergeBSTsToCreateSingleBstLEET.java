@@ -1,6 +1,6 @@
 // https://leetcode.com/problems/merge-bsts-to-create-single-bst/
 
-// TODO: See the optimal and compact solution for this
+// TODO: See the optimal and compact solution for this: https://www.youtube.com/watch?v=tMPUGvlHBXY
 
 /**
  * Definition for a binary tree node.
