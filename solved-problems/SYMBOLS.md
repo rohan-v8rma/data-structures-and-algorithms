@@ -1,0 +1,3 @@
+- Minimum : Min
+- Maximum : Max
+- Different : Diff
