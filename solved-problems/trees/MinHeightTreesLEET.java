@@ -51,7 +51,11 @@ class Solution {
     //     return (List)result;
     // }
 
-    /*____OPTIMAL: O(2N + E). DFS Approach ____*/
+    /*
+    ____MOST OPTIMAL: O(2N + E). DFS Approach ____
+
+    Has the least runtime
+    */
 
     // int dfs1(int current, int prev) {
     //     int additionalHeight = -1;
@@ -185,7 +189,11 @@ class Solution {
     //     return minHeightNodes;
     // }
 
-    /*____MORE OPTIMAL: BFS approach____*/
+    /*
+    ____OPTIMAL: BFS approach____
+
+    Better in the sense that it is easier to understand.
+    */
 
     public List<Integer> findMinHeightTrees(int n, int[][] edges) {
         if(n == 1) return Arrays.asList(0);
@@ -196,6 +204,7 @@ class Solution {
 
         int[] degrees = new int[n];
 
+        // Calculating degrees of each vertex.
         for(int[] edge: edges) {
             degrees[edge[0]]++;
             degrees[edge[1]]++;
@@ -206,17 +215,30 @@ class Solution {
 
         Queue<Integer> leaves = new LinkedList<>();
         boolean[] visited = new boolean[n];
-        int numVisited = 0;
 
+        // Adding leaves to a queue, and marking them as visited.
         for(int node = 0; node < n; node++) {
             if(degrees[node] == 1) {
                 leaves.offer(node);
                 visited[node] = true;
-                numVisited++;
             }
         }
 
+        /* 
+        We are removing leaves level-by-level, since leaves won't
+        responsible for minimum height trees, but rather
+        nodes towards the center that have medium distance from
+        all leaves.
+        */
         while(leaves.size() > 1) {
+            /* 
+            There are just 2 leaves left which are conneted to
+            each other (validated using degree check).
+            
+            Since they are left over, they are equidistant 
+            from actual leaves in the tree, so both of them 
+            are labels of minimum height trees.
+            */
             if(leaves.size() == 2) {
                 int firstLeaf = leaves.peek();
                 int adjNode = adj.get(firstLeaf).iterator().next();
@@ -228,14 +250,21 @@ class Solution {
 
             int leavesInThisLevel = leaves.size();
 
-            for(int removeLeaf = 0; removeLeaf < leavesInThisLevel; removeLeaf++) {
+            for(
+                int removeLeaf = 0; 
+                removeLeaf < leavesInThisLevel; 
+                removeLeaf++
+            ) {
                 int leaf = leaves.poll();
 
+                // Reducing degree of the node connected to this leaf
                 int adjNode = adj.get(leaf).iterator().next();
                 degrees[adjNode]--;
                 
+                // Removing the leaf from the nodes' adjacency list as well
                 adj.get(adjNode).remove(leaf);
 
+                // If the node has now become a leaf, we add it to queue.
                 if(degrees[adjNode] == 1 && !visited[adjNode]) {
                     leaves.offer(adjNode);
                     visited[adjNode] = true;
