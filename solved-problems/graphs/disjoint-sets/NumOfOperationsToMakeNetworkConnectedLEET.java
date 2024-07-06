@@ -1,7 +1,13 @@
 // https://leetcode.com/problems/number-of-operations-to-make-network-connected
 
 class Solution {
-    //* DFS approach
+    /* 
+    ____DFS approach____
+
+    Useless approach that makes use of pathVisited, when
+    a simple visited array is enough to find out how many
+    wires are extra.
+    */
     // public int makeConnected(int n, int[][] connections) {
         
     //     adjList = new ArrayList<>(2 * n);
@@ -81,7 +87,9 @@ class Solution {
     //     pathVisited[computer] = false;
     // }
 
-    //* DFS approach (OPTIMIZED)
+    /*
+    ____Ideal DFS approach____
+    */
     // public int makeConnected(int n, int[][] connections) {
     //     // (n - 1) wires are needed at minimum to make entire network connected.
     //     if(connections.length < (n - 1)) {
@@ -141,34 +149,9 @@ class Solution {
     //     }
     // }
 
-    //* Approach using Disjoint Sets.
-    // public int makeConnected(int n, int[][] connections) {
-
-    //     numOfComponents = n;
-    //     extraWires = 0;
-
-    //     size = new int[n];
-    //     Arrays.setAll(size, idx -> 1);
-    //     parent = new int[n];
-    //     Arrays.setAll(parent, idx -> idx);
-
-    //     for(int[] connection: connections) {
-    //         unionBySize(connection[0], connection[1]);
-    //     }
-
-    //     // In order to connect n components of the network, we need n - 1 wires.
-    //     if( extraWires < (numOfComponents - 1) ) {
-    //         return -1;
-    //     }
-
-    //     return numOfComponents - 1;
-    // }
-
-    // static int extraWires;
-    // static int numOfComponents;
-
-    // static int[] size;
-    // static int[] parent;
+    /* 
+    ____Approach using Disjoint Sets.____
+    */
 
     // static int getParent(int node) {
     //     if(parent[node] == node) {
@@ -207,41 +190,39 @@ class Solution {
     //         parent[parentU] = parentV;
     //         size[parentV] += size[parentU];
     //     }
+    // }
+    
+    // static int extraWires;
+    // static int numOfComponents;
 
-    //* Approach using Disjoint Sets (OPTIMIZED)
-    public int makeConnected(int n, int[][] connections) {
-        
-        // (n - 1) wires are needed at minimum to make entire network connected.
-        if(connections.length < (n - 1)) {
-            return -1;
-        }
+    // static int[] size;
+    // static int[] parent;
+    
+    // public int makeConnected(int n, int[][] connections) {
 
-        numOfComponents = n;
+    //     numOfComponents = n;
+    //     extraWires = 0;
 
-        size = new int[n];
-        Arrays.setAll(size, idx -> 1);
-        parent = new int[n];
-        Arrays.setAll(parent, idx -> idx);
+    //     size = new int[n];
+    //     Arrays.setAll(size, idx -> 1);
+    //     parent = new int[n];
+    //     Arrays.setAll(parent, idx -> idx);
 
-        for(int[] connection: connections) {
-            unionBySize(connection[0], connection[1]);
-        }
+    //     for(int[] connection: connections) {
+    //         unionBySize(connection[0], connection[1]);
+    //     }
 
-        /* 
-        In order to connect k components of the network, 
-        k - 1 operations need to be performed
-        
-        We directly return k - 1, since we have already eliminated cases
-        where it is not possible to make the entire network connected.
-        */
-        return numOfComponents - 1;
-    }
+    //     // In order to connect n components of the network, we need n - 1 wires.
+    //     if( extraWires < (numOfComponents - 1) ) {
+    //         return -1;
+    //     }
 
-    static int numOfComponents;
+    //     return numOfComponents - 1;
+    // }
 
-    static int[] size;
-    static int[] parent;
-
+    /* 
+    ____Approach using Disjoint Sets (OPTIMIZED)____
+    */
     static int getParent(int node) {
         if(parent[node] == node) {
             return node;
@@ -274,5 +255,37 @@ class Solution {
             parent[parentU] = parentV;
             size[parentV] += size[parentU];
         }
+    }
+
+    static int numOfComponents;
+
+    static int[] size;
+    static int[] parent;
+
+    public int makeConnected(int n, int[][] connections) {
+        // (n - 1) wires are needed at minimum to make entire network connected.
+        if(connections.length < (n - 1)) {
+            return -1;
+        }
+
+        numOfComponents = n;
+
+        size = new int[n];
+        Arrays.setAll(size, idx -> 1);
+        parent = new int[n];
+        Arrays.setAll(parent, idx -> idx);
+
+        for(int[] connection: connections) {
+            unionBySize(connection[0], connection[1]);
+        }
+
+        /* 
+        In order to connect k components of the network, 
+        k - 1 operations need to be performed
+        
+        We directly return k - 1, since we have already eliminated cases
+        where it is not possible to make the entire network connected.
+        */
+        return numOfComponents - 1;
     }
 }

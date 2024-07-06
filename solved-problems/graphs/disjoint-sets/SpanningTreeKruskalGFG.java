@@ -4,6 +4,46 @@ class Solution {
     /*
     Kruskal's algorithm for finding MST
     */
+    static int findParent(int vertex) {
+        if(parent[vertex] == vertex) {
+            return vertex;
+        }
+        
+        // Path compression
+        return parent[vertex] = findParent(parent[vertex]);
+    }
+    
+    static boolean union(int u, int v) {
+        int parentU = findParent(u);
+        int parentV = findParent(v);
+        
+        /* 
+        Including this edge will result in the formation of a cycle.
+        
+        So, return false to indicate that union is not possible
+        */
+        if(parentU == parentV) {
+            return false;
+        }
+        
+        int sizeU = size[parentU];
+        int sizeV = size[parentV];
+        
+        if(sizeU >= sizeV) {
+            parent[parentV] = parentU;
+            size[parentU] += size[parentV];
+        }
+        else {
+            parent[parentU] = parentV;
+            size[parentV] += size[parentU];
+        }
+        
+        return true;
+    }
+
+    static int[] parent;
+    static int[] size;
+
     static int spanningTree(int V, int E, int edges[][]){
     
         parent = new int[V];
@@ -42,45 +82,5 @@ class Solution {
         
         
         return mstSum;
-    }
-    
-    static int[] parent;
-    static int[] size;
-    
-    static int findParent(int vertex) {
-        if(parent[vertex] == vertex) {
-            return vertex;
-        }
-        
-        // Path compression
-        return parent[vertex] = findParent(parent[vertex]);
-    }
-    
-    static boolean union(int u, int v) {
-        int parentU = findParent(u);
-        int parentV = findParent(v);
-        
-        /* 
-        Including this edge will result in the formation of a cycle.
-        
-        So, return false to indicate that union is not possible
-        */
-        if(parentU == parentV) {
-            return false;
-        }
-        
-        int sizeU = size[parentU];
-        int sizeV = size[parentV];
-        
-        if(sizeU >= sizeV) {
-            parent[parentV] = parentU;
-            size[parentU] += size[parentV];
-        }
-        else {
-            parent[parentU] = parentV;
-            size[parentV] += size[parentU];
-        }
-        
-        return true;
     }
 }

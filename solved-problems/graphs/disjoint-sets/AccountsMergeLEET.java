@@ -1,7 +1,39 @@
 // https://leetcode.com/problems/accounts-merge
 
 class Solution {
-    // SELF DEVELOPED ALGO, that uses Disjoint Sets
+    /* 
+    ____SELF DEVELOPED ALGO, that uses Disjoint Sets____
+    */
+    static void unionBySize(int U, int V) {
+        
+        int parentU = getParent(U);
+        int parentV = getParent(V);
+
+        if(parentU == parentV) {
+            return;
+        }
+
+        if(size[parentU] >= size[parentV]) {
+            parent[parentV] = parentU;
+            size[parentU] += size[parentV];
+        }
+        else {
+            parent[parentU] = parentV;
+            size[parentV] += size[parentU];
+        }
+    }
+
+    static int getParent(int node) {
+        if(node == parent[node]) {
+            return node;
+        }
+
+        return parent[node] = getParent(parent[node]);
+    }
+
+    static int[] parent;
+    static int[] size;
+
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
         int numOfAcc = accounts.size();
 
@@ -101,35 +133,5 @@ class Solution {
         }
         
         return mergedAccounts;
-    }
-
-    static void unionBySize(int U, int V) {
-        
-        int parentU = getParent(U);
-        int parentV = getParent(V);
-
-        if(parentU == parentV) {
-            return;
-        }
-
-        if(size[parentU] >= size[parentV]) {
-            parent[parentV] = parentU;
-            size[parentU] += size[parentV];
-        }
-        else {
-            parent[parentU] = parentV;
-            size[parentV] += size[parentU];
-        }
-    }
-
-    static int[] parent;
-    static int[] size;
-
-    static int getParent(int node) {
-        if(node == parent[node]) {
-            return node;
-        }
-
-        return parent[node] = getParent(parent[node]);
     }
 }
