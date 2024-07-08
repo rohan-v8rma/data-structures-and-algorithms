@@ -119,42 +119,73 @@ class Solution {
     //     return chordThroughThisNode(root);
     // }
 
-    // OPTIMAL solution: Marginally faster than BETTER solution
+    /* 
+    ____OPTIMAL solution: Marginally faster than BETTER solution____
+    */
+    // static int diameter;
 
-    static int diameter;
-
-    static int returnHeightAndFindDiameterPassively(TreeNode root) {
-        // Finding lh and rh as usual.
-        int leftHeight = 0;
-        int rightHeight = 0;
+    // static int returnHeightAndFindDiameterPassively(TreeNode root) {
+    //     // Finding lh and rh as usual.
+    //     int leftHeight = 0;
+    //     int rightHeight = 0;
         
-        if(root.left != null) {
-            leftHeight = returnHeightAndFindDiameterPassively(root.left);
-        }
+    //     if(root.left != null) {
+    //         leftHeight = returnHeightAndFindDiameterPassively(root.left);
+    //     }
         
-        if(root.right != null) {
-            rightHeight = returnHeightAndFindDiameterPassively(root.right);
-        }
+    //     if(root.right != null) {
+    //         rightHeight = returnHeightAndFindDiameterPassively(root.right);
+    //     }
 
+    //     /* 
+    //     While finding the heights, we check whether the current node is the CURVE POINT
+    //     for the diameter of the tree.
+
+    //     We use the calculated values of leftHeight and rightHeight to perform this check.
+    //     */
+    //     diameter = Math.max(diameter, leftHeight + rightHeight);
+
+    //     // Returning height as usual.
+    //     return 1 + Math.max(leftHeight, rightHeight);
+    // }
+
+    // public int diameterOfBinaryTree(TreeNode root) {
+    //     if(root == null) {
+    //         return 0;
+    //     }
+
+    //     diameter = 0;
+    //     returnHeightAndFindDiameterPassively(root);
+    //     return diameter;
+    // }
+
+    /*
+    ___SMALLER CODE, BETTER BASE CASE
+    */
+    int getHeight(TreeNode root) {
         /* 
-        While finding the heights, we check whether the current node is the CURVE POINT
-        for the diameter of the tree.
+        Since we've reached a node beyond the leaf, 
+        it technically has -1 height because it doesn't exist
 
-        We use the calculated values of leftHeight and rightHeight to perform this check.
+        When leaf adds 1 to this, it gets correct height of 0.
         */
+        if(root == null) return -1;
+
+        int leftHeight = 1 + getHeight(root.left);
+        int rightHeight = 1 + getHeight(root.right);
+
         diameter = Math.max(diameter, leftHeight + rightHeight);
 
-        // Returning height as usual.
-        return 1 + Math.max(leftHeight, rightHeight);
+        return Math.max(leftHeight, rightHeight);
     }
 
-    public int diameterOfBinaryTree(TreeNode root) {
-        if(root == null) {
-            return 0;
-        }
+    int diameter;
 
-        diameter = 0;
-        returnHeightAndFindDiameterPassively(root);
+    public int diameterOfBinaryTree(TreeNode root) {
+        diameter = -1;
+        
+        getHeight(root);
+        
         return diameter;
     }
 }
