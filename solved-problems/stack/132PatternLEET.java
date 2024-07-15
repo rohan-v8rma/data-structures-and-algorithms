@@ -1,5 +1,4 @@
 // https://leetcode.com/problems/132-pattern
-// TODO: Make notes
 
 class Solution {
     /*
@@ -51,7 +50,6 @@ class Solution {
     i < j < k
     num1 < num2 < num3
 
-
     If we continuously get smaller and smaller elements, 
     keep adding them into the stack.
     
@@ -86,17 +84,16 @@ class Solution {
     */
     public boolean find132pattern(int[] nums) {
         /*
-        This stack contains the current num3, as well
-        as all potential candidates for num3, 
+        This stack contains all potential candidates for num2, 
         in monotonically increasing order.
         */
-        ArrayDeque<Integer> num3Candidates = new ArrayDeque<>();
+        ArrayDeque<Integer> num2Candidates = new ArrayDeque<>();
 
         int n = nums.length;
 
         int num2 = Integer.MIN_VALUE;
 
-        num3Candidates.push(Integer.MAX_VALUE);
+        num2Candidates.push(Integer.MAX_VALUE);
 
         for(int i = n - 1; i >= 0; i--) {
             /*
@@ -113,28 +110,29 @@ class Solution {
             the previous (greatest possible) num3 candidate
             as our new num2.
             */
-            if(nums[i] > num3Candidates.peek()) {
+            if(nums[i] > num2Candidates.peek()) {
                 int num3 = nums[i];
 
                 /*
                 Maximizing num2, without letting it exceed
                 num3
                 */
-                while(num3 > num3Candidates.peek()) {
-                    num2 = num3Candidates.pop();
+                while(num3 > num2Candidates.peek()) {
+                    num2 = num2Candidates.pop();
                 }
 
                 // This prevents 2 equal values in the stack.
-                if(num3 < num3Candidates.peek()) {
-                    num3Candidates.push(num3);
+                if(num3 < num2Candidates.peek()) {
+                    // The num3 we just used, can serve as a future num2
+                    num2Candidates.push(num3);
                 }
             }
             /*
             Since this is a smaller element, we keep it as
-            potential num3 candidate.
+            potential num2 candidate.
             */
-            else if(nums[i] < num3Candidates.peek()) {
-                num3Candidates.push(nums[i]);
+            else if(nums[i] < num2Candidates.peek()) {
+                num2Candidates.push(nums[i]);
             }
         }
 
