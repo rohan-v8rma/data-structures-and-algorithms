@@ -2,6 +2,7 @@
 
 class Solution {
 public:
+    // DFS
     bool dfs(
         int node,
         vector<vector<int>>& graph,
@@ -42,4 +43,49 @@ public:
 
         return safe;
     }
+
+    // // BFS
+
+    // vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+    //     int n = graph.size();
+
+    //     // Measure out degrees to find terminal nodes and make a reverse graph that go from leaf nodes to parents so that we can see which nodes are terminal nodes or safe nodes
+
+    //     vector<int> out_degrees = vector(n, 0);
+    //     vector<vector<int>> reverseGraph = vector(n, vector(0, 0));
+
+    //     for(int i = 0; i < n; i++) {
+    //         for(auto e: graph[i]) {   
+    //             out_degrees[i]++;
+    //             reverseGraph[e].push_back(i);
+    //         }
+    //     }
+
+    //     queue<int> q;
+
+    //     for(int i = 0; i < n; i++) {
+    //         if(out_degrees[i] == 0) {
+    //             q.push(i);
+    //         }
+    //     }
+
+    //     vector<int> safe;
+
+    //     while(!q.empty()) {
+    //         int safeElement = q.front();
+    //         q.pop();
+    //         safe.push_back(safeElement);
+
+    //         for(auto e: reverseGraph[safeElement]) {
+    //             out_degrees[e]--;
+    //             if(out_degrees[e] == 0) {
+    //                 q.push(e);
+    //             }
+    //         }
+    //     }
+
+    //     sort(safe.begin(), safe.end());
+
+    //     return safe;
+    // }
 };
